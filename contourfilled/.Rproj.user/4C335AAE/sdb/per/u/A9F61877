@@ -1,0 +1,17 @@
+{
+    "contents" : "library(devtools)\nlibrary(roxygen2)\n",
+    "created" : 1464033388023.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2558744123",
+    "id" : "A9F61877",
+    "lastKnownWriteTime" : 162570560,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

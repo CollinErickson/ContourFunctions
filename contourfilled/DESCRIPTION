@@ -1,0 +1,12 @@
+Package: contourfilled
+Type: Package
+Title: Contour functions
+Version: 1.0
+Date: 2016-05-23
+Author: Collin Erickson <collinerickson@u.northwestern.edu>
+Maintainer: Collin Erickson <collinerickson@u.northwestern.edu>
+Suggests: mlegp
+Description: Provides functions for making contour plots.
+License: GPL-2
+Packaged: 2016-05-24 13:10:18 UTC; cbe117
+RoxygenNote: 5.0.1
