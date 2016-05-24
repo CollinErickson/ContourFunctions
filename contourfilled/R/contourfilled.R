@@ -20,6 +20,14 @@
 #' @param axes  logical indicating if axes should be drawn, as in plot.default.
 #' @param frame.plot  logical indicating if a box should be drawn, as in plot.default.
 #' @param ...  additional graphical parameters, currently only passed to title().
+#' @importFrom grDevices cm.colors
+#' @importFrom graphics .filled.contour
+#' @importFrom graphics Axis 
+#' @importFrom graphics box
+#' @importFrom graphics plot.new 
+#' @importFrom graphics plot.window 
+#' @importFrom graphics points 
+#' @importFrom graphics title
 #' @examples 
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
 #' r <- sqrt(outer(x^2, y^2, "+"))
@@ -88,6 +96,13 @@ contourfilled <-
     #mar <- mar.orig
     #mar[4L] <- 1
     #par(mar = mar)
+    # Changing the margin to get bigger and square
+    mar <- mar.orig <- par()$mar
+    mar[1] <- 2.2 # bottom
+    mar[2] <- 2.5 # left
+    mar[3] <- 1.3 # top
+    mar[4] <- 1 # right
+    par(mar = mar)
     plot.new()
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1L || ncol(z) <= 1L)
@@ -144,7 +159,7 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),mainmin
         if(inbatch==0) XYi <- matrix(c(xi,yi),ncol=2)
         else XYi <- rbind(XYi,matrix(c(xi,yi),ncol=2))
         inbatch <- inbatch + 1
-        if(inbatch == batchmax | (xi==n & yi==n)) {#browser()
+        if(inbatch == batchmax | (xi==n & yi==n)) {
           Zbatch <- fn(matrix(c(x[XYi[,1]],y[XYi[,2]]),ncol=2,byrow=F))
           for(rowbatch in 1:length(Zbatch)) {
             z[XYi[rowbatch,1],XYi[rowbatch,2]] <- Zbatch[rowbatch]
@@ -155,10 +170,13 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),mainmin
       }
     }
   }
-  if(mainminmax)
-    contourfilled(x,y,z,main=paste(signif(c(min(z),max(z)),3)),...)
-  else
+  if(mainminmax) {
+    contourfilled(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
+    contourfilled(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
+    #contourfilled(x,y,z,main=paste('abcde','abc'),...)
+  } else {
     contourfilled(x,y,z,...)
+  }
 }
 #' Makes filled contour plot from data without sidebar by interpolating with Gaussian process, uses contourfilled
 #' @param x  either just x data, x and y data, or x, y and z data
@@ -167,6 +185,8 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),mainmin
 #' @param xcontlim  x limits for the contour plot
 #' @param ycontlim  y limits for the contour plot
 #' @param ...  passed to contourfilled.func
+#' @importFrom mlegp mlegp
+#' @importFrom mlegp predict.gp
 #' @examples 
 #' x <- runif(20)
 #' y <- runif(20)
@@ -184,7 +204,7 @@ contourfilled.data <- function(x,y=NULL,z=NULL,xcontlim=NULL,ycontlim=NULL,...) 
   #  xcontlim,ycontlim: contour limits will be set to data limits +- 5% if not specified
   #  ... parameters passed to contourfilled.func
   # Created 5/23/16 by Collin Erickson
-  require(mlegp)
+  #require(mlegp)
   # This section parses data into x, y, and z
   if (is.null(y) & !is.null(z)) {
     if(dim(x)[2]!=2) {stop('Either give y or x must be matrix')}
@@ -202,8 +222,8 @@ contourfilled.data <- function(x,y=NULL,z=NULL,xcontlim=NULL,ycontlim=NULL,...) 
     x <- x[,1]
   }
   # Fits a Gaussian process model that interpolates perfectly
-  mod <- mlegp(X=data.frame(x,y),Z=z,verbose=0)
-  pred.func <- function(xx) {predict.gp(mod,xx)}
+  mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0)
+  pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
   minx <- min(x);maxx <- max(x);miny <- min(y);maxy <- max(y)
   if(is.null(xcontlim)) {xcontlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
   if(is.null(ycontlim)) {ycontlim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
