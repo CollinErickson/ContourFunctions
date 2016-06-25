@@ -171,8 +171,10 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),mainmin
     }
   }
   if(mainminmax) {
-    contourfilled(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
-    contourfilled(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
+    #contourfilled(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
+    #contourfilled(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
+    contourfilled(x,y,z)
+    multicolor.title(c('(','min',', ','max',') = (',signif(min(z),3),', ',signif(max(z),3),')'),c(1,"#80FFFFFF",1,"#FF80FFFF",1,1,1,1,1))
     #contourfilled(x,y,z,main=paste('abcde','abc'),...)
   } else {
     contourfilled(x,y,z,...)
@@ -231,4 +233,33 @@ contourfilled.data <- function(x,y=NULL,z=NULL,xcontlim=NULL,ycontlim=NULL,...) 
   contourfilled.func(fn0 = pred.func,xcontlim=xcontlim,ycontlim=ycontlim,...)
   # Adds points to show where data came from
   points(x,y,pch=19)
+}
+
+#' Makes plot title using specified colors for the text
+#' @param main  Text to put in main title of plot
+#' @param col.main  Colors to use for the text
+#' @param collapse  What to put between elements of main, defaults to "" but " " might be appropriate
+#' @examples 
+#' plot(1:4)
+#' multicolor.title(c('Black, ','red, ','green'),c(1,2,3))
+#' @export
+multicolor.title <- function(main,col.main,collapse='') {
+  if (length(main) != length(col.main)) {stop('main and col must have same length')}
+  n <- length(main)
+  if(n==1) {print('n is 1')
+    title(bquote(.(main[1])),col.main=col.main[1])
+  } else {
+    # print first
+    title(bquote(.(main[1]) * phantom(.(paste0(main[2:n],collapse=collapse)))),col.main=col.main[1])
+    
+    # print middle
+    if(n > 2) {
+      for(i in 2:(n-1)) {
+        title(bquote(phantom(.(paste0(main[1:(i-1)],collapse=collapse))) * .(main[i]) * phantom(.(paste0(main[(i+1):n],collapse=collapse)))),col.main=col.main[i]) 
+      }
+    }
+    
+    # print last
+    title(bquote(phantom(.(paste0(main[1:(n-1)],collapse=collapse))) * .(main[n])),col.main=col.main[n])
+  }
 }
