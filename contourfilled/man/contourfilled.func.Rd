@@ -6,7 +6,7 @@
 \usage{
 contourfilled.func(fn0, n = 100, xcontlim = c(0, 1), ycontlim = c(0, 1),
   mainminmax = T, batchmax = 1, out.col.name = NULL, pretitle = "",
-  posttitle = "", title = NULL, ...)
+  posttitle = "", title = NULL, mainminmax_minmax = TRUE, ...)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}
@@ -28,6 +28,8 @@ contourfilled.func(fn0, n = 100, xcontlim = c(0, 1), ycontlim = c(0, 1),
 \item{posttitle}{Text to be appended to end of plot title}
 
 \item{title}{Title for the plot}
+
+\item{mainminmax_minmax}{Whether [min,max]= should be shown in title or just the numbers}
 
 \item{...}{Passed to contourfilled}
 }
