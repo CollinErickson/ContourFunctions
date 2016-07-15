@@ -5,7 +5,8 @@
 \title{Makes filled contour plot from function without sidebar, uses contourfilled}
 \usage{
 contourfilled.func(fn0, n = 100, xcontlim = c(0, 1), ycontlim = c(0, 1),
-  mainminmax = T, batchmax = 1, out.col.name = NULL, ...)
+  mainminmax = T, batchmax = 1, out.col.name = NULL, pretitle = "",
+  posttitle = "", title = NULL, ...)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}
@@ -21,6 +22,12 @@ contourfilled.func(fn0, n = 100, xcontlim = c(0, 1), ycontlim = c(0, 1),
 \item{batchmax}{number of datapoints that can be computed at a time}
 
 \item{out.col.name}{if a column needs to be selected from the function, specify it}
+
+\item{pretitle}{Text to be preappended to end of plot title}
+
+\item{posttitle}{Text to be appended to end of plot title}
+
+\item{title}{Title for the plot}
 
 \item{...}{Passed to contourfilled}
 }

@@ -8,3 +8,5 @@ x <- runif(20)
 y <- runif(20)
 z <- exp(-(x-.5)^2-5*(y-.5)^2)
 contourfilled.data(x,y,z)
+
+contourfilled.func(function(xx){exp(-sum((xx-.5)^2))})
