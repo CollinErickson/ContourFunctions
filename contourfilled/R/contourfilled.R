@@ -244,7 +244,7 @@ contourfilled.data <- function(x,y=NULL,z=NULL,xcontlim=NULL,ycontlim=NULL,...) 
     x <- x[,1]
   }
   # Fits a Gaussian process model that interpolates perfectly
-  mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0)
+  co <- capture.output(mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0))
   pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
   minx <- min(x);maxx <- max(x);miny <- min(y);maxy <- max(y)
   if(is.null(xcontlim)) {xcontlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
