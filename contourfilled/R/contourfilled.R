@@ -141,6 +141,7 @@ contourfilled <-
 #' @param posttitle Text to be appended to end of plot title
 #' @param title Title for the plot
 #' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
+#' @param pts Points to plot on top of contour
 #' @param ...  Passed to contourfilled
 #' @examples 
 #' contourfilled.func(function(x){x[1]*x[2]})
@@ -152,7 +153,8 @@ contourfilled <-
 #' @export
 contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),
                                mainminmax=T,batchmax=1,out.col.name=NULL,
-                               pretitle="", posttitle="",title=NULL,mainminmax_minmax=TRUE,
+                               pretitle="", posttitle="",title=NULL,
+                               mainminmax_minmax=TRUE, pts=NULL,
                                ...) {
   if(is.null(out.col.name)) {fn <- fn0} else {fn <- function(xx){fn0(xx)[,out.col.name]}}
   x <- seq(xcontlim[1],xcontlim[2],length.out = n)
@@ -198,6 +200,9 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),
     #contourfilled(x,y,z,main=paste('abcde','abc'),...)
   } else {
     contourfilled(x,y,z,...)
+  }
+  if (!is.null(pts)) {
+    points(pts, pch=19)
   }
 }
 #' Makes filled contour plot from data without sidebar by interpolating with Gaussian process, uses contourfilled
