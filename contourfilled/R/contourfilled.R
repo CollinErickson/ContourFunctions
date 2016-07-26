@@ -137,6 +137,7 @@ contourfilled <-
 #' @param mainminmax  whether the min and max values should be shown in the title of plot
 #' @param batchmax  number of datapoints that can be computed at a time
 #' @param out.col.name  if a column needs to be selected from the function, specify it
+#' @param out.name Selects with a $ the name from output to be used, for lists and data frames
 #' @param pretitle Text to be preappended to end of plot title
 #' @param posttitle Text to be appended to end of plot title
 #' @param title Title for the plot
@@ -153,10 +154,17 @@ contourfilled <-
 #' @export
 contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),
                                mainminmax=T,batchmax=1,out.col.name=NULL,
+                               out.name=NULL,
                                pretitle="", posttitle="",title=NULL,
                                mainminmax_minmax=TRUE, pts=NULL,
                                ...) {
-  if(is.null(out.col.name)) {fn <- fn0} else {fn <- function(xx){fn0(xx)[,out.col.name]}}
+  if(!is.null(out.col.name)) {
+    fn <- function(xx){fn0(xx)[,out.col.name]}
+  } else if (!is.null(out.name)) {
+    fn <- function(xx){fn0(xx)[[out.name]]}
+  } else {
+    fn <- fn0
+  }
   x <- seq(xcontlim[1],xcontlim[2],length.out = n)
   y <- seq(ycontlim[1],ycontlim[2],length.out = n)
   z <- matrix(NA,n,n)
@@ -214,6 +222,7 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),
 #' @param ...  passed to contourfilled.func
 #' @importFrom mlegp mlegp
 #' @importFrom mlegp predict.gp
+#' @importFrom utils capture.output
 #' @examples 
 #' x <- runif(20)
 #' y <- runif(20)
