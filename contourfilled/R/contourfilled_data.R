@@ -1,9 +1,11 @@
-#' Makes filled contour plot from data without sidebar by interpolating with Gaussian process, uses contourfilled
+#' Makes filled contour plot from data without sidebar by interpolating 
+#' with Gaussian process, uses contourfilled
 #' @param x  either just x data, x and y data, or x, y and z data
 #' @param y  either y data, z data, or null
 #' @param z  either z data or null
-#' @param xcontlim  x limits for the contour plot
-#' @param ycontlim  y limits for the contour plot
+#' @param xlim  x limits for the contour plot, will be set to data limits +- 5\% if not specified
+#' @param ylim  y limits for the contour plot, will be set to data limits +- 5\% if not specified
+#' @param xylim x and y limits for the contour plot
 #' @param ...  passed to contourfilled.func
 #' @importFrom mlegp mlegp
 #' @importFrom mlegp predict.gp
@@ -18,11 +20,13 @@
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-contourfilled.data <- function(x,y=NULL,z=NULL,xcontlim=NULL,ycontlim=NULL,...) {
+contourfilled.data <- function(x, y=NULL, z=NULL,
+                               xlim=NULL, ylim=NULL, xylim=NULL,
+                               ...) {
   # Function that creates a contour plot from a data set
   # using a Gaussian process interpolation from mlegp
   #  x,y,z: three dimensional data, can be given only in x, in x and y, or in all three
-  #  xcontlim,ycontlim: contour limits will be set to data limits +- 5% if not specified
+  #  xlim,ylim: contour limits will be set to data limits +- 5% if not specified
   #  ... parameters passed to contourfilled.func
   # Created 5/23/16 by Collin Erickson
   #require(mlegp)
@@ -46,10 +50,11 @@ contourfilled.data <- function(x,y=NULL,z=NULL,xcontlim=NULL,ycontlim=NULL,...) 
   co <- capture.output(mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0))
   pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
   minx <- min(x);maxx <- max(x);miny <- min(y);maxy <- max(y)
-  if(is.null(xcontlim)) {xcontlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
-  if(is.null(ycontlim)) {ycontlim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
+  if (!is.null(xylim)) {xlim <- ylim <- xylim}
+  if(is.null(xlim)) {xlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
+  if(is.null(ylim)) {ylim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
   # Passes prediction function to contourfilled.func
-  contourfilled.func(fn0 = pred.func,xcontlim=xcontlim,ycontlim=ycontlim,...)
+  contourfilled.func(fn0 = pred.func,xlim=xlim,ylim=ylim,...)
   # Adds points to show where data came from
   points(x,y,pch=19)
 }

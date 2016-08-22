@@ -4,19 +4,21 @@
 \alias{contourfilled.func}
 \title{Makes filled contour plot from function without sidebar, uses contourfilled}
 \usage{
-contourfilled.func(fn0, n = 100, xcontlim = c(0, 1), ycontlim = c(0, 1),
-  mainminmax = T, batchmax = 1, out.col.name = NULL, out.name = NULL,
-  pretitle = "", posttitle = "", title = NULL, mainminmax_minmax = TRUE,
-  pts = NULL, ...)
+contourfilled.func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1),
+  xylim = NULL, mainminmax = T, batchmax = 1, out.col.name = NULL,
+  out.name = NULL, pretitle = "", posttitle = "", title = NULL,
+  mainminmax_minmax = TRUE, pts = NULL, ...)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}
 
 \item{n}{number of points in each dimension}
 
-\item{xcontlim}{x limits for the contour plot}
+\item{xlim}{x limits for the contour plot}
 
-\item{ycontlim}{y limits for the contour plot}
+\item{ylim}{y limits for the contour plot}
+
+\item{xylim}{x and y limits for the contour plot, use when both are same}
 
 \item{mainminmax}{whether the min and max values should be shown in the title of plot}
 

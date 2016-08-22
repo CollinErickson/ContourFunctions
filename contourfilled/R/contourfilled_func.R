@@ -1,8 +1,9 @@
 #' Makes filled contour plot from function without sidebar, uses contourfilled
 #' @param fn0  function to plot, first argument must be two-dimensional
 #' @param n  number of points in each dimension
-#' @param xcontlim  x limits for the contour plot
-#' @param ycontlim  y limits for the contour plot
+#' @param xlim  x limits for the contour plot
+#' @param ylim  y limits for the contour plot
+#' @param xylim  x and y limits for the contour plot, use when both are same
 #' @param mainminmax  whether the min and max values should be shown in the title of plot
 #' @param batchmax  number of datapoints that can be computed at a time
 #' @param out.col.name  if a column needs to be selected from the function, specify it
@@ -21,10 +22,11 @@
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),
-                               mainminmax=T,batchmax=1,out.col.name=NULL,
+contourfilled.func <- function(fn0, n=100,
+                               xlim=c(0,1), ylim=c(0,1), xylim=NULL,
+                               mainminmax=T, batchmax=1, out.col.name=NULL,
                                out.name=NULL,
-                               pretitle="", posttitle="",title=NULL,
+                               pretitle="", posttitle="", title=NULL,
                                mainminmax_minmax=TRUE, pts=NULL,
                                ...) {
   if(!is.null(out.col.name)) {
@@ -34,11 +36,14 @@ contourfilled.func <- function(fn0,n=100,xcontlim=c(0,1),ycontlim=c(0,1),
   } else {
     fn <- fn0
   }
-  x <- seq(xcontlim[1],xcontlim[2],length.out = n)
-  y <- seq(ycontlim[1],ycontlim[2],length.out = n)
+  if (!is.null(xylim)) {xlim <- ylim <- xylim}
+  x <- seq(xlim[1],xlim[2],length.out = n)
+  y <- seq(ylim[1],ylim[2],length.out = n)
   z <- matrix(NA,n,n)
   if(batchmax<=1) { # calculate single Z value at a time
-    for(xi in 1:n) for(yi in 1:n) {z[xi,yi] <- fn(c(x[xi],y[yi]))}
+    #for(xi in 1:n) for(yi in 1:n) {z[xi,yi] <- fn(c(x[xi],y[yi]))}
+    fn_outer <- Vectorize(function(xi, yi) {fn(c(x[xi], y[yi]))})
+    z <- outer(1:n, 1:n, fn_outer)
   } else {
     inbatch <- 0
     for(xi in 1:n) {

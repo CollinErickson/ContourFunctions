@@ -2,10 +2,11 @@
 % Please edit documentation in R/contourfilled_data.R
 \name{contourfilled.data}
 \alias{contourfilled.data}
-\title{Makes filled contour plot from data without sidebar by interpolating with Gaussian process, uses contourfilled}
+\title{Makes filled contour plot from data without sidebar by interpolating 
+with Gaussian process, uses contourfilled}
 \usage{
-contourfilled.data(x, y = NULL, z = NULL, xcontlim = NULL,
-  ycontlim = NULL, ...)
+contourfilled.data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL,
+  xylim = NULL, ...)
 }
 \arguments{
 \item{x}{either just x data, x and y data, or x, y and z data}
@@ -14,14 +15,17 @@ contourfilled.data(x, y = NULL, z = NULL, xcontlim = NULL,
 
 \item{z}{either z data or null}
 
-\item{xcontlim}{x limits for the contour plot}
+\item{xlim}{x limits for the contour plot, will be set to data limits +- 5\% if not specified}
 
-\item{ycontlim}{y limits for the contour plot}
+\item{ylim}{y limits for the contour plot, will be set to data limits +- 5\% if not specified}
+
+\item{xylim}{x and y limits for the contour plot}
 
 \item{...}{passed to contourfilled.func}
 }
 \description{
-Makes filled contour plot from data without sidebar by interpolating with Gaussian process, uses contourfilled
+Makes filled contour plot from data without sidebar by interpolating 
+with Gaussian process, uses contourfilled
 }
 \examples{
 x <- runif(20)
