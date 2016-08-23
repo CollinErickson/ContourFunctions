@@ -1,4 +1,4 @@
-#' Makes filled contour plot from function without sidebar, uses contourfilled
+#' Makes filled contour plot from function without sidebar, uses cf_grid
 #' @param fn0  function to plot, first argument must be two-dimensional
 #' @param n  number of points in each dimension
 #' @param xlim  x limits for the contour plot
@@ -13,16 +13,16 @@
 #' @param title Title for the plot
 #' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param pts Points to plot on top of contour
-#' @param ...  Passed to contourfilled
+#' @param ...  Passed to cf_grid
 #' @examples 
-#' contourfilled.func(function(x){x[1]*x[2]})
-#' contourfilled.func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
+#' cf_func(function(x){x[1]*x[2]})
+#' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-contourfilled.func <- function(fn0, n=100,
+cf_func <- function(fn0, n=100,
                                xlim=c(0,1), ylim=c(0,1), xylim=NULL,
                                mainminmax=T, batchmax=1, out.col.name=NULL,
                                out.name=NULL,
@@ -63,9 +63,9 @@ contourfilled.func <- function(fn0, n=100,
     }
   }
   if(mainminmax) {
-    #contourfilled(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
-    #contourfilled(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
-    contourfilled(x,y,z)
+    #cf_grid(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
+    #cf_grid(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
+    cf_grid(x,y,z)
     if(is.null(title)) {
       title_text <- c(pretitle)
       title_color <- c(1)
@@ -79,9 +79,9 @@ contourfilled.func <- function(fn0, n=100,
     } else {
       multicolor.title(title, 1)
     }
-    #contourfilled(x,y,z,main=paste('abcde','abc'),...)
+    #cf_grid(x,y,z,main=paste('abcde','abc'),...)
   } else {
-    contourfilled(x,y,z,...)
+    cf_grid(x,y,z,...)
   }
   if (!is.null(pts)) {
     points(pts, pch=19)

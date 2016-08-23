@@ -1,10 +1,10 @@
-Package: contourfilled
+Package: cf
 Type: Package
 Title: Contour Functions
 Version: 1.0
 Date: 2016-05-23
-Author: Collin Erickson <collinerickson@u.northwestern.edu>
-Maintainer: Collin Erickson <collinerickson@u.northwestern.edu>
+Author: Collin Erickson <collinberickson@gmail.com>
+Maintainer: Collin Erickson <collinberickson@gmail.com>
 Imports: mlegp
 Description: Provides functions for making contour plots.
 License: GPL-2
