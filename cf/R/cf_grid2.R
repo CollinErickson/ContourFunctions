@@ -38,15 +38,15 @@
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-cf_grid <-
+cf_grid2 <-
   function (x = seq(0, 1, length.out = nrow(z)), 
             y = seq(0, 1,length.out = ncol(z)), z, xlim = range(x, finite = TRUE),
             ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE),
             levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors,
             col = color.palette(length(levels) - 1), plot.title, plot.axes,
             key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
-            axes = TRUE, frame.plot = axes, bar=F, ...)
-  {#browser()
+            axes = TRUE, frame.plot = axes, ...)
+  {
     # filled.contour gives unnecessary legend, this function removes it
     # Used P Lapointe's solution from here: http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r
     #   also had to changed .Internal(fillcontour) to .filled.contour
@@ -72,42 +72,37 @@ cf_grid <-
     }
     if (any(diff(x) <= 0) || any(diff(y) <= 0))
       stop("increasing 'x' and 'y' values expected")
-    
-    if (any(diff(x) <= 0) || any(diff(y) <= 0)) 
-      stop("increasing 'x' and 'y' values expected")
-    mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
-    on.exit(par(par.orig))
-    w <- (3 + mar.orig[2L]) * par("csi") * 2.54
-    layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
-    par(las = las)
-    if (bar) {
-      mar <- mar.orig
-      mar[4L] <- mar[2L]
-      mar[2L] <- 1
-      par(mar = mar)
-      plot.new()
-      plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
-                  yaxs = "i")
-      rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
-      if (missing(key.axes)) {
-        if (axes) 
-          axis(4)
-      }
-      else key.axes
-      box()
-      if (!missing(key.title))
-        key.title
-      mar <- mar.orig
-      mar[4L] <- 1
-    }
-    if (!bar) {
-      # Changing the margin to get bigger and square
-      mar <- mar.orig #<- par()$mar
-      mar[1] <- 2.2 # bottom
-      mar[2] <- 2.5 # left
-      mar[3] <- 1.3 # top
-      mar[4] <- 1 # right
-    }
+    #mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
+    #on.exit(par(par.orig))
+    # Comment out everything that was for legend
+    #w <- (3 + mar.orig[2L]) * par("csi") * 2.54
+    #layout(matrix(c(1, 1), ncol = 1L), widths = c(1, lcm(w)))
+    #par(las = las)
+    #mar <- mar.orig
+    #mar[4L] <- mar[2L]
+    #mar[2L] <- 1
+    #par(mar = mar)
+    #plot.new()
+    #plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i",
+    #            yaxs = "i")
+    #    rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
+    #    if (missing(key.axes)) {
+    #        if (axes)
+    #            axis(4)
+    #    }
+    #    else key.axes
+    #    box()
+    #if (!missing(key.title))
+    #  key.title
+    #mar <- mar.orig
+    #mar[4L] <- 1
+    #par(mar = mar)
+    # Changing the margin to get bigger and square
+    mar <- mar.orig <- par()$mar
+    mar[1] <- 2.2 # bottom
+    mar[2] <- 2.5 # left
+    mar[3] <- 1.3 # top
+    mar[4] <- 1 # right
     par(mar = mar)
     plot.new()
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)

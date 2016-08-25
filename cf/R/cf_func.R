@@ -65,7 +65,7 @@ cf_func <- function(fn0, n=100,
   if(mainminmax) {
     #cf_grid(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
     #cf_grid(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
-    cf_grid(x,y,z)
+    cf_grid2(x,y,z, ...)
     if(is.null(title)) {
       title_text <- c(pretitle)
       title_color <- c(1)
@@ -81,7 +81,7 @@ cf_func <- function(fn0, n=100,
     }
     #cf_grid(x,y,z,main=paste('abcde','abc'),...)
   } else {
-    cf_grid(x,y,z,...)
+    cf_grid2(x,y,z,...)
   }
   if (!is.null(pts)) {
     points(pts, pch=19)
