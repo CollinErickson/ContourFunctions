@@ -54,7 +54,7 @@ cf_data <- function(x, y=NULL, z=NULL,
   if(is.null(xlim)) {xlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
   if(is.null(ylim)) {ylim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
   # Passes prediction function to cf_func
-  cf_func(fn0 = pred.func,xlim=xlim,ylim=ylim,...)
+  cf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=cbind(x,y), ...)
   # Adds points to show where data came from
-  points(x,y,pch=19)
+  #points(x,y,pch=19) # now passed as pts to cf_func
 }

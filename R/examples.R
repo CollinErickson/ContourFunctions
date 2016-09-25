@@ -9,4 +9,4 @@ y <- runif(20)
 z <- exp(-(x-.5)^2-5*(y-.5)^2)
 cf_data(x,y,z)
 
-cf_func(function(xx){exp(-sum((xx-.5)^2))})
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))})

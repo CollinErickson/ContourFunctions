@@ -19,6 +19,8 @@
 #' @param las  the style of labeling to be used. The default is to use horizontal labeling.
 #' @param axes  logical indicating if axes should be drawn, as in plot.default.
 #' @param frame.plot  logical indicating if a box should be drawn, as in plot.default.
+#' @param bar Should a bar showing the output range and colors be shown on the right?
+#' @param pts Points to plot on top of contour
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -45,8 +47,8 @@ cf_grid <-
             levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors,
             col = color.palette(length(levels) - 1), plot.title, plot.axes,
             key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
-            axes = TRUE, frame.plot = axes, bar=F, ...)
-  {#browser()
+            axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=T,...)
+  {browser()
     # filled.contour gives unnecessary legend, this function removes it
     # Used P Lapointe's solution from here: http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r
     #   also had to changed .Internal(fillcontour) to .filled.contour
@@ -76,7 +78,7 @@ cf_grid <-
     if (any(diff(x) <= 0) || any(diff(y) <= 0)) 
       stop("increasing 'x' and 'y' values expected")
     mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
-    on.exit(par(par.orig))
+    if (reset.par) {on.exit(par(par.orig))}
     w <- (3 + mar.orig[2L]) * par("csi") * 2.54
     layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
     par(las = las)
@@ -132,5 +134,14 @@ cf_grid <-
     if (missing(plot.title))
       title(...)
     else plot.title
-    invisible()
+    
+    if (!is.null(pts)) {
+      points(pts, pch=19)
+    }
+    
+    if (reset.par) {
+      invisible()
+    } else {
+      par.orig
+    }
   }
