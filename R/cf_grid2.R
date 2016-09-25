@@ -45,7 +45,7 @@ cf_grid2 <-
             levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors,
             col = color.palette(length(levels) - 1), plot.title, plot.axes,
             key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
-            axes = TRUE, frame.plot = axes, ...)
+            axes = TRUE, frame.plot = axes, bar=NULL, pts=NULL, reset.par=NULL,...)
   {
     # filled.contour gives unnecessary legend, this function removes it
     # Used P Lapointe's solution from here: http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r
@@ -127,5 +127,10 @@ cf_grid2 <-
     if (missing(plot.title))
       title(...)
     else plot.title
+    
+    if (!is.null(pts)) {
+      points(pts, pch=19)
+    }
+    
     invisible()
   }

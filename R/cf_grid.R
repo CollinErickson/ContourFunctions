@@ -48,7 +48,7 @@ cf_grid <-
             col = color.palette(length(levels) - 1), plot.title, plot.axes,
             key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
             axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=T,...)
-  {browser()
+  {#browser()
     # filled.contour gives unnecessary legend, this function removes it
     # Used P Lapointe's solution from here: http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r
     #   also had to changed .Internal(fillcontour) to .filled.contour
