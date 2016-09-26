@@ -82,7 +82,7 @@ cf_func <- function(fn0, n=100,
     }
     #cf_grid(x,y,z,main=paste('abcde','abc'),...)
   } else {
-    cf_grid2(x,y,z, pts=pts...)
+    cf_grid2(x,y,z, pts=pts, ...)
   }
   #if (!is.null(pts)) { # This is now done in cf_grid
   #  points(pts, pch=19)

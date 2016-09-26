@@ -21,6 +21,7 @@
 #' @param frame.plot  logical indicating if a box should be drawn, as in plot.default.
 #' @param bar Should a bar showing the output range and colors be shown on the right?
 #' @param pts Points to plot on top of contour
+#' @param reset.par Should the graphical parameters be reset before exiting? Usually should be.
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -31,6 +32,7 @@
 #' @importFrom graphics points 
 #' @importFrom graphics title
 #' @importFrom graphics par
+#' @importFrom graphics axis layout lcm rect
 #' @examples 
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
 #' r <- sqrt(outer(x^2, y^2, "+"))

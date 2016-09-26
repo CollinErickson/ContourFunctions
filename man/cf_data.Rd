@@ -6,7 +6,7 @@
 with Gaussian process, passes model to cf_func to make contour}
 \usage{
 cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL, xylim = NULL,
-  ...)
+  fit = "", ...)
 }
 \arguments{
 \item{x}{either just x data, x and y data, or x, y and z data}
@@ -20,6 +20,9 @@ cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL, xylim = NULL,
 \item{ylim}{y limits for the contour plot, will be set to data limits +- 5\% if not specified}
 
 \item{xylim}{x and y limits for the contour plot}
+
+\item{fit}{Method to fit a model with. Current options are laGP (default)
+and mlegp. laGP is faster but might cause trouble.}
 
 \item{...}{passed to cf_func}
 }

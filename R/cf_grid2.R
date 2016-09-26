@@ -19,6 +19,9 @@
 #' @param las  the style of labeling to be used. The default is to use horizontal labeling.
 #' @param axes  logical indicating if axes should be drawn, as in plot.default.
 #' @param frame.plot  logical indicating if a box should be drawn, as in plot.default.
+#' @param bar Should a bar showing the output range and colors be shown on the right?
+#' @param pts Points to plot on top of contour
+#' @param reset.par Should the graphical parameters be reset before exiting? Usually should be.
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour

@@ -10,7 +10,7 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   nlevels = 20, color.palette = cm.colors,
   col = color.palette(length(levels) - 1), plot.title, plot.axes, key.title,
   key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1, axes = TRUE,
-  frame.plot = axes, bar = F, ...)
+  frame.plot = axes, bar = F, pts = NULL, reset.par = T, ...)
 }
 \arguments{
 \item{x}{x values, must form grid with y}
@@ -52,6 +52,12 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
 \item{axes}{logical indicating if axes should be drawn, as in plot.default.}
 
 \item{frame.plot}{logical indicating if a box should be drawn, as in plot.default.}
+
+\item{bar}{Should a bar showing the output range and colors be shown on the right?}
+
+\item{pts}{Points to plot on top of contour}
+
+\item{reset.par}{Should the graphical parameters be reset before exiting? Usually should be.}
 
 \item{...}{additional graphical parameters, currently only passed to title().}
 }
