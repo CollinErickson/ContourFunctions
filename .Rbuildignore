@@ -1,3 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 Rplots.pdf
+^README\.Rmd$
+^README-.*\.png$
+^\.travis\.yml$
