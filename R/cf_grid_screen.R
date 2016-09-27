@@ -36,13 +36,13 @@
 #' @examples 
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
 #' r <- sqrt(outer(x^2, y^2, "+"))
-#' cf_grid(cos(r^2)*exp(-r/(2*pi)))
+#' cf_grid2(cos(r^2)*exp(-r/(2*pi)))
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-cf_grid <-
+cf_grid3 <-
   function (x = seq(0, 1, length.out = nrow(z)), 
             y = seq(0, 1,length.out = ncol(z)), z, xlim = range(x, finite = TRUE),
             ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE),
@@ -80,14 +80,20 @@ cf_grid <-
     if (any(diff(x) <= 0) || any(diff(y) <= 0)) 
       stop("increasing 'x' and 'y' values expected")
     mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
-    if (reset.par) {on.exit(par(par.orig))}
+    if (reset.par) {on.exit({par(par.orig);close.screen(all=TRUE)})}
+    #on.exit(close.screen(all=TRUE))
     w <- (3 + mar.orig[2L]) * par("csi") * 2.54
-    layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
+    #layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
     par(las = las)
     if (bar) {
+      #split.screen(c(1,2))
+      split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
+      screen(2)
       mar <- mar.orig
-      mar[4L] <- mar[2L]
-      mar[2L] <- 1
+      mar[4L] <- 2.5#mar[2L]
+      mar[1] <- 2.2 # bottom
+      mar[3] <- 1.3 # top
+      mar[2L] <- 0#1
       par(mar = mar)
       plot.new()
       plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
@@ -103,6 +109,10 @@ cf_grid <-
         key.title
       mar <- mar.orig
       mar[4L] <- 1
+      screen(1)
+      mar[1L] <- 2.2
+      mar[2L] <- 2.5 # left
+      mar[3L] <- 1.3
     }
     if (!bar) {
       # Changing the margin to get bigger and square
