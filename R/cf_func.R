@@ -67,19 +67,8 @@ cf_func <- function(fn0, n=100,
     #cf_grid(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
     par.orig <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
     on.exit({par(par.orig);close.screen(all=TRUE)})#;browser()
-    if(is.null(title)) {
-      title_text <- c(pretitle)
-      title_color <- c(1)
-      if (mainminmax_minmax) {
-        title_text  <- c(title_text, '[','min',      ', ','max',      '] = ')
-        title_color <- c(title_color,1,  "#80FFFFFF",1,   "#FF80FFFF",1)
-      }
-      title_text  <- c(title_text, "[",signif(min(z),3),', ',signif(max(z),3),']',posttitle)
-      title_color <- c(title_color,1,  1,               1,   1,               1,  1)
-      multicolor.title(title_text,title_color)
-    } else {
-      multicolor.title(title, 1)
-    }
+    make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
+
     #cf_grid(x,y,z,main=paste('abcde','abc'),...)
   } else {
     cf_grid3(x,y,z, pts=pts, ...)

@@ -90,10 +90,10 @@ cf_grid3 <-
       split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
       screen(2)
       mar <- mar.orig
-      mar[4L] <- 2.5#mar[2L]
+      mar[4L] <- 2.5#mar[2L] # right
       mar[1] <- 2.2 # bottom
-      mar[3] <- 1.3 # top
-      mar[2L] <- 0#1
+      mar[3] <- 1.3#1.3 # top
+      mar[2L] <- 0#1 # left
       par(mar = mar)
       plot.new()
       plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
@@ -108,11 +108,11 @@ cf_grid3 <-
       if (!missing(key.title))
         key.title
       mar <- mar.orig
-      mar[4L] <- 1
+      mar[4L] <- 1 # right
       screen(1)
-      mar[1L] <- 2.2
+      mar[1L] <- 2.2 # bottom
       mar[2L] <- 2.5 # left
-      mar[3L] <- 1.3
+      mar[3L] <- 1.3# 1.3 # top
     }
     if (!bar) {
       # Changing the margin to get bigger and square
