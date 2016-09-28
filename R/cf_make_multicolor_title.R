@@ -1,6 +1,5 @@
-make.multicolor.title <- function(title, z, pretitle, posttitle, mainminmax_minmax) {
-  
-  if(is.null(title)) {
+make.multicolor.title <- function(main, z, pretitle, posttitle, mainminmax_minmax) {
+  if(is.null(main)) {
     title_text <- c(pretitle)
     title_color <- c(1)
     if (mainminmax_minmax) {
@@ -11,6 +10,6 @@ make.multicolor.title <- function(title, z, pretitle, posttitle, mainminmax_minm
     title_color <- c(title_color,1,  1,               1,   1,               1,  1)
     multicolor.title(title_text,title_color)
   } else {
-    multicolor.title(title, 1)
+    multicolor.title(main, 1)
   }
 }

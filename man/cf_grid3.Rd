@@ -10,7 +10,9 @@ cf_grid3(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   nlevels = 20, color.palette = cm.colors,
   col = color.palette(length(levels) - 1), plot.title, plot.axes, key.title,
   key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1, axes = TRUE,
-  frame.plot = axes, bar = F, pts = NULL, reset.par = T, ...)
+  frame.plot = axes, bar = F, pts = NULL, reset.par = TRUE,
+  pretitle = "", posttitle = "", title = NULL, mainminmax = !bar,
+  mainminmax_minmax = TRUE, ...)
 }
 \arguments{
 \item{x}{x values, must form grid with y}
@@ -57,7 +59,18 @@ cf_grid3(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
 
 \item{pts}{Points to plot on top of contour}
 
-\item{reset.par}{Should the graphical parameters be reset before exiting? Usually should be.}
+\item{reset.par}{Should the graphical parameters be reset before exiting? Usually should be
+unless you need to add something to the plot afterwards and bar is TRUE.}
+
+\item{pretitle}{Text to be preappended to end of plot title}
+
+\item{posttitle}{Text to be appended to end of plot title}
+
+\item{title}{Title for the plot}
+
+\item{mainminmax}{whether the min and max values should be shown in the title of plot}
+
+\item{mainminmax_minmax}{Whether [min,max]= should be shown in title or just the numbers}
 
 \item{...}{additional graphical parameters, currently only passed to title().}
 }

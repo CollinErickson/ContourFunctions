@@ -21,10 +21,12 @@
 #' @param frame.plot  logical indicating if a box should be drawn, as in plot.default.
 #' @param bar Should a bar showing the output range and colors be shown on the right?
 #' @param pts Points to plot on top of contour
-#' @param reset.par Should the graphical parameters be reset before exiting? Usually should be.
+#' @param reset.par Should the graphical parameters be reset before exiting? Usually should be
+#' unless you need to add something to the plot afterwards and bar is TRUE.
 #' @param pretitle Text to be preappended to end of plot title
 #' @param posttitle Text to be appended to end of plot title
-#' @param title Title for the plot
+#' @param main Title for the plot
+#' @param mainminmax  whether the min and max values should be shown in the title of plot
 #' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
@@ -37,6 +39,7 @@
 #' @importFrom graphics title
 #' @importFrom graphics par
 #' @importFrom graphics axis layout lcm rect
+#' @importFrom graphics split.screen screen close.screen
 #' @examples 
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
 #' r <- sqrt(outer(x^2, y^2, "+"))
@@ -53,9 +56,9 @@ cf_grid3 <-
             levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors,
             col = color.palette(length(levels) - 1), plot.title, plot.axes,
             key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
-            axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=T,
-            pretitle="", posttitle="", title=NULL,
-            mainminmax_minmax=TRUE,
+            axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=TRUE,
+            pretitle="", posttitle="", main=NULL,
+            mainminmax=!bar, mainminmax_minmax=TRUE,
             ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
@@ -92,7 +95,8 @@ cf_grid3 <-
     w <- (3 + mar.orig[2L]) * par("csi") * 2.54
     #layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
     par(las = las)
-    if (bar) {
+    start.screen.number <- screen()
+    if (bar) {#browser()
       #split.screen(c(1,2))
       screen.numbers <- split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
       screen1 <- screen.numbers[1]
@@ -101,7 +105,7 @@ cf_grid3 <-
       mar <- mar.orig
       mar[4L] <- 2.5#mar[2L] # right
       mar[1] <- 2.2 # bottom
-      mar[3] <- 1.3#1.3 # top
+      mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
       mar[2L] <- 0#1 # left
       par(mar = mar)
       plot.new()
@@ -122,7 +126,7 @@ cf_grid3 <-
       screen(screen1)
       mar[1L] <- 2.2 # bottom
       mar[2L] <- 2.5 # left
-      mar[3L] <- 1.3# 1.3 # top
+      mar[3L] <- if (mainminmax | !is.null(main)) 1.3 else .3 #1.3# 1.3 # top
     }
     if (!bar) {
       screen.numbers <- split.screen(c(1,1)) # Single screen, try to fix other plot error
@@ -132,7 +136,7 @@ cf_grid3 <-
       mar <- mar.orig #<- par()$mar
       mar[1] <- 2.2 # bottom
       mar[2] <- 2.5 # left
-      mar[3] <- 1.3 # top
+      mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
       mar[4] <- 1 # right
     }
     par(mar = mar)
@@ -160,7 +164,9 @@ cf_grid3 <-
       title(...)
     else plot.title
     
-    make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
+    if (mainminmax | !is.null(main)) {
+      make.multicolor.title(main=main, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
+    }
     
     if (!is.null(pts)) {
       points(pts, pch=19)
@@ -169,11 +175,13 @@ cf_grid3 <-
     if (reset.par) {#browser()
       par(par.orig)
       close.screen(screen1)
+      if (start.screen.number != FALSE) {screen(start.screen.number, new=FALSE)}
       invisible()
     } else {
       function() {
         par(par.orig)
         close.screen(screen1)
+        if (start.screen.number != FALSE) {screen(start.screen.number, new=FALSE)}
       }
     }
   }

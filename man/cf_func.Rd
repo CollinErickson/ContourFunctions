@@ -5,9 +5,7 @@
 \title{Makes filled contour plot from function without sidebar, uses cf_grid}
 \usage{
 cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
-  mainminmax = T, batchmax = 1, out.col.name = NULL, out.name = NULL,
-  pretitle = "", posttitle = "", title = NULL, mainminmax_minmax = TRUE,
-  pts = NULL, ...)
+  batchmax = 1, out.col.name = NULL, out.name = NULL, pts = NULL, ...)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}
@@ -18,23 +16,18 @@ cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
 
 \item{ylim}{y limits for the contour plot}
 
-\item{xylim}{x and y limits for the contour plot, use when both are same}
-
-\item{mainminmax}{whether the min and max values should be shown in the title of plot}
+\item{xylim}{x and y limits for the contour plot, use when both are same
+#@param mainminmax  whether the min and max values should be shown in the title of plot}
 
 \item{batchmax}{number of datapoints that can be computed at a time}
 
 \item{out.col.name}{if a column needs to be selected from the function, specify it}
 
-\item{out.name}{Selects with a $ the name from output to be used, for lists and data frames}
-
-\item{pretitle}{Text to be preappended to end of plot title}
-
-\item{posttitle}{Text to be appended to end of plot title}
-
-\item{title}{Title for the plot}
-
-\item{mainminmax_minmax}{Whether [min,max]= should be shown in title or just the numbers}
+\item{out.name}{Selects with a $ the name from output to be used, for lists and data frames
+#@param pretitle Text to be preappended to end of plot title
+#@param posttitle Text to be appended to end of plot title
+#@param title Title for the plot
+#@param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers}
 
 \item{pts}{Points to plot on top of contour}
 

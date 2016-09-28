@@ -4,14 +4,14 @@
 #' @param xlim  x limits for the contour plot
 #' @param ylim  y limits for the contour plot
 #' @param xylim  x and y limits for the contour plot, use when both are same
-#' @param mainminmax  whether the min and max values should be shown in the title of plot
+#' #@param mainminmax  whether the min and max values should be shown in the title of plot
 #' @param batchmax  number of datapoints that can be computed at a time
 #' @param out.col.name  if a column needs to be selected from the function, specify it
 #' @param out.name Selects with a $ the name from output to be used, for lists and data frames
-#' @param pretitle Text to be preappended to end of plot title
-#' @param posttitle Text to be appended to end of plot title
-#' @param title Title for the plot
-#' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
+#' #@param pretitle Text to be preappended to end of plot title
+#' #@param posttitle Text to be appended to end of plot title
+#' #@param title Title for the plot
+#' #@param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param pts Points to plot on top of contour
 #' @param ...  Passed to cf_grid
 #' @examples 
@@ -24,7 +24,8 @@
 #' @export
 cf_func <- function(fn0, n=100,
                                xlim=c(0,1), ylim=c(0,1), xylim=NULL,
-                               mainminmax=T, batchmax=1, out.col.name=NULL,
+                               #mainminmax=T, 
+                               batchmax=1, out.col.name=NULL,
                                out.name=NULL,
                                #pretitle="", posttitle="", title=NULL,
                                #mainminmax_minmax=TRUE, 
@@ -63,18 +64,17 @@ cf_func <- function(fn0, n=100,
       }
     }
   }
-  if(mainminmax) {
-    #cf_grid(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
-    #cf_grid(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
-    cf_grid3(x,y,z, pts=pts, reset.par=T, ...)
+  #if(mainminmax) {
+    #cf_grid3(x,y,z, pts=pts, reset.par=T, ...)
+    cf_grid3(x,y,z, pts=pts, ...)
     #par.reset.func <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
     #on.exit(par.reset.func)#;browser()
     # make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
 
     #cf_grid(x,y,z,main=paste('abcde','abc'),...)
-  } else {
-    cf_grid3(x,y,z, pts=pts, ...)
-  }
+  #} else {
+  #  cf_grid3(x,y,z, pts=pts, ...)
+  #}
   #if (!is.null(pts)) { # This is now done in cf_grid
   #  points(pts, pch=19)
   #}
