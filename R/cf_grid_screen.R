@@ -80,15 +80,17 @@ cf_grid3 <-
     if (any(diff(x) <= 0) || any(diff(y) <= 0)) 
       stop("increasing 'x' and 'y' values expected")
     mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
-    if (reset.par) {on.exit({par(par.orig);close.screen(all=TRUE)})}
+    #if (reset.par) {on.exit({par(par.orig);close.screen(1)})}#all=TRUE)})}
     #on.exit(close.screen(all=TRUE))
     w <- (3 + mar.orig[2L]) * par("csi") * 2.54
     #layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
     par(las = las)
     if (bar) {
       #split.screen(c(1,2))
-      split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
-      screen(2)
+      screen.numbers <- split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
+      screen1 <- screen.numbers[1]
+      screen2 <- screen.numbers[2]
+      screen(screen2)
       mar <- mar.orig
       mar[4L] <- 2.5#mar[2L] # right
       mar[1] <- 2.2 # bottom
@@ -108,8 +110,9 @@ cf_grid3 <-
       if (!missing(key.title))
         key.title
       mar <- mar.orig
-      mar[4L] <- 1 # right
-      screen(1)
+      mar[4L] <- 1 # right # Why is this here?
+      close.screen(screen2)
+      screen(screen1)
       mar[1L] <- 2.2 # bottom
       mar[2L] <- 2.5 # left
       mar[3L] <- 1.3# 1.3 # top
@@ -152,8 +155,13 @@ cf_grid3 <-
     }
     
     if (reset.par) {
+      par(par.orig)
+      close.screen(screen1)
       invisible()
     } else {
-      par.orig
+      function() {
+        par(par.orig)
+        close.screen(screen1)
+      }
     }
   }
