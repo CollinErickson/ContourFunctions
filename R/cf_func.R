@@ -26,8 +26,9 @@ cf_func <- function(fn0, n=100,
                                xlim=c(0,1), ylim=c(0,1), xylim=NULL,
                                mainminmax=T, batchmax=1, out.col.name=NULL,
                                out.name=NULL,
-                               pretitle="", posttitle="", title=NULL,
-                               mainminmax_minmax=TRUE, pts=NULL,
+                               #pretitle="", posttitle="", title=NULL,
+                               #mainminmax_minmax=TRUE, 
+                               pts=NULL,
                                ...) {
   if(!is.null(out.col.name)) {
     fn <- function(xx){fn0(xx)[,out.col.name]}
@@ -65,9 +66,10 @@ cf_func <- function(fn0, n=100,
   if(mainminmax) {
     #cf_grid(x,y,z,main=paste('min = ',signif(min(z),3),', max = ',signif(max(z),3)),...)
     #cf_grid(x,y,z,main=paste('(min, max) = (',signif(min(z),3),', ',signif(max(z),3),')'),...)
-    par.reset.func <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
-    on.exit(par.reset.func())#;browser()
-    make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
+    cf_grid3(x,y,z, pts=pts, reset.par=T, ...)
+    #par.reset.func <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
+    #on.exit(par.reset.func)#;browser()
+    # make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
 
     #cf_grid(x,y,z,main=paste('abcde','abc'),...)
   } else {

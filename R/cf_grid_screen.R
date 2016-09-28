@@ -22,6 +22,10 @@
 #' @param bar Should a bar showing the output range and colors be shown on the right?
 #' @param pts Points to plot on top of contour
 #' @param reset.par Should the graphical parameters be reset before exiting? Usually should be.
+#' @param pretitle Text to be preappended to end of plot title
+#' @param posttitle Text to be appended to end of plot title
+#' @param title Title for the plot
+#' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -49,7 +53,10 @@ cf_grid3 <-
             levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors,
             col = color.palette(length(levels) - 1), plot.title, plot.axes,
             key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
-            axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=T,...)
+            axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=T,
+            pretitle="", posttitle="", title=NULL,
+            mainminmax_minmax=TRUE,
+            ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
     # Used P Lapointe's solution from here: http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r
@@ -118,6 +125,9 @@ cf_grid3 <-
       mar[3L] <- 1.3# 1.3 # top
     }
     if (!bar) {
+      screen.numbers <- split.screen(c(1,1)) # Single screen, try to fix other plot error
+      screen1 <- screen.numbers[1]
+      screen(screen1)
       # Changing the margin to get bigger and square
       mar <- mar.orig #<- par()$mar
       mar[1] <- 2.2 # bottom
@@ -150,11 +160,13 @@ cf_grid3 <-
       title(...)
     else plot.title
     
+    make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
+    
     if (!is.null(pts)) {
       points(pts, pch=19)
     }
     
-    if (reset.par) {
+    if (reset.par) {#browser()
       par(par.orig)
       close.screen(screen1)
       invisible()

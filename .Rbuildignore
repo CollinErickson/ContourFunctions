@@ -4,3 +4,4 @@ Rplots.pdf
 ^README\.Rmd$
 ^README-.*\.png$
 ^\.travis\.yml$
+Scratch

@@ -13,6 +13,8 @@ cf_data(x,y,z, bar=T)
 
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))})
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T)
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, title="Title check")
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T, title="Title check")
 
 
 split.screen(c(2,2))
@@ -22,3 +24,4 @@ close.screen(1)
 screen(2)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T)
 close.screen(2)
+close.screen(all=T)
