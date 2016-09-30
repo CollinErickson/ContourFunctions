@@ -28,6 +28,7 @@
 #' @param main Title for the plot
 #' @param mainminmax  whether the min and max values should be shown in the title of plot
 #' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
+#' @param afterplotfunc Function to call after plotting, such as adding points or lines.
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -59,6 +60,7 @@ cf_grid3 <-
             axes = TRUE, frame.plot = axes, bar=F, pts=NULL, reset.par=TRUE,
             pretitle="", posttitle="", main=NULL,
             mainminmax=!bar, mainminmax_minmax=TRUE,
+            afterplotfunc=NULL,
             ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
@@ -129,7 +131,8 @@ cf_grid3 <-
       mar[3L] <- if (mainminmax | !is.null(main)) 1.3 else .3 #1.3# 1.3 # top
     }
     if (!bar) {
-      screen.numbers <- split.screen(c(1,1)) # Single screen, try to fix other plot error
+      # Using screen even with 1 screen to avoid error. Adding points after didn't show up properly
+      screen.numbers <- split.screen(c(1,1)) 
       screen1 <- screen.numbers[1]
       screen(screen1)
       # Changing the margin to get bigger and square
@@ -160,9 +163,9 @@ cf_grid3 <-
     else plot.axes
     if (frame.plot)
       box()
-    if (missing(plot.title))
-      title(...)
-    else plot.title
+    #if (missing(plot.title))
+    #  title(...)
+    #else plot.title
     
     if (mainminmax | !is.null(main)) {
       make.multicolor.title(main=main, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
@@ -172,16 +175,19 @@ cf_grid3 <-
       points(pts, pch=19)
     }
     
-    if (reset.par) {#browser()
-      par(par.orig)
-      close.screen(screen1)
-      if (start.screen.number != FALSE) {screen(start.screen.number, new=FALSE)}
-      invisible()
-    } else {
-      function() {
+    if (!is.null(afterplotfunc)) {
+      afterplotfunc()
+    }
+    
+    reset.par.func <- function() {
         par(par.orig)
-        close.screen(screen1)
+        if (T) {close.screen(screen1)}
         if (start.screen.number != FALSE) {screen(start.screen.number, new=FALSE)}
-      }
+    }
+    if (reset.par) {# Either reset parameters
+      reset.par.func()
+      invisible()
+    } else { # or return it so user can do it later
+      return(reset.par.func)
     }
   }

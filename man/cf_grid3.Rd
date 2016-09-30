@@ -11,8 +11,8 @@ cf_grid3(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   col = color.palette(length(levels) - 1), plot.title, plot.axes, key.title,
   key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1, axes = TRUE,
   frame.plot = axes, bar = F, pts = NULL, reset.par = TRUE,
-  pretitle = "", posttitle = "", title = NULL, mainminmax = !bar,
-  mainminmax_minmax = TRUE, ...)
+  pretitle = "", posttitle = "", main = NULL, mainminmax = !bar,
+  mainminmax_minmax = TRUE, afterplotfunc = NULL, ...)
 }
 \arguments{
 \item{x}{x values, must form grid with y}
@@ -66,11 +66,13 @@ unless you need to add something to the plot afterwards and bar is TRUE.}
 
 \item{posttitle}{Text to be appended to end of plot title}
 
-\item{title}{Title for the plot}
+\item{main}{Title for the plot}
 
 \item{mainminmax}{whether the min and max values should be shown in the title of plot}
 
 \item{mainminmax_minmax}{Whether [min,max]= should be shown in title or just the numbers}
+
+\item{afterplotfunc}{Function to call after plotting, such as adding points or lines.}
 
 \item{...}{additional graphical parameters, currently only passed to title().}
 }

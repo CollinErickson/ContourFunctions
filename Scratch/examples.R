@@ -16,6 +16,9 @@ cf_func(function(xx){exp(-sum((xx-.5)^2/.1))})
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, main="Title check")
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T, main="Title check")
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))},pts=matrix(c(.2,.2,.2,.8,.8,.2,.8,.8),byrow=T,ncol=2))
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))})
+points(matrix(c(.2,.2,.2,.8,.8,.2,.8,.8),byrow=T,ncol=2)) #These should show up at right spot
 
 
 split.screen(c(2,2))
