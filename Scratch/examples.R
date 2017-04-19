@@ -29,3 +29,8 @@ screen(2)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T)
 close.screen(2)
 close.screen(all=T)
+
+# Checking text size
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F)
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F, cex.main=.5)
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F, cex=3)

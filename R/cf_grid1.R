@@ -1,4 +1,8 @@
-#' Makes filled contour plot without sidebar, essentially filled.contour function
+#' Makes filled contour plot without sidebar, essentially filled.contour function.
+#' A sidebar can be added by setting bar to TRUE. However, this will cause any other
+#' plot functions used afterwards, such as points, to not put points at the correct spot.
+#' 
+#' 
 #' @param x  x values, must form grid with y
 #' @param y  y values, must form grid with x
 #' @param z  z values at grid locations
@@ -36,13 +40,13 @@
 #' @examples 
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
 #' r <- sqrt(outer(x^2, y^2, "+"))
-#' cf_grid(cos(r^2)*exp(-r/(2*pi)))
+#' cf_grid1(cos(r^2)*exp(-r/(2*pi)))
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-cf_grid <-
+cf_grid1 <-
   function (x = seq(0, 1, length.out = nrow(z)), 
             y = seq(0, 1,length.out = ncol(z)), z, xlim = range(x, finite = TRUE),
             ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE),

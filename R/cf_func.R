@@ -66,7 +66,8 @@ cf_func <- function(fn0, n=100,
   }
   #if(mainminmax) {
     #cf_grid3(x,y,z, pts=pts, reset.par=T, ...)
-    cf_grid3(x,y,z, pts=pts, ...)
+    # cf_grid3(x,y,z, pts=pts, ...)
+    cf_grid(x,y,z, pts=pts, ...)
     #par.reset.func <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
     #on.exit(par.reset.func)#;browser()
     # make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)

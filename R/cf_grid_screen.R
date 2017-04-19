@@ -1,4 +1,10 @@
-#' Makes filled contour plot without sidebar, essentially filled.contour function
+#' Makes filled contour plot with an optional sidebar, essentially filled.contour function.
+#' This version uses the split.screen() function to add the sidebar if bar is TRUE.
+#' By default it won't show the bar but will show the min and max values in the plot title
+#' along with their colors.
+#' Using this function will make other functions such as points() called afterwards not put points
+#' where you expect. Pass anything you want added to the plot area to afterplotfunc
+#' as a function to get it to work properly.
 #' @param x  x values, must form grid with y
 #' @param y  y values, must form grid with x
 #' @param z  z values at grid locations
@@ -29,6 +35,7 @@
 #' @param mainminmax  whether the min and max values should be shown in the title of plot
 #' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param afterplotfunc Function to call after plotting, such as adding points or lines.
+#' @param cex.main The size of the main title. 1.2 is default.
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -44,13 +51,13 @@
 #' @examples 
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
 #' r <- sqrt(outer(x^2, y^2, "+"))
-#' cf_grid2(cos(r^2)*exp(-r/(2*pi)))
+#' cf_grid(cos(r^2)*exp(-r/(2*pi)))
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
-cf_grid3 <-
+cf_grid <-
   function (x = seq(0, 1, length.out = nrow(z)), 
             y = seq(0, 1,length.out = ncol(z)), z, xlim = range(x, finite = TRUE),
             ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE),
@@ -61,6 +68,7 @@ cf_grid3 <-
             pretitle="", posttitle="", main=NULL,
             mainminmax=!bar, mainminmax_minmax=TRUE,
             afterplotfunc=NULL,
+            cex.main=par()$cex.main,
             ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
@@ -168,10 +176,15 @@ cf_grid3 <-
     #else plot.title
     
     if (mainminmax | !is.null(main)) {
-      make.multicolor.title(main=main, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
+      make.multicolor.title(main=main, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax, cex.main=cex.main)
     }
     
     if (!is.null(pts)) {
+      if (!is.matrix(pts)) { # if not a matrix, make it a matrix by row
+        if (is.numeric(pts) && (length(pts)%%2==0)) {
+          pts <- matrix(pts, ncol=2, byrow = T)
+        }
+      }
       points(pts, pch=19)
     }
     

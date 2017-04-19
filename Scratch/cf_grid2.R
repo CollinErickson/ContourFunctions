@@ -1,4 +1,9 @@
-#' Makes filled contour plot without sidebar, essentially filled.contour function
+#' Makes filled contour plot without sidebar, essentially filled.contour function.
+#' This was the original version of cf_grid, before I tried adding the bar option.
+#' I used it when I had trouble adding the bar to the function, but now that it works
+#' I don't need this.
+#' The legend part is commented out so `bar` does nothing.
+#' Will no longer export since it doesn't do anything useful anymore.
 #' @param x  x values, must form grid with y
 #' @param y  y values, must form grid with x
 #' @param z  z values at grid locations
