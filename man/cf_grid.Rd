@@ -19,7 +19,7 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   frame.plot = axes, bar = F, pts = NULL, reset.par = TRUE,
   pretitle = "", posttitle = "", main = NULL, mainminmax = !bar,
   mainminmax_minmax = TRUE, afterplotfunc = NULL,
-  cex.main = par()$cex.main, ...)
+  cex.main = par()$cex.main, par.list = NULL, ...)
 }
 \arguments{
 \item{x}{x values, must form grid with y}
@@ -82,6 +82,8 @@ unless you need to add something to the plot afterwards and bar is TRUE.}
 \item{afterplotfunc}{Function to call after plotting, such as adding points or lines.}
 
 \item{cex.main}{The size of the main title. 1.2 is default.}
+
+\item{par.list}{List of options to pass to par}
 
 \item{...}{additional graphical parameters, currently only passed to title().}
 }

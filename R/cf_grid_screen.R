@@ -36,6 +36,7 @@
 #' @param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param afterplotfunc Function to call after plotting, such as adding points or lines.
 #' @param cex.main The size of the main title. 1.2 is default.
+#' @param par.list List of options to pass to par
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -69,6 +70,7 @@ cf_grid <-
             mainminmax=!bar, mainminmax_minmax=TRUE,
             afterplotfunc=NULL,
             cex.main=par()$cex.main,
+            par.list=NULL,
             ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
@@ -99,8 +101,16 @@ cf_grid <-
     
     if (any(diff(x) <= 0) || any(diff(y) <= 0)) 
       stop("increasing 'x' and 'y' values expected")
-    mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
+    # mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
     #if (reset.par) {on.exit({par(par.orig);close.screen(1)})}#all=TRUE)})}
+    
+    # This allows user to pass in par.list and it will return it after plotting
+    par.names.to.save <- c("mar", "las", "mfrow", names(par.list))
+    mar.orig <- (par.orig <- par(par.names.to.save))$mar
+    if (!is.null(par.list)) {
+      par(par.list)
+    }
+    
     #on.exit(close.screen(all=TRUE))
     w <- (3 + mar.orig[2L]) * par("csi") * 2.54
     #layout(matrix(c(if(bar) 2 else 1, 1), ncol = 2L), widths = c(1, lcm(w)))
@@ -151,6 +161,7 @@ cf_grid <-
       mar[4] <- 1 # right
     }
     par(mar = mar)
+    # par(cex.axis = 2)
     plot.new()
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1L || ncol(z) <= 1L)
@@ -193,9 +204,9 @@ cf_grid <-
     }
     
     reset.par.func <- function() {
-        par(par.orig)
-        if (T) {close.screen(screen1)}
-        if (start.screen.number != FALSE) {screen(start.screen.number, new=FALSE)}
+      if (T) {close.screen(screen1)}
+      if (start.screen.number != FALSE) {screen(start.screen.number, new=FALSE)}
+      par(par.orig)
     }
     if (reset.par) {# Either reset parameters
       reset.par.func()

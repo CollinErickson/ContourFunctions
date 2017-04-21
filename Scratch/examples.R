@@ -1,9 +1,9 @@
 
 a <- b <- seq(-4*pi, 4*pi, len = 27)
 r <- sqrt(outer(a^2, b^2, "+"))
-cf_grid3(cos(r^2)*exp(-r/(2*pi)))
-cf_grid3(cos(r^2)*exp(-r/(2*pi)), bar=T)
-cf_grid3(cos(r^2)*exp(-r/(2*pi)), bar=T, mainminmax = T)
+cf_grid(cos(r^2)*exp(-r/(2*pi)))
+cf_grid(cos(r^2)*exp(-r/(2*pi)), bar=T)
+cf_grid(cos(r^2)*exp(-r/(2*pi)), bar=T, mainminmax = T)
 
 
 x <- runif(20)
@@ -34,3 +34,13 @@ close.screen(all=T)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F, cex.main=.5)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F, cex=3)
+
+# Checking par.list, everything should go back to normal after each plot
+cf_grid(cos(r^2)*exp(-r/(2*pi)))
+cf_grid(cos(r^2)*exp(-r/(2*pi)), par.list=list(col='red', cex.axis=2.5))
+cf_grid(cos(r^2)*exp(-r/(2*pi)))
+cf_grid(cos(r^2)*exp(-r/(2*pi)), par.list=list(col='red', cex.axis=2.5, lwd=5))
+cf_grid(cos(r^2)*exp(-r/(2*pi)))
+plot(1:10)
+cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=F, par.list=list(col='red', cex.axis=2.5, lwd=5))
+cf_grid(cos(r^2)*exp(-r/(2*pi)))
