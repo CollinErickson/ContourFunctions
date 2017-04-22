@@ -17,6 +17,8 @@
 #' @examples 
 #' cf_func(function(x){x[1]*x[2]})
 #' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
+#' cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE)
+#' cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, mainminmax=TRUE)
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references

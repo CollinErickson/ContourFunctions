@@ -5,8 +5,8 @@
 #' Using this function will make other functions such as points() called afterwards not put points
 #' where you expect. Pass anything you want added to the plot area to afterplotfunc
 #' as a function to get it to work properly.
-#' @param x  x values, must form grid with y
-#' @param y  y values, must form grid with x
+#' @param x  x values, must form grid with y. If not given, it is assumed to be from 0 to 1.
+#' @param y  y values, must form grid with x. If not given, it is assumed to be from 0 to 1.
 #' @param z  z values at grid locations
 #' @param xlim  x limits for the plot.
 #' @param ylim  y limits for the plot.

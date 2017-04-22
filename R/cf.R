@@ -9,6 +9,10 @@
 #'
 #' @examples
 #' cf(function(x){x[1]^2 - x[2]})
+#' x <- runif(20)
+#' y <- runif(20)
+#' z <- exp(-(x-.5)^2-5*(y-.5)^2)# + rnorm(20,0,.05)
+#' cf(x,y,z)
 cf <- function(...) {
   dots <- list(...)
   if (is.function(dots[[1]])) {

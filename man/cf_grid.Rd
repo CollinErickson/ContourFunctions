@@ -22,9 +22,9 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   cex.main = par()$cex.main, par.list = NULL, ...)
 }
 \arguments{
-\item{x}{x values, must form grid with y}
+\item{x}{x values, must form grid with y. If not given, it is assumed to be from 0 to 1.}
 
-\item{y}{y values, must form grid with x}
+\item{y}{y values, must form grid with x. If not given, it is assumed to be from 0 to 1.}
 
 \item{z}{z values at grid locations}
 

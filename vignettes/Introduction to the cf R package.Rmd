@@ -1,0 +1,132 @@
+---
+title: "Introduction to the cf R package"
+author: "Collin Erickson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to the cf R package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=6)
+```
+
+
+The cf R package provides functions that make it easier to make contour plots. The function `cf` is a quick function that can take in grid data, a function, or any data, and give a contour plot showing the function or data.
+
+## `cf_grid`
+
+`cf_grid` creates a contour plot from a grid of points.
+
+Below `a` and `b` create a grid of points at which `r` is calculated. `cf_grid` is used to create the contour plot.
+Note that the only indication of the relationship between the colors and the `r` values is in the title of plot, which says that the darkest blue point is the minimum of -0.613, and the darkest pink point is the maximum of 1. (Note that this is not a good representation of the surface because there aren't enough points in the grid, the contours are actually concentric circles as shown below.)
+
+```{r cf_grid}
+library(cf)
+a <- b <- seq(-4*pi, 4*pi, len = 27)
+r <- sqrt(outer(a^2, b^2, "+"))
+cf_grid(a, b, cos(r^2)*exp(-r/(2*pi)))
+```
+
+To add a bar that shows how the colors relate to the output, simply set `bar=TRUE`, as shown below.
+
+```{r cf_grid bar}
+
+cf_grid(a, b, cos(r^2)*exp(-r/(2*pi)), bar=TRUE)
+```
+
+Other parameters specifying details of the plot can be passed as well, see 
+the documentation for those options.
+
+
+## `cf_func`
+
+For the above we had to create the grid of points and give it in to `cf_grid`. To make this easier, `cf_func` allows you to simply pass in a function. It will then evaluate the function at a grid of points and pass these to `cf_grid` to make the contour plot.
+
+```{r}
+f1 <- function(r) cos(r[1]^2 + r[2]^2)*exp(-sqrt(r[1]^2 + r[2]^2)/(2*pi))
+cf_func(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi))
+```
+
+
+If you give a function that can more efficient evaluate a bunch of points at a time, instead of one at a time, use the `batchmax` to have it pass points as a matrix to the given function.
+
+The argument `n` controls how many points along each dimension are used. We see below that if we go back to `n=27`, then we get the same plot as above.
+
+
+```{r}
+cf_func(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi), n=27)
+```
+
+
+
+## `cf_data`
+
+Often one has data and wants to get an idea of what the surface looks like that fits the data. The `cf_data` allows the user to pass in the data to get such a plot. A Gaussian process model is fit to the data, by default using the R package laGP to do so. The model is then used to make predictions at the grid of points to make the contour plot. The model prediction function is passed to `cf_func` to create the contour plot.
+Note that this relies heavily on the model being somewhat accurate, and may not truly represent the data if the model is a poor fit.
+
+Below a random sample of 20 points are taken from a function (a Gaussian peak centered at (0.5, 0.5)), and `cf_data` is used to plot the data. The black dots show the data points used to create the model.
+
+```{r cf_data}
+set.seed(0)
+x <- runif(20)
+y <- runif(20)
+z <- exp(-(x-.5)^2-5*(y-.5)^2)# + rnorm(20,0,.05)
+# cf_data(x,y,z)
+cf_data(x,y,z, bar=T)
+```
+
+
+
+## `afterplotfunc`
+
+The contour plots are created using the `split.screen` function.
+This causes the plot to not add additional items, such as points or lines, after making the plot. The plot below shows how when trying to add a point to the plot using `points`, a point that should be placed at the center ends up in the bottom right corner.
+
+
+```{r}
+cf_func(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi))
+points(c(0,0), pch=19)
+```
+
+If you just want to add points, you can use the parameter `pts` to do so. Below we see that the point ends up correctly in the center of the plot.
+
+```{r}
+cf_func(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi), pts=c(0,0))
+```
+
+Another option, that gives you more capability, is to use the parameter `afterplotfunc` to pass in a function that takes no arguments. After the plot is made this function will be called. You can put anything inside this function that you would normally do to a plot, including `points`, `text`, `legend`, and `abline`.
+
+
+
+```{r}
+cf_func(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi),
+        afterplotfunc=function() {
+          points(5, 5, pch=19)
+          text(-5,5,"Text here")
+          legend('bottomright', legend=c(1,2,3), fill=c(1,2,3))
+          abline(a=0, b=1, col=2)
+          }
+        )
+```
+
+
+
+## `cf`
+
+To make using the above `cf_func` and `cf_data` slightly easier, the same inputs can be passed to the function `cf`. It detects whether the first parameter is a function, in which case it passes everything to `cf_func` or numeric, in which case it passes everything to `cf_data`.
+
+The following two plots demonstrate how `cf` is used. Really the only benefit is that is saves you typing `_func` or `_grid`.
+
+```{r cf for func}
+cf(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi))
+```
+
+```{r cf for data}
+cf(x,y,z, bar=T)
+```
+
+
+
