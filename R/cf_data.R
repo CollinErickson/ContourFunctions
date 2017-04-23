@@ -9,8 +9,6 @@
 #' @param fit Method to fit a model with. Current options are laGP (default)
 #' and mlegp. laGP is faster but might cause trouble.
 #' @param ...  passed to cf_func
-#' @importFrom mlegp mlegp
-#' @importFrom mlegp predict.gp
 #' @importFrom utils capture.output
 #' @examples 
 #' x <- runif(20)
