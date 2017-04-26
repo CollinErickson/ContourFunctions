@@ -5,3 +5,4 @@ Rplots.pdf
 ^README-.*\.png$
 ^\.travis\.yml$
 Scratch
+^cran-comments\.md$
