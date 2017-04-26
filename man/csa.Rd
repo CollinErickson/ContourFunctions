@@ -25,4 +25,3 @@ hist(runif(100))
 csa()
 hist(rexp(100))
 }
-

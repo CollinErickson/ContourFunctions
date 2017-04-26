@@ -22,4 +22,3 @@ Makes plot title using specified colors for the text
 plot(1:4)
 multicolor.title(c('Black, ','red, ','green'),c(1,2,3))
 }
-

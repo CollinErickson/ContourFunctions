@@ -106,4 +106,3 @@ cf_grid(cos(r^2)*exp(-r/(2*pi)))
 
 [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 }
-

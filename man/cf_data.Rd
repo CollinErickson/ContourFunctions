@@ -41,4 +41,3 @@ cf_data(x,y,z)
 
 [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 }
-

@@ -8,7 +8,7 @@ Maintainer: Collin Erickson <collinberickson@gmail.com>
 Description: Provides functions for making contour plots.
 License: GPL-2
 Packaged: 2016-05-24 13:10:18 UTC; cbe117
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown,
     mlegp,
