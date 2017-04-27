@@ -41,14 +41,14 @@ r <- sqrt(outer(a^2, b^2, "+"))
 cf_grid(a, b, cos(r^2)*exp(-r/(2*pi)))
 ```
 
-![](README-cf_grid-1.png)
+![](tools/README-cf_grid-1.png)
 
 ``` r
 f1 <- function(r) cos(r[1]^2 + r[2]^2)*exp(-sqrt(r[1]^2 + r[2]^2)/(2*pi))
 cf_func(f1, xlim = c(-4*pi, 4*pi), ylim = c(-4*pi, 4*pi))
 ```
 
-![](README-cf_func-1.png)
+![](tools/README-cf_func-1.png)
 
 ``` r
 set.seed(0)
@@ -58,4 +58,4 @@ z <- exp(-(x-.5)^2-5*(y-.5)^2)
 cf_data(x,y,z)
 ```
 
-![](README-cf_data-1.png)
+![](tools/README-cf_data-1.png)
