@@ -1,11 +1,5 @@
-I submitted it last night but failed the auto-test.
-It said it couldn't fetch the images from the README.
-I had not had this error on any of the four systems
-I checked it on before submitting.
-I changed it so those image files are no long in the 
-.Rbuildignore (not sure why they were in the first place).
-I moved them to the tools folder.
-This seems like it should fix the problem.
+I submitted twice last week.
+I was asked to change the name from cf, so it is now called ContourFunctions
 
 ## Test environments
 * local Windows 7 install, R 3.4.0

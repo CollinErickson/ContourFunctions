@@ -1,6 +1,6 @@
-Package: cf
+Package: ContourFunctions
 Type: Package
-Title: Contour Functions
+Title: Create Contour Plots From Data or a Function
 Version: 0.1.0
 Authors@R: person("Collin", "Erickson", 
   email = "collinberickson@gmail.com",

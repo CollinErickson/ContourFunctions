@@ -1,10 +1,10 @@
 ---
-title: "Introduction to the cf R package"
+title: "Introduction to the ContourFunctions R package"
 author: "Collin Erickson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to the cf R package}
+  %\VignetteIndexEntry{Introduction to the ContourFunctions R package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.width=6, fig.height=6)
 ```
 
 
-The cf R package provides functions that make it easier to make contour plots. The function `cf` is a quick function that can take in grid data, a function, or any data, and give a contour plot showing the function or data.
+The ContourFunctions R package provides functions that make it easier to make contour plots. The function `cf` is a quick function that can take in grid data, a function, or any data, and give a contour plot showing the function or data.
 
 ## `cf_grid`
 
@@ -24,7 +24,7 @@ Below `a` and `b` create a grid of points at which `r` is calculated. `cf_grid` 
 Note that the only indication of the relationship between the colors and the `r` values is in the title of plot, which says that the darkest blue point is the minimum of -0.613, and the darkest pink point is the maximum of 1. (Note that this is not a good representation of the surface because there aren't enough points in the grid, the contours are actually concentric circles as shown below.)
 
 ```{r cf_grid}
-library(cf)
+library(ContourFunctions)
 a <- b <- seq(-4*pi, 4*pi, len = 27)
 r <- sqrt(outer(a^2, b^2, "+"))
 cf_grid(a, b, cos(r^2)*exp(-r/(2*pi)))
