@@ -1,6 +1,6 @@
 Package: ContourFunctions
 Type: Package
-Title: Create Contour Plots From Data or a Function
+Title: Create Contour Plots from Data or a Function
 Version: 0.1.0
 Authors@R: person("Collin", "Erickson", 
   email = "collinberickson@gmail.com",
