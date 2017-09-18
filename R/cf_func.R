@@ -1,4 +1,8 @@
-#' Makes filled contour plot from function without sidebar, uses cf_grid
+#' Makes filled contour plot from function 
+#' 
+#' A contour plot of the given function without sidebar by default.
+#' It call the function `cf_grid` to make the actual plot.
+#' 
 #' @param fn0  function to plot, first argument must be two-dimensional
 #' @param n  number of points in each dimension
 #' @param xlim  x limits for the contour plot

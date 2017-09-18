@@ -3,7 +3,7 @@
 ContourFunctions
 ================
 
-[![Travis-CI Build Status](https://travis-ci.org/CollinErickson/contour.svg?branch=master)](https://travis-ci.org/CollinErickson/contour)
+[![Travis-CI Build Status](https://travis-ci.org/CollinErickson/contour.svg?branch=master)](https://travis-ci.org/CollinErickson/contour) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ContourFunctions)](https://cran.r-project.org/package=ContourFunctions)
 
 This is an R package that provides simple functions for creating contour plots.
 

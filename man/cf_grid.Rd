@@ -2,13 +2,7 @@
 % Please edit documentation in R/cf_grid_screen.R
 \name{cf_grid}
 \alias{cf_grid}
-\title{Makes filled contour plot with an optional sidebar, essentially filled.contour function.
-This version uses the split.screen() function to add the sidebar if bar is TRUE.
-By default it won't show the bar but will show the min and max values in the plot title
-along with their colors.
-Using this function will make other functions such as points() called afterwards not put points
-where you expect. Pass anything you want added to the plot area to afterplotfunc
-as a function to get it to work properly.}
+\title{Create a contour plot from a grid of data}
 \usage{
 cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   ncol(z)), z, xlim = range(x, finite = TRUE), ylim = range(y, finite =

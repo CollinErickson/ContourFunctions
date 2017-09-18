@@ -1,3 +1,5 @@
+#' Create a contour plot from a grid of data
+#' 
 #' Makes filled contour plot with an optional sidebar, essentially filled.contour function.
 #' This version uses the split.screen() function to add the sidebar if bar is TRUE.
 #' By default it won't show the bar but will show the min and max values in the plot title
@@ -5,6 +7,7 @@
 #' Using this function will make other functions such as points() called afterwards not put points
 #' where you expect. Pass anything you want added to the plot area to afterplotfunc
 #' as a function to get it to work properly.
+#' 
 #' @param x  x values, must form grid with y. If not given, it is assumed to be from 0 to 1.
 #' @param y  y values, must form grid with x. If not given, it is assumed to be from 0 to 1.
 #' @param z  z values at grid locations
@@ -159,6 +162,12 @@ cf_grid <-
       mar[2] <- 2.5 # left
       mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
       mar[4] <- 1 # right
+      
+      if (!missing(plot.axes) && plot.axes == FALSE) {
+        mar[1] <- .3 # bottom
+        mar[2] <- .3 # left
+        mar[4] <- .3 # 1 # right
+      }
     }
     par(mar = mar)
     # par(cex.axis = 2)
@@ -172,7 +181,7 @@ cf_grid <-
     #                        col = col))
     .filled.contour(as.double(x), as.double(y), z, as.double(levels),
                     col = col)
-    if (missing(plot.axes)) {
+    if (missing(plot.axes) || isTRUE(plot.axes)) {
       if (axes) {
         title(main = "", xlab = "", ylab = "")
         Axis(x, side = 1)

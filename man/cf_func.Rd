@@ -2,7 +2,7 @@
 % Please edit documentation in R/cf_func.R
 \name{cf_func}
 \alias{cf_func}
-\title{Makes filled contour plot from function without sidebar, uses cf_grid}
+\title{Makes filled contour plot from function}
 \usage{
 cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
   batchmax = 1, out.col.name = NULL, out.name = NULL, pts = NULL, ...)
@@ -34,7 +34,8 @@ cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
 \item{...}{Passed to cf_grid}
 }
 \description{
-Makes filled contour plot from function without sidebar, uses cf_grid
+A contour plot of the given function without sidebar by default.
+It call the function `cf_grid` to make the actual plot.
 }
 \examples{
 cf_func(function(x){x[1]*x[2]})
