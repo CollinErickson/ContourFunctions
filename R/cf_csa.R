@@ -1,7 +1,15 @@
-#' Closes the screens open if plotting with split.screen is interrupted.
-#' Happens often when there is a plotting error, then when you try to plot
-#' the next thing it gives an error. Running this function will reset.
-#' It just does close.screen(all.screens=TRUE) but is faster to type.
+#' Close all open screens
+#' 
+#' Closes the screens open, which happens
+#' when plotting with `split.screen` is interrupted.
+#' It often happens when there is a error while plotting.
+#' When you try to plot
+#' the next thing it gives an error.
+#' Running this function will reset the plot screen.
+#' It just does `close.screen(all.screens=TRUE)` but is faster to type.
+#' 
+#' @param silent Should the output of `close.screen` not be returned?
+#' 
 #' @examples
 #' # Split screen into fourths
 #' split.screen(c(2,2))
@@ -12,6 +20,10 @@
 #' csa()
 #' hist(rexp(100))
 #' @export
-csa <- function() {
-  close.screen(all.screens=TRUE)
+csa <- function(silent=FALSE) {
+  if (silent) { # Suppresses "FALSE" if already closed
+    invisible(close.screen(all.screens=TRUE))
+  } else {
+    close.screen(all.screens=TRUE)
+  }
 }

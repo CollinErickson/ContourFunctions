@@ -2,8 +2,7 @@
 % Please edit documentation in R/cf_data.R
 \name{cf_data}
 \alias{cf_data}
-\title{Makes filled contour plot from data without sidebar by interpolating 
-with Gaussian process, passes model to cf_func to make contour}
+\title{Contour plot from data}
 \usage{
 cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL, xylim = NULL,
   fit = "", ...)
@@ -28,7 +27,8 @@ and mlegp. laGP is faster but might cause trouble.}
 }
 \description{
 Makes filled contour plot from data without sidebar by interpolating 
-with Gaussian process, passes model to cf_func to make contour
+with a Gaussian process model.
+The model is passed to cf_func to make the contour plot.
 }
 \examples{
 x <- runif(20)

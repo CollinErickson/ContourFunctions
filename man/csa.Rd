@@ -2,18 +2,21 @@
 % Please edit documentation in R/cf_csa.R
 \name{csa}
 \alias{csa}
-\title{Closes the screens open if plotting with split.screen is interrupted.
-Happens often when there is a plotting error, then when you try to plot
-the next thing it gives an error. Running this function will reset.
-It just does close.screen(all.screens=TRUE) but is faster to type.}
+\title{Close all open screens}
 \usage{
-csa()
+csa(silent = FALSE)
+}
+\arguments{
+\item{silent}{Should the output of `close.screen` not be returned?}
 }
 \description{
-Closes the screens open if plotting with split.screen is interrupted.
-Happens often when there is a plotting error, then when you try to plot
-the next thing it gives an error. Running this function will reset.
-It just does close.screen(all.screens=TRUE) but is faster to type.
+Closes the screens open, which happens
+when plotting with `split.screen` is interrupted.
+It often happens when there is a error while plotting.
+When you try to plot
+the next thing it gives an error.
+Running this function will reset the plot screen.
+It just does `close.screen(all.screens=TRUE)` but is faster to type.
 }
 \examples{
 # Split screen into fourths

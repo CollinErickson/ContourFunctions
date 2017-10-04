@@ -2,9 +2,7 @@
 % Please edit documentation in R/cf_grid1.R
 \name{cf_grid1}
 \alias{cf_grid1}
-\title{Makes filled contour plot without sidebar, essentially filled.contour function.
-A sidebar can be added by setting bar to TRUE. However, this will cause any other
-plot functions used afterwards, such as points, to not put points at the correct spot.}
+\title{Makes filled contour plot without sidebar}
 \usage{
 cf_grid1(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   ncol(z)), z, xlim = range(x, finite = TRUE), ylim = range(y, finite =
@@ -64,9 +62,9 @@ cf_grid1(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
 \item{...}{additional graphical parameters, currently only passed to title().}
 }
 \description{
-Makes filled contour plot without sidebar, essentially filled.contour function.
+Essentially filled.contour function.
 A sidebar can be added by setting bar to TRUE. However, this will cause any other
-plot functions used afterwards, such as points, to not put points at the correct spot.
+plot functions used afterwards, such as points, to not be put at the correct spot.
 }
 \examples{
 x <- y <- seq(-4*pi, 4*pi, len = 27)

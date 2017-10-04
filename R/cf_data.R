@@ -1,5 +1,9 @@
+#' Contour plot from data
+#' 
 #' Makes filled contour plot from data without sidebar by interpolating 
-#' with Gaussian process, passes model to cf_func to make contour
+#' with a Gaussian process model.
+#' The model is passed to cf_func to make the contour plot.
+#' 
 #' @param x  either just x data, x and y data, or x, y and z data
 #' @param y  either y data, z data, or null
 #' @param z  either z data or null

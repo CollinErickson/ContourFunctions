@@ -1,6 +1,8 @@
-#' Makes filled contour plot without sidebar, essentially filled.contour function.
+#' Makes filled contour plot without sidebar
+#' 
+#' Essentially filled.contour function.
 #' A sidebar can be added by setting bar to TRUE. However, this will cause any other
-#' plot functions used afterwards, such as points, to not put points at the correct spot.
+#' plot functions used afterwards, such as points, to not be put at the correct spot.
 #' 
 #' 
 #' @param x  x values, must form grid with y
