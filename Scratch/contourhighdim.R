@@ -1,0 +1,41 @@
+contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)/2) {
+  print(low);print(high); print(baseline)
+  # opar <- par()
+  # par(mfrow=c(D-1,D-1)
+  #     , mar=c(1,1,1,1)
+  # )
+  par(mar=c(1,1,1,1))
+  split.screen(c(D-1, D-1))
+  current_screen <- 1
+  # screen(1)
+  # plot(rexp(5))
+  browser()
+  for (j in 2:D) {
+    for (i in 1:(j-1)) {
+      screen(current_screen)
+      plot(rnorm(10), xlab=i, ylab=j)
+      tf <- function(x2) {
+        mid2 <- baseline
+        mid2[i] <- x2[1]
+        mid2[j] <- x2[2]
+        func(mid2)
+      }
+      # browser()
+      cf_func(tf, batchmax=1, mainminmax=FALSE)
+      current_screen <- current_screen + 1
+      # close.screen()
+    }
+    if (j < D) {
+      for (k in 1:(D - j)) {
+        # plot.new()
+        current_screen <- current_screen + 1
+        # close.screen()
+      }
+    }
+  }
+  close.screen(all.screens = TRUE)
+  # par(mfrow=opar$mfrow, mar=opar$mar)
+}
+close.screen(all.screens = TRUE)
+# contourhighdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
+contourhighdim(TestFunctions::borehole, 8)
