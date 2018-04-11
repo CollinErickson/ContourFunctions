@@ -9,11 +9,11 @@ contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+h
   current_screen <- 1
   # screen(1)
   # plot(rexp(5))
-  browser()
+  # browser()
   for (j in 2:D) {
     for (i in 1:(j-1)) {
       screen(current_screen)
-      plot(rnorm(10), xlab=i, ylab=j)
+      # plot(rnorm(10), xlab=i, ylab=j)
       tf <- function(x2) {
         mid2 <- baseline
         mid2[i] <- x2[1]
@@ -21,7 +21,7 @@ contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+h
         func(mid2)
       }
       # browser()
-      cf_func(tf, batchmax=1, mainminmax=FALSE)
+      cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F) #(j==D || i==1))
       current_screen <- current_screen + 1
       # close.screen()
     }
@@ -35,7 +35,18 @@ contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+h
   }
   close.screen(all.screens = TRUE)
   # par(mfrow=opar$mfrow, mar=opar$mar)
+  
+  # Add variable names
+  for (j in 2:D) {
+    mtext(paste0("x",j), 2, at=(D-j+.5)/(D-1))
+  }
+  for (i in 1:(D-1)) {
+    mtext(paste0("x",i), 1, at=(i-.5)/(D-1))
+  }
 }
 close.screen(all.screens = TRUE)
 # contourhighdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
 contourhighdim(TestFunctions::borehole, 8)
+
+# To get this to work, in cf_grid_screen, change Axis(x,1) part so that you can have it
+#  only set one or other. Then only set values for y on left plots and x on right

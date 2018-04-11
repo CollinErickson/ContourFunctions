@@ -181,6 +181,8 @@ cf_grid <-
     #                        col = col))
     .filled.contour(as.double(x), as.double(y), z, as.double(levels),
                     col = col)
+    # Something like this will remove axis numbers and ticks
+    # Axis(x, side=1, labels=F, tick=F)
     if (missing(plot.axes) || isTRUE(plot.axes)) {
       if (axes) {
         title(main = "", xlab = "", ylab = "")
