@@ -32,7 +32,9 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
 
 \item{nlevels}{if levels is not specified, the range of z, values is divided into approximately this many levels.}
 
-\item{color.palette}{a color palette function to be used to assign colors in the plot.}
+\item{color.palette}{a color palette function to be used to assign colors
+in the plot. Defaults to cm.colors. Other options include rainbow,
+heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.}
 
 \item{col}{an explicit set of colors to be used in the plot. This argument overrides any palette function specification. There should be one less color than levels}
 
@@ -94,6 +96,8 @@ as a function to get it to work properly.
 x <- y <- seq(-4*pi, 4*pi, len = 27)
 r <- sqrt(outer(x^2, y^2, "+"))
 cf_grid(cos(r^2)*exp(-r/(2*pi)))
+cf_grid(r, color.palette=heat.colors, bar=TRUE)
+cf_grid(r, color.palette=function(x) {gray((1:x)/x)}, bar=TRUE)
 }
 \references{
 [1] filled.contour R function, copied function but removed part for sidebar
