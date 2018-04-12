@@ -10,15 +10,20 @@
 #' @param high High input value for each dimension
 #' @param baseline Baseline input value for each dimension
 #'
+#' @importFrom graphics contour mtext
 #' @return NULL
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Only use 4 dims of 8 for borehole function
 #' cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
 #' 
 #' # Full 8D borehole function
 #' cf_highdim(TestFunctions::borehole, 8)
+#' }
+#' 
+#' cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3)
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)/2) {
   print(low);print(high); print(baseline)
   # opar <- par()
