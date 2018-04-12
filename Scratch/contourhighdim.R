@@ -1,3 +1,24 @@
+#' Plot contour functions from 2D slices of higher dimensional functions
+#' 
+#' Plots a grid of contour plots.
+#' Each contour plot is a contour over two dimensions with the remaining
+#' dimensions set to the baseline value. 
+#'
+#' @param func Function to plot contours of
+#' @param D Input dimension of function
+#' @param low Low input value for each dimension
+#' @param high High input value for each dimension
+#' @param baseline Baseline input value for each dimension
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+#' # Only use 4 dims of 8 for borehole function
+#' contourhighdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
+#' 
+#' # Full 8D borehole function
+#' contourhighdim(TestFunctions::borehole, 8)
 contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)/2) {
   print(low);print(high); print(baseline)
   # opar <- par()
