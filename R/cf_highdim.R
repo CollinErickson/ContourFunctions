@@ -15,11 +15,11 @@
 #'
 #' @examples
 #' # Only use 4 dims of 8 for borehole function
-#' contourhighdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
+#' cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
 #' 
 #' # Full 8D borehole function
-#' contourhighdim(TestFunctions::borehole, 8)
-contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)/2) {
+#' cf_highdim(TestFunctions::borehole, 8)
+cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)/2) {
   print(low);print(high); print(baseline)
   # opar <- par()
   # par(mfrow=c(D-1,D-1)
@@ -65,9 +65,11 @@ contourhighdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+h
     mtext(paste0("x",i), 1, at=(i-.5)/(D-1))
   }
 }
-close.screen(all.screens = TRUE)
-# contourhighdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
-contourhighdim(TestFunctions::borehole, 8)
+if (F) {
+  close.screen(all.screens = TRUE)
+  # cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
+  cf_highdim(TestFunctions::borehole, 8)
+}
 
 # To get this to work, in cf_grid_screen, change Axis(x,1) part so that you can have it
 #  only set one or other. Then only set values for y on left plots and x on right
