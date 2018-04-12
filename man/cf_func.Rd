@@ -5,7 +5,8 @@
 \title{Makes filled contour plot from function}
 \usage{
 cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
-  batchmax = 1, out.col.name = NULL, out.name = NULL, pts = NULL, ...)
+  batchmax = 1, out.col.name = NULL, out.name = NULL, pts = NULL,
+  use_lines = FALSE, ...)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}
@@ -31,6 +32,9 @@ cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
 
 \item{pts}{Points to plot on top of contour}
 
+\item{use_lines}{If the contour should be made with lines. Otherwise is made
+using colors. Defaults to colors.}
+
 \item{...}{Passed to cf_grid}
 }
 \description{
@@ -42,6 +46,7 @@ cf_func(function(x){x[1]*x[2]})
 cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE)
 cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, mainminmax=TRUE)
+cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)), use_lines=TRUE)
 }
 \references{
 [1] filled.contour R function, copied function but removed part for sidebar

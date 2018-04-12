@@ -17,12 +17,15 @@
 #' #@param title Title for the plot
 #' #@param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param pts Points to plot on top of contour
+#' @param use_lines If the contour should be made with lines. Otherwise is made
+#' using colors. Defaults to colors.
 #' @param ...  Passed to cf_grid
 #' @examples 
 #' cf_func(function(x){x[1]*x[2]})
 #' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 #' cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE)
 #' cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, mainminmax=TRUE)
+#' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)), use_lines=TRUE)
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references
@@ -36,6 +39,7 @@ cf_func <- function(fn0, n=100,
                                #pretitle="", posttitle="", title=NULL,
                                #mainminmax_minmax=TRUE, 
                                pts=NULL,
+                    use_lines=FALSE,
                                ...) {
   if(!is.null(out.col.name)) {
     fn <- function(xx){fn0(xx)[,out.col.name]}
@@ -73,6 +77,10 @@ cf_func <- function(fn0, n=100,
   #if(mainminmax) {
     #cf_grid3(x,y,z, pts=pts, reset.par=T, ...)
     # cf_grid3(x,y,z, pts=pts, ...)
+  if (use_lines) {
+    contour(x, y, z, ...)
+    points(pts, pch=19)
+  } else
     cf_grid(x,y,z, pts=pts, ...)
     #par.reset.func <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
     #on.exit(par.reset.func)#;browser()
