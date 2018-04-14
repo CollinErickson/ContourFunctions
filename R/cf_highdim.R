@@ -26,7 +26,8 @@
 #' # Full 8D borehole function
 #' cf_highdim(TestFunctions::borehole, 8)
 #' 
-#' cf_highdim(TestFunctions::borehole, 8, n=10, same_scale = T)
+#' # Putting each plot on separate scale
+#' cf_highdim(TestFunctions::borehole, 8, n=10, same_scale = FALSE)
 #' }
 #' 
 #' cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3)
