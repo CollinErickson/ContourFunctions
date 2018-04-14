@@ -24,7 +24,8 @@
 #' }
 #' 
 #' cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3)
-cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)/2) {
+cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
+                       baseline=(low+high)/2, ...) {
   print(low);print(high); print(baseline)
   # opar <- par()
   # par(mfrow=c(D-1,D-1)
@@ -47,7 +48,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)
         func(mid2)
       }
       # browser()
-      cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F) #(j==D || i==1))
+      cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F, ...) #, zlim=c(11,254)) #(j==D || i==1))
       current_screen <- current_screen + 1
       # close.screen()
     }
@@ -64,10 +65,10 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D), baseline=(low+high)
   
   # Add variable names
   for (j in 2:D) {
-    mtext(paste0("x",j), 2, at=(D-j+.5)/(D-1))
+    mtext(paste0("x",j), 2, at=(D-j+.5)/(D-1)*1.14-.07)
   }
   for (i in 1:(D-1)) {
-    mtext(paste0("x",i), 1, at=(i-.5)/(D-1))
+    mtext(paste0("x",i), 1, at=(i-.5)/(D-1)*1.14-.07)
   }
 }
 if (F) {
