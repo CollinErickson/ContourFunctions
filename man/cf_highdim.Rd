@@ -5,7 +5,7 @@
 \title{Plot contour functions from 2D slices of higher dimensional functions}
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
-  high)/2)
+  high)/2, same_scale = TRUE, n = 20, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -17,6 +17,13 @@ cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
 \item{high}{High input value for each dimension}
 
 \item{baseline}{Baseline input value for each dimension}
+
+\item{same_scale}{Should all contour plots be on the same scale?
+Takes longer since it has to precalculate range of outputs.}
+
+\item{n}{Number of points in grid on each dimension}
+
+\item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
 \description{
 Plots a grid of contour plots.
@@ -30,6 +37,8 @@ cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
 
 # Full 8D borehole function
 cf_highdim(TestFunctions::borehole, 8)
+
+cf_highdim(TestFunctions::borehole, 8, n=10, same_scale = T)
 }
 
 cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3)

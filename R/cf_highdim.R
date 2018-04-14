@@ -9,6 +9,10 @@
 #' @param low Low input value for each dimension
 #' @param high High input value for each dimension
 #' @param baseline Baseline input value for each dimension
+#' @param n Number of points in grid on each dimension
+#' @param same_scale Should all contour plots be on the same scale?
+#' Takes longer since it has to precalculate range of outputs.
+#' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
 #' @return NULL
@@ -21,11 +25,36 @@
 #' 
 #' # Full 8D borehole function
 #' cf_highdim(TestFunctions::borehole, 8)
+#' 
+#' cf_highdim(TestFunctions::borehole, 8, n=10, same_scale = T)
 #' }
 #' 
 #' cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3)
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
-                       baseline=(low+high)/2, ...) {
+                       baseline=(low+high)/2, same_scale=TRUE,
+                       n=20,
+                       ...) {
+  # To put them all on same scale, need range of values first
+  if (same_scale) {
+    zmin <- Inf
+    zmax <- -Inf
+    for (j in 2:D) {
+      for (i in 1:(j-1)) {
+        tfouter <- Vectorize(function(xa, xb) {
+          mid2 <- baseline
+          mid2[i] <- xa
+          mid2[j] <- xb
+          func(mid2)
+        })
+        tv <- outer(X = seq(low[i], high[i], length.out=n),
+                    Y = seq(low[i], high[i], length.out=n),
+                    tfouter)
+        zmin <- min(zmin, min(tv))
+        zmax <- max(zmax, max(tv))
+      }
+    }
+    zlim <- c(zmin, zmax)
+  }
   print(low);print(high); print(baseline)
   # opar <- par()
   # par(mfrow=c(D-1,D-1)
@@ -48,7 +77,11 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
         func(mid2)
       }
       # browser()
-      cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F, ...) #, zlim=c(11,254)) #(j==D || i==1))
+      if (same_scale) {
+        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F, zlim=zlim, ...) #, zlim=c(11,254)) #(j==D || i==1))
+      } else {
+        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F, ...) #, zlim=c(11,254)) #(j==D || i==1))
+      }
       current_screen <- current_screen + 1
       # close.screen()
     }
