@@ -1,8 +1,9 @@
-#' Plot contour functions from 2D slices of higher dimensional functions
+#' Plot 2D contour slices of higher dimensional functions
 #' 
 #' Plots a grid of contour plots.
 #' Each contour plot is a contour over two dimensions with the remaining
-#' dimensions set to the baseline value. 
+#' dimensions set to the baseline value.
+#' Similar to plots created in Hwang et al. (2018).
 #'
 #' @param func Function to plot contours of
 #' @param D Input dimension of function
@@ -17,6 +18,10 @@
 #' @importFrom graphics contour mtext
 #' @return NULL
 #' @export
+#' @references Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,
+#' and Hyung-Jo Jung. "The Multiple-Update-Infill Sampling Method Using
+#' Minimum Energy Design for Sequential Surrogate Modeling."
+#' Applied Sciences 8, no. 4 (2018): 481.
 #'
 #' @examples
 #' \dontrun{

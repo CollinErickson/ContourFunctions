@@ -2,7 +2,7 @@
 % Please edit documentation in R/cf_highdim.R
 \name{cf_highdim}
 \alias{cf_highdim}
-\title{Plot contour functions from 2D slices of higher dimensional functions}
+\title{Plot 2D contour slices of higher dimensional functions}
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
   high)/2, same_scale = TRUE, n = 20, ...)
@@ -29,6 +29,7 @@ Takes longer since it has to precalculate range of outputs.}
 Plots a grid of contour plots.
 Each contour plot is a contour over two dimensions with the remaining
 dimensions set to the baseline value.
+Similar to plots created in Hwang et al. (2018).
 }
 \examples{
 \dontrun{
@@ -51,4 +52,10 @@ cf_highdim(friedman, 5, color.palette=topo.colors)
 cf_highdim(friedman, 5, 
            color.palette=function(x) {gray((1:x)/x)},
            nlevels=10)
+}
+\references{
+Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,
+and Hyung-Jo Jung. "The Multiple-Update-Infill Sampling Method Using
+Minimum Energy Design for Sequential Surrogate Modeling."
+Applied Sciences 8, no. 4 (2018): 481.
 }
