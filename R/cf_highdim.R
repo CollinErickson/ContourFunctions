@@ -31,6 +31,14 @@
 #' }
 #' 
 #' cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3)
+#' 
+#' friedman <- function(x) {
+#'   10*sin(pi*x[1]*x[2]) + 20*(x[3]-.5)^2 + 10*x[4] + 5*x[5]
+#' }
+#' cf_highdim(friedman, 5, color.palette=topo.colors)
+#' cf_highdim(friedman, 5, 
+#'            color.palette=function(x) {gray((1:x)/x)},
+#'            nlevels=10)
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
