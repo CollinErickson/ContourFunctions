@@ -44,6 +44,17 @@
 #' cf_highdim(friedman, 5, 
 #'            color.palette=function(x) {gray((1:x)/x)},
 #'            nlevels=10)
+#'            
+#' \dontrun{
+#' # Recreate Plate 1 or Figure 1.1 from Engineering Design via Surrogate
+#' # Modelling by Forrester, Sobester, and Keane (2008).
+#' cf_highdim(function(x)TestFunctions::wingweight(x, scale_it=FALSE),
+#'   D=10, low = c(150,220,6,-10,16,.5,.08,2.5,1700,.025),
+#'   high = c(200,300,10,10,45,1,.18,6,2500,.08),
+#'   baseline=c(174,252,7.52,0,34,.672,.12,3.8,2000,.064),
+#'   color.palette=topo.colors, 
+#'   var_names=c('SW', 'Wtw', 'A', 'Lambda', 'q', 'lambda', 'tc', 'Nz', 'Wdg'))
+#' }
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
