@@ -12,6 +12,7 @@
 #' @param baseline Baseline input value for each dimension
 #' @param n Number of points in grid on each dimension
 #' @param same_scale Should all contour plots be on the same scale?
+#' @param var_names Variable names to add to plot
 #' Takes longer since it has to precalculate range of outputs.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'

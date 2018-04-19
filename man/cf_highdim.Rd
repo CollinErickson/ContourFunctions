@@ -5,7 +5,7 @@
 \title{Plot 2D contour slices of higher dimensional functions}
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
-  high)/2, same_scale = TRUE, n = 20, ...)
+  high)/2, same_scale = TRUE, n = 20, var_names = paste0("x", 1:D), ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -18,10 +18,12 @@ cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
 
 \item{baseline}{Baseline input value for each dimension}
 
-\item{same_scale}{Should all contour plots be on the same scale?
-Takes longer since it has to precalculate range of outputs.}
+\item{same_scale}{Should all contour plots be on the same scale?}
 
 \item{n}{Number of points in grid on each dimension}
+
+\item{var_names}{Variable names to add to plot
+Takes longer since it has to precalculate range of outputs.}
 
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
@@ -52,6 +54,17 @@ cf_highdim(friedman, 5, color.palette=topo.colors)
 cf_highdim(friedman, 5, 
            color.palette=function(x) {gray((1:x)/x)},
            nlevels=10)
+           
+\dontrun{
+# Recreate Plate 1 or Figure 1.1 from Engineering Design via Surrogate
+# Modelling by Forrester, Sobester, and Keane (2008).
+cf_highdim(function(x)TestFunctions::wingweight(x, scale_it=FALSE),
+  D=10, low = c(150,220,6,-10,16,.5,.08,2.5,1700,.025),
+  high = c(200,300,10,10,45,1,.18,6,2500,.08),
+  baseline=c(174,252,7.52,0,34,.672,.12,3.8,2000,.064),
+  color.palette=topo.colors, 
+  var_names=c('SW', 'Wtw', 'A', 'Lambda', 'q', 'lambda', 'tc', 'Nz', 'Wdg'))
+}
 }
 \references{
 Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,
