@@ -58,6 +58,7 @@
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
+                       var_names=paste0("x",1:D),
                        ...) {
   # To put them all on same scale, need range of values first
   if (same_scale) {
@@ -72,7 +73,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
           func(mid2)
         })
         tv <- outer(X = seq(low[i], high[i], length.out=n),
-                    Y = seq(low[i], high[i], length.out=n),
+                    Y = seq(low[j], high[j], length.out=n),
                     tfouter)
         zmin <- min(zmin, min(tv))
         zmax <- max(zmax, max(tv))
@@ -103,9 +104,13 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       }
       # browser()
       if (same_scale) {
-        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F, zlim=zlim, ...) #, zlim=c(11,254)) #(j==D || i==1))
+        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
+                xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
+                zlim=zlim, ...)
       } else {
-        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F, ...) #, zlim=c(11,254)) #(j==D || i==1))
+        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
+                xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
+                ...)
       }
       current_screen <- current_screen + 1
       # close.screen()
@@ -123,10 +128,10 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   
   # Add variable names
   for (j in 2:D) {
-    mtext(paste0("x",j), 2, at=(D-j+.5)/(D-1)*1.14-.07)
+    mtext(var_names[j], 2, at=(D-j+.5)/(D-1)*1.14-.07)
   }
   for (i in 1:(D-1)) {
-    mtext(paste0("x",i), 1, at=(i-.5)/(D-1)*1.14-.07)
+    mtext(var_names[i], 1, at=(i-.5)/(D-1)*1.14-.07)
   }
 }
 if (F) {
