@@ -30,13 +30,17 @@ cf_4dim <- function(func,
                        over2=seq(0,1,length.out=nover2),
                        low=rep(0,4), high=rep(1,4),
                     nlevels=20,
+                    color.palette = cm.colors,
+                    col = color.palette(length(levels) - 1),
                        # baseline=(low+high)/2,
                        same_scale=F,
                        n=20,
                        var_names=paste0("x",1:4),
-                    bar=T,
+                    bar=T, key.axes, axes=T,
                        ...) {
   # browser()
+  d1 <- (1:4)[-over][1]
+  d2 <- (1:4)[-over][2]
   # To put them all on same scale, need range of values first
   if (same_scale) {
     zmin <- Inf
@@ -50,8 +54,8 @@ cf_4dim <- function(func,
           mid2[over[2]] <- over2[j]
           func(mid2)
         })
-        tv <- outer(X = over1,
-                    Y = over2,
+        tv <- outer(X = seq(low[d1],high[d1], l=n),
+                    Y = seq(low[d2],high[d2], l=n),
                     tfouter)
         zmin <- min(zmin, min(tv))
         zmax <- max(zmax, max(tv))
@@ -64,7 +68,7 @@ cf_4dim <- function(func,
   # par(mfrow=c(D-1,D-1)
   #     , mar=c(1,1,1,1)
   # )
-  if (bar) {browser()
+  if (bar) {
     #split.screen(c(1,2))
     screen.numbers <- split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
     screen1 <- screen.numbers[1]
@@ -82,21 +86,21 @@ cf_4dim <- function(func,
     plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
                 yaxs = "i")
     rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
-    # if (missing(key.axes)) {
-    #   if (axes) 
-    #     axis(4)
-    # }
-    # else key.axes
+    if (missing(key.axes)) {
+      if (axes)
+        axis(4, las=T)
+    }
+    else key.axes
     box()
-    if (!missing(key.title))
-      key.title
-    mar <- mar.orig
-    mar[4L] <- 1 # right # Why is this here?
+    # if (!missing(key.title))
+    #   key.title
+    # mar <- mar.orig
+    # mar[4L] <- 1 # right # Why is this here?
     close.screen(screen2)
     screen(screen1)
   }
   par(mar=c(1,1,1,1))
-  split.screen(c(nover1, nover2))
+  screens <- split.screen(c(nover1, nover2))
   current_screen <- 1
   # screen(1)
   # plot(rexp(5))
@@ -105,7 +109,7 @@ cf_4dim <- function(func,
   d2 <- (1:4)[-over][2]
   for (j in nover2:1) {
     for (i in 1:nover1) {
-      screen(current_screen)
+      screen(screens[current_screen])
       # plot(rnorm(10), xlab=i, ylab=j)
       tf <- function(x2) {
         mid2 <- rep(NaN, 4)
@@ -118,7 +122,7 @@ cf_4dim <- function(func,
       if (same_scale) {
         cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
-                zlim=zlim, ...)
+                zlim=zlim, n=n, ...)
       } else {
         cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
@@ -140,7 +144,7 @@ cf_4dim <- function(func,
   
   # Add variable names
   for (i in 1:nover1) {
-    mtext(paste0(var_names[over[1]], "=", over1[i]), 1, at=(i-.5)/(nover1)*1.14-.07)
+    mtext(paste0(var_names[over[1]], "=", over1[i]), 1, at=(i-.5)/(nover1)*(1.14-.15*bar)-.07)
   }
   for (j in 1:nover2) {
     mtext(paste0(var_names[over[2]], "=", over2[j]), 2, at=(j-.5)/(nover2)*1.14-.07)
