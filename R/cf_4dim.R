@@ -5,14 +5,23 @@
 #' two dimensions set to the baseline value.
 #' See cf_highdim for functions with more than 4 dimensions.
 #'
-#' @param func Function to plot contours of
+#' @param func A four-dimensional function to plot contours of
+#' @param over Indices of the dimensions used for the outer grid
+#' @param nover Number of grid points for the outer grid dimensions
+#' @param nover1 Number of grid points for the first outer grid dimension
+#' @param nover2 Number of grid points for the second outer grid dimension
 #' @param low Low input value for each dimension
 #' @param high High input value for each dimension
-#' @param baseline Baseline input value for each dimension
 #' @param n Number of points in grid on each dimension
 #' @param same_scale Should all contour plots be on the same scale?
-#' @param var_names Variable names to add to plot
 #' Takes longer since it has to precalculate range of outputs.
+#' @param nlevels Number of levels in contour scale
+#' @param color.palette Color palette used for contour plots
+#' @param col The colors for the contour plots
+#' @param var_names Variable names to add to plot
+#' @param bar Should a bar be added on right when all on same_scale?
+#' @param key.axes key for bar plot
+#' @param axes axes
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -24,23 +33,24 @@
 #'   function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}
 #' )
 cf_4dim <- function(func,
-                       over=c(1,2),
-                       nover=5, nover1=nover, nover2=nover,
-                       over1=seq(0,1,length.out=nover1),
-                       over2=seq(0,1,length.out=nover2),
-                       low=rep(0,4), high=rep(1,4),
+                    over=c(1,2),
+                    nover=5, nover1=nover, nover2=nover,
+                    # over1=seq(0,1,length.out=nover1),
+                    # over2=seq(0,1,length.out=nover2),
+                    low=rep(0,4), high=rep(1,4),
+                    n=20,
+                    same_scale=TRUE,
                     nlevels=20,
                     color.palette = cm.colors,
                     col = color.palette(length(levels) - 1),
-                       # baseline=(low+high)/2,
-                       same_scale=F,
-                       n=20,
-                       var_names=paste0("x",1:4),
+                    var_names=paste0("x",1:4),
                     bar=T, key.axes, axes=T,
-                       ...) {
+                    ...) {
   # browser()
   d1 <- (1:4)[-over][1]
   d2 <- (1:4)[-over][2]
+  over1=seq(low[over[1]],high[over[1]],length.out=nover1)
+  over2=seq(low[over[2]],high[over[2]],length.out=nover2)
   # To put them all on same scale, need range of values first
   if (same_scale) {
     zmin <- Inf
