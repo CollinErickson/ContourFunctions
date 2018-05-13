@@ -14,6 +14,7 @@
 #' @param same_scale Should all contour plots be on the same scale?
 #' @param var_names Variable names to add to plot
 #' Takes longer since it has to precalculate range of outputs.
+#' @param pts Matrix of points to show on plot
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -28,6 +29,9 @@
 #' \dontrun{
 #' # Only use 4 dims of 8 for borehole function
 #' cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
+#' # Add points
+#' cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4,
+#'            pts=matrix(c(.1,.3,.6,.9),1,4))
 #' 
 #' # Full 8D borehole function
 #' cf_highdim(TestFunctions::borehole, 8)
@@ -60,8 +64,12 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
                        var_names=paste0("x",1:D),
+                       pts=NULL,
                        ...) {
   # To put them all on same scale, need range of values first
+  if (!is.null(pts)) {
+    if (ncol(pts) != D) {stop("pts must have D columns")}
+  }
   if (same_scale) {
     zmin <- Inf
     zmax <- -Inf
@@ -107,10 +115,11 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       if (same_scale) {
         cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
-                zlim=zlim, ...)
+                zlim=zlim, pts=pts[,c(i,j)], ...)
       } else {
         cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
+                pts=pts[,c(i,j)],
                 ...)
       }
       current_screen <- current_screen + 1

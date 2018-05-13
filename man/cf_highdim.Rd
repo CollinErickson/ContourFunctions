@@ -5,7 +5,8 @@
 \title{Plot 2D contour slices of higher dimensional functions}
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
-  high)/2, same_scale = TRUE, n = 20, var_names = paste0("x", 1:D), ...)
+  high)/2, same_scale = TRUE, n = 20, var_names = paste0("x", 1:D),
+  pts = NULL, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -25,6 +26,8 @@ cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
 \item{var_names}{Variable names to add to plot
 Takes longer since it has to precalculate range of outputs.}
 
+\item{pts}{Matrix of points to show on plot}
+
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
 \description{
@@ -37,6 +40,9 @@ Similar to plots created in Hwang et al. (2018).
 \dontrun{
 # Only use 4 dims of 8 for borehole function
 cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
+# Add points
+cf_highdim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4,
+           pts=matrix(c(.1,.3,.6,.9),1,4))
 
 # Full 8D borehole function
 cf_highdim(TestFunctions::borehole, 8)
