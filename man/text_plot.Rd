@@ -7,18 +7,21 @@
 text_plot(p, x = 0.5, y = 0.5, cex = 2, ...)
 }
 \arguments{
-\item{p}{}
+\item{p}{Text to put on a plot}
 
-\item{x}{}
+\item{x}{x-value of center of text, defaults to center}
 
-\item{y}{}
+\item{y}{y-value of center of text, defaults to center}
 
-\item{cex}{}
+\item{cex}{Size of text}
 
-\item{...}{}
+\item{...}{Arguments passed to plot}
 }
 \description{
 Make a plot with only text
+}
+\examples{
+text_plot("Useful?", cex=5)
 }
 \references{
 ZNK's answer on https://stackoverflow.com/questions/19918985/r-plot-only-text, retrieved 5/25/2018

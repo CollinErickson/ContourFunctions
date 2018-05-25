@@ -1,14 +1,17 @@
 #' Make a plot with only text
 #' 
 #' 
-#' @param p 
-#' @param x 
-#' @param y 
-#' @param cex 
-#' @param ... 
+#' @param p Text to put on a plot
+#' @param x x-value of center of text, defaults to center
+#' @param y y-value of center of text, defaults to center
+#' @param cex Size of text
+#' @param ... Arguments passed to plot
 #' @export
+#' @importFrom graphics plot text
 #'
 #' @references ZNK's answer on https://stackoverflow.com/questions/19918985/r-plot-only-text, retrieved 5/25/2018
+#' @examples 
+#' text_plot("Useful?", cex=5)
 text_plot <- function(p, x=0.5, y=0.5, cex=2, ...) {
   omar <- par()$mar
   par(mar = c(0,0,0,0))
@@ -20,4 +23,3 @@ text_plot <- function(p, x=0.5, y=0.5, cex=2, ...) {
   text(x = x, y = y, p, cex=cex, ...)
   par(mar=omar)
 }
-text_plot("Useful?", cex=5)

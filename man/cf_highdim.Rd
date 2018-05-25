@@ -29,6 +29,15 @@ Takes longer since it has to precalculate range of outputs.}
 
 \item{pts}{Matrix of points to show on plot}
 
+\item{average}{Should the background dimensions be averaged over instead of
+set to baseline value? Much slower.}
+
+\item{average_reps}{Number of points to average over when using average}
+
+\item{average_matrix}{If using average, should the points be evaluated
+separately or as rows of a matrix? As a matrix can be much faster, but
+requires separate coding.}
+
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
 \description{
@@ -73,7 +82,9 @@ cf_highdim(function(x)TestFunctions::wingweight(x, scale_it=FALSE),
   var_names=c('SW', 'Wtw', 'A', 'Lambda', 'q', 'lambda', 'tc', 'Nz', 'Wdg'))
 }
 
+# Average over background dimensions, use higher reps to reduce noise.
 f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
+cf_highdim(f1, 4, average=FALSE, average_reps=1e2, n=10)
 }
 \references{
 Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,
