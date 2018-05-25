@@ -6,7 +6,8 @@
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
   high)/2, same_scale = TRUE, n = 20, var_names = paste0("x", 1:D),
-  pts = NULL, ...)
+  pts = NULL, average = FALSE, average_reps = 10000,
+  average_matrix = FALSE, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -71,6 +72,8 @@ cf_highdim(function(x)TestFunctions::wingweight(x, scale_it=FALSE),
   color.palette=topo.colors, 
   var_names=c('SW', 'Wtw', 'A', 'Lambda', 'q', 'lambda', 'tc', 'Nz', 'Wdg'))
 }
+
+f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
 }
 \references{
 Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,

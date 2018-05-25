@@ -60,11 +60,14 @@
 #'   color.palette=topo.colors, 
 #'   var_names=c('SW', 'Wtw', 'A', 'Lambda', 'q', 'lambda', 'tc', 'Nz', 'Wdg'))
 #' }
+#' 
+#' f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
                        var_names=paste0("x",1:D),
                        pts=NULL,
+                       average=FALSE, average_reps=1e4, average_matrix=FALSE,
                        ...) {
   # To put them all on same scale, need range of values first
   if (!is.null(pts)) {
@@ -103,13 +106,33 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   # browser()
   for (j in 2:D) {
     for (i in 1:(j-1)) {
+      ds <- c(i, j)
+      notds <- setdiff(1:D, ds)
       screen(current_screen)
       # plot(rnorm(10), xlab=i, ylab=j)
-      tf <- function(x2) {
-        mid2 <- baseline
-        mid2[i] <- x2[1]
-        mid2[j] <- x2[2]
-        func(mid2)
+      if (average) {
+        # Average over hidden dimensions
+        tf <- function(x2) {
+          xD <- numeric(D)
+          xD[ds] <- x2
+          XX <- lhs::randomLHS(average_reps, D-2)
+          X4 <- matrix(nrow=average_reps, ncol=4)
+          X4[, ds[1]] <- x2[1]
+          X4[, ds[2]] <- x2[2]
+          X4[, notds] <- XX
+          if (average_matrix) {
+            mean(func(X4))
+          } else {
+            mean(apply(X4, 1, func))
+          }
+        }
+      } else { # Just use baseline
+        tf <- function(x2) {
+          mid2 <- baseline
+          mid2[i] <- x2[1]
+          mid2[j] <- x2[2]
+          func(mid2)
+        }
       }
       # browser()
       if (same_scale) {
