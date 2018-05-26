@@ -1,7 +1,7 @@
 #' Makes filled contour plot from function 
 #' 
 #' A contour plot of the given function without sidebar by default.
-#' It call the function `cf_grid` to make the actual plot.
+#' It calls the function `cf_grid` to make the actual plot.
 #' 
 #' @param fn0  function to plot, first argument must be two-dimensional
 #' @param n  number of points in each dimension
@@ -32,15 +32,12 @@
 #' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
 cf_func <- function(fn0, n=100,
-                               xlim=c(0,1), ylim=c(0,1), xylim=NULL,
-                               #mainminmax=T, 
-                               batchmax=1, out.col.name=NULL,
-                               out.name=NULL,
-                               #pretitle="", posttitle="", title=NULL,
-                               #mainminmax_minmax=TRUE, 
-                               pts=NULL,
+                    xlim=c(0,1), ylim=c(0,1), xylim=NULL,
+                    batchmax=1, out.col.name=NULL,
+                    out.name=NULL,
+                    pts=NULL,
                     use_lines=FALSE,
-                               ...) {
+                    ...) {
   if(!is.null(out.col.name)) {
     fn <- function(xx){fn0(xx)[,out.col.name]}
   } else if (!is.null(out.name)) {
@@ -74,23 +71,9 @@ cf_func <- function(fn0, n=100,
       }
     }
   }
-  #if(mainminmax) {
-    #cf_grid3(x,y,z, pts=pts, reset.par=T, ...)
-    # cf_grid3(x,y,z, pts=pts, ...)
   if (use_lines) {
     contour(x, y, z, ...)
     points(pts, pch=19)
   } else
     cf_grid(x,y,z, pts=pts, ...)
-    #par.reset.func <- cf_grid3(x,y,z, pts=pts, reset.par=F, ...)
-    #on.exit(par.reset.func)#;browser()
-    # make.multicolor.title(title=title, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax)
-
-    #cf_grid(x,y,z,main=paste('abcde','abc'),...)
-  #} else {
-  #  cf_grid3(x,y,z, pts=pts, ...)
-  #}
-  #if (!is.null(pts)) { # This is now done in cf_grid
-  #  points(pts, pch=19)
-  #}
 }

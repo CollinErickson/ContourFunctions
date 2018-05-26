@@ -82,6 +82,8 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     if (ncol(pts) != D) {stop("pts must have D columns")}
   }
   if (same_scale) {
+    # Put all plots on same scale, need to know max and min values before
+    #  beginning plot, so it is twice as slow.
     zmin <- Inf
     zmax <- -Inf
     for (j in 2:D) {

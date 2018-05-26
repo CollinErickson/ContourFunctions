@@ -39,7 +39,7 @@ using colors. Defaults to colors.}
 }
 \description{
 A contour plot of the given function without sidebar by default.
-It call the function `cf_grid` to make the actual plot.
+It calls the function `cf_grid` to make the actual plot.
 }
 \examples{
 cf_func(function(x){x[1]*x[2]})
