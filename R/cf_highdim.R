@@ -11,6 +11,7 @@
 #' @param high High input value for each dimension
 #' @param baseline Baseline input value for each dimension
 #' @param n Number of points in grid on each dimension
+#' @param batchmax  number of datapoints that can be computed at a time
 #' @param same_scale Should all contour plots be on the same scale?
 #' @param var_names Variable names to add to plot
 #' Takes longer since it has to precalculate range of outputs.
@@ -70,9 +71,12 @@
 #' # Average over background dimensions, use higher reps to reduce noise.
 #' f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
 #' cf_highdim(f1, 4, average=FALSE, average_reps=1e2, n=10)
+#' f1b <- function(x) {x[,1] + x[,2]^2 + x[,3]^3}
+#' cf_highdim(f1b, 4, average=FALSE, average_reps=1e2, n=10, batchmax=Inf)
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
+                       batchmax=1,
                        var_names=paste0("x",1:D),
                        pts=NULL,
                        average=FALSE, average_reps=1e4, average_matrix=FALSE,
@@ -81,29 +85,104 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   if (!is.null(pts)) {
     if (ncol(pts) != D) {stop("pts must have D columns")}
   }
+  browser()
+  # Make version of function for just two dimensions
+  
+  if (average) {
+    # Average over hidden dimensions
+    funcij <- function(x2) {
+      xD <- numeric(D)
+      xD[ds] <- x2
+      XX <- lhs::randomLHS(average_reps, D-2)
+      X4 <- matrix(nrow=average_reps, ncol=4)
+      X4[, ds[1]] <- x2[1]
+      X4[, ds[2]] <- x2[2]
+      X4[, notds] <- XX
+      if (average_matrix) {
+        mean(func(X4))
+      } else {
+        mean(apply(X4, 1, func))
+      }
+    }
+  } else {
+    funcij <- function(xx, i, j) {browser()
+      if (batchmax == 1) {
+        mid2 <- baseline
+        mid2[i] <- xx[1]
+        mid2[j] <- xx[2]
+      } else { # batchmax > 1, use matrix
+        mid2 <- matrix(baseline, nrow=nrow(xx), ncol=D, byrow=T)
+        mid2[,i] <- xx[,1]
+        mid2[,j] <- xx[,2]
+      }
+      func(mid2)
+    }
+  }
+  # Get this function as a function
+  get_funcij <- function(i,j) {
+    function(x) {
+      funcij(xx=x, i=i, j=j)
+    }
+  }
   if (same_scale) {
     # Put all plots on same scale, need to know max and min values before
     #  beginning plot, so it is twice as slow.
     zmin <- Inf
     zmax <- -Inf
+    # for (j in 2:D) {
+    #   for (i in 1:(j-1)) {
+    #     tfouter <- Vectorize(function(xa, xb) {
+    #       mid2 <- baseline
+    #       mid2[i] <- xa
+    #       mid2[j] <- xb
+    #       func(mid2)
+    #     })
+    #     tv <- outer(X = seq(low[i], high[i], length.out=n),
+    #                 Y = seq(low[j], high[j], length.out=n),
+    #                 tfouter)
+    #     zmin <- min(zmin, min(tv))
+    #     zmax <- max(zmax, max(tv))
+    #   }
+    # }
+    # zlim <- c(zmin, zmax)
+    # Use eval_over_grid_with_batch
+    zlist <- list()
     for (j in 2:D) {
+      # TODO Check i and j vs x and y
+      y <- seq(low[j], high[j], length.out=n)
+      zlist[[j]] <- list()
       for (i in 1:(j-1)) {
-        tfouter <- Vectorize(function(xa, xb) {
-          mid2 <- baseline
-          mid2[i] <- xa
-          mid2[j] <- xb
-          func(mid2)
-        })
-        tv <- outer(X = seq(low[i], high[i], length.out=n),
-                    Y = seq(low[j], high[j], length.out=n),
-                    tfouter)
-        zmin <- min(zmin, min(tv))
-        zmax <- max(zmax, max(tv))
+        x <- seq(low[i], high[i], length.out=n)
+        # tfouter <- Vectorize(function(xa, xb) {
+        #   mid2 <- baseline
+        #   mid2[i] <- xa
+        #   mid2[j] <- xb
+        #   func(mid2)
+        # })
+        # if (batchmax == 1) {
+        #   tfouter <- function(xx) {
+        #     mid2 <- baseline
+        #     mid2[i] <- xx[1]
+        #     mid2[j] <- xx[2]
+        #     func(mid2)
+        #   }
+        # } else {# batchmax > 1, use matrix
+        #   tfouter <- function(xx) {browser()
+        #     mid2 <- matrix(baseline, nrow=nrow(xx), ncol=D, byrow=T)
+        #     mid2[,i] <- xx[,1]
+        #     mid2[,j] <- xx[,2]
+        #     func(mid2)
+        #   }
+        # }
+        zij <- eval_over_grid_with_batch(x, y, fn=get_funcij(i=i,j=j), batchmax)
+        zlist[[j]][[i]] <- zij
+        zmin <- min(zmin, min(zij))
+        zmax <- max(zmax, max(zij))
       }
     }
     zlim <- c(zmin, zmax)
   }
-  print(low);print(high); print(baseline)
+  # print(low);print(high); print(baseline)
   # opar <- par()
   # par(mfrow=c(D-1,D-1)
   #     , mar=c(1,1,1,1)
@@ -137,20 +216,30 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
           }
         }
       } else { # Just use baseline
-        tf <- function(x2) {
-          mid2 <- baseline
-          mid2[i] <- x2[1]
-          mid2[j] <- x2[2]
-          func(mid2)
-        }
+        # tf <- function(x2) {
+        #   mid2 <- baseline
+        #   mid2[i] <- x2[1]
+        #   mid2[j] <- x2[2]
+        #   func(mid2)
+        # }
       }
       # browser()
       if (same_scale) {
-        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
+        # TODO Need to check i and j vs x and y, flipped?
+        # cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
+        #         mainminmax=FALSE, plot.axes=F,
+        #         xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
+        #         zlim=zlim, pts=pts[,c(i,j)], ...)
+        # browser()
+        cf_grid(x=seq(low[i], high[i], length.out=n),
+                y=seq(low[j], high[j], length.out=n),
+                z=zlist[[j]][[i]],
+                mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
                 zlim=zlim, pts=pts[,c(i,j)], ...)
       } else {
-        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
+        cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
+                mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
                 pts=pts[,c(i,j)],
                 ...)

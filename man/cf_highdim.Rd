@@ -5,9 +5,9 @@
 \title{Plot 2D contour slices of higher dimensional functions}
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
-  high)/2, same_scale = TRUE, n = 20, var_names = paste0("x", 1:D),
-  pts = NULL, average = FALSE, average_reps = 10000,
-  average_matrix = FALSE, ...)
+  high)/2, same_scale = TRUE, n = 20, batchmax = 1,
+  var_names = paste0("x", 1:D), pts = NULL, average = FALSE,
+  average_reps = 10000, average_matrix = FALSE, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -23,6 +23,8 @@ cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
 \item{same_scale}{Should all contour plots be on the same scale?}
 
 \item{n}{Number of points in grid on each dimension}
+
+\item{batchmax}{number of datapoints that can be computed at a time}
 
 \item{var_names}{Variable names to add to plot
 Takes longer since it has to precalculate range of outputs.}
@@ -85,6 +87,8 @@ cf_highdim(function(x)TestFunctions::wingweight(x, scale_it=FALSE),
 # Average over background dimensions, use higher reps to reduce noise.
 f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
 cf_highdim(f1, 4, average=FALSE, average_reps=1e2, n=10)
+f1b <- function(x) {x[,1] + x[,2]^2 + x[,3]^3}
+cf_highdim(f1b, 4, average=FALSE, average_reps=1e2, n=10, batchmax=Inf)
 }
 \references{
 Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,
