@@ -70,6 +70,13 @@
 #' cf_highdim(f1, 4, average=FALSE, average_reps=1e2, n=10)
 #' f1b <- function(x) {x[,1] + x[,2]^2 + x[,3]^3}
 #' cf_highdim(f1b, 4, average=FALSE, average_reps=1e2, n=10, batchmax=Inf)
+#' 
+#' # This was giving bad result
+#' csa()
+#' split.screen(c(2,1))
+#' screen(2)
+#' cf_highdim(f1b, 4, average=F, average_reps=1e2, n=10, batchmax=Inf)
+#' csa()
 cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        baseline=(low+high)/2, same_scale=TRUE,
                        n=20,
@@ -78,7 +85,9 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        pts=NULL,
                        average=FALSE, average_reps=1e4,
                        ...) {
+  # TODO put var_names in sep row/col
   # To put them all on same scale, need range of values first
+  begin_screen <- screen()
   if (!is.null(pts)) {
     if (ncol(pts) != D) {stop("pts must have D columns")}
   }
@@ -165,7 +174,6 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     # Use eval_over_grid_with_batch
     zlist <- list()
     for (j in 2:D) {
-      # TODO Check i and j vs x and y
       y <- seq(low[j], high[j], length.out=n)
       zlist[[j]] <- list()
       for (i in 1:(j-1)) {
@@ -205,8 +213,9 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   #     , mar=c(1,1,1,1)
   # )
   par(mar=c(1,1,1,1))
-  split.screen(c(D-1, D-1))
-  current_screen <- 1
+  screen.numbers <- split.screen(c(D-1, D-1))
+  current_screen_index <- 1
+  current_screen <- screen.numbers[current_screen_index]
   # screen(1)
   # plot(rexp(5))
   # browser()
@@ -242,7 +251,6 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       }
       # browser()
       if (same_scale) {
-        # TODO Need to check i and j vs x and y, flipped?
         # cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
         #         mainminmax=FALSE, plot.axes=F,
         #         xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
@@ -261,19 +269,27 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                 pts=pts[,c(i,j)],
                 ...)
       }
-      current_screen <- current_screen + 1
+      # current_screen <- current_screen + 1
+      current_screen_index <- current_screen_index + 1
+      current_screen <- screen.numbers[current_screen_index]
       # close.screen()
     }
     if (j < D) {
       for (k in 1:(D - j)) {
         # plot.new()
-        current_screen <- current_screen + 1
+        # current_screen <- current_screen + 1
+        current_screen_index <- current_screen_index + 1
+        current_screen <- screen.numbers[current_screen_index]
         # close.screen()
       }
     }
   }
-  close.screen(all.screens = TRUE)
+  # close.screen(all.screens = TRUE)
+  close.screen(n = screen.numbers)
   # par(mfrow=opar$mfrow, mar=opar$mar)
+  # Return to original screen
+  # browser()
+  screen(begin_screen, new=FALSE)
   
   # Add variable names
   for (j in 2:D) {
