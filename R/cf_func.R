@@ -48,29 +48,30 @@ cf_func <- function(fn0, n=100,
   if (!is.null(xylim)) {xlim <- ylim <- xylim}
   x <- seq(xlim[1],xlim[2],length.out = n)
   y <- seq(ylim[1],ylim[2],length.out = n)
-  z <- matrix(NA,n,n)
-  if(batchmax<=1) { # calculate single Z value at a time
-    #for(xi in 1:n) for(yi in 1:n) {z[xi,yi] <- fn(c(x[xi],y[yi]))}
-    fn_outer <- Vectorize(function(xi, yi) {fn(c(x[xi], y[yi]))})
-    z <- outer(1:n, 1:n, fn_outer)
-  } else {
-    inbatch <- 0
-    for(xi in 1:n) {
-      for(yi in 1:n) {
-        if(inbatch==0) XYi <- matrix(c(xi,yi),ncol=2)
-        else XYi <- rbind(XYi,matrix(c(xi,yi),ncol=2))
-        inbatch <- inbatch + 1
-        if(inbatch == batchmax | (xi==n & yi==n)) {
-          Zbatch <- fn(matrix(c(x[XYi[,1]],y[XYi[,2]]),ncol=2,byrow=F))
-          for(rowbatch in 1:length(Zbatch)) {
-            z[XYi[rowbatch,1],XYi[rowbatch,2]] <- Zbatch[rowbatch]
-          }
-          inbatch <- 0
-          rm(XYi)
-        }
-      }
-    }
-  }
+  z <- eval_over_grid_with_batch(x, y, fn, batchmax)
+  # z <- matrix(NA,n,n)
+  # if(batchmax<=1) { # calculate single Z value at a time
+  #   #for(xi in 1:n) for(yi in 1:n) {z[xi,yi] <- fn(c(x[xi],y[yi]))}
+  #   fn_outer <- Vectorize(function(xi, yi) {fn(c(x[xi], y[yi]))})
+  #   z <- outer(1:n, 1:n, fn_outer)
+  # } else {
+  #   inbatch <- 0
+  #   for(xi in 1:n) {
+  #     for(yi in 1:n) {
+  #       if(inbatch==0) XYi <- matrix(c(xi,yi),ncol=2)
+  #       else XYi <- rbind(XYi,matrix(c(xi,yi),ncol=2))
+  #       inbatch <- inbatch + 1
+  #       if(inbatch == batchmax | (xi==n & yi==n)) {
+  #         Zbatch <- fn(matrix(c(x[XYi[,1]],y[XYi[,2]]),ncol=2,byrow=F))
+  #         for(rowbatch in 1:length(Zbatch)) {
+  #           z[XYi[rowbatch,1],XYi[rowbatch,2]] <- Zbatch[rowbatch]
+  #         }
+  #         inbatch <- 0
+  #         rm(XYi)
+  #       }
+  #     }
+  #   }
+  # }
   if (use_lines) {
     contour(x, y, z, ...)
     points(pts, pch=19)
