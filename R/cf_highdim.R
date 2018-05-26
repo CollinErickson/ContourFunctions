@@ -85,27 +85,47 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   if (!is.null(pts)) {
     if (ncol(pts) != D) {stop("pts must have D columns")}
   }
-  browser()
+  # browser()
   # Make version of function for just two dimensions
   
   if (average) {
     # Average over hidden dimensions
-    funcij <- function(x2) {
-      xD <- numeric(D)
-      xD[ds] <- x2
+    funcij <- function(xx, i, j) {
+      # There's a double batch issue: matrix of points to eval,
+      #  then I use matrices for the average. So instead I'll
+      #  force the first into vectors
+      if (is.matrix(xx)) {return(apply(xx, 1, funcij, i=i, j=j))}
+      ds <- c(i, j)
+      notds <- setdiff(1:D, ds)
+      # xD <- numeric(D)
+      # xD[ds] <- xx
       XX <- lhs::randomLHS(average_reps, D-2)
       X4 <- matrix(nrow=average_reps, ncol=4)
-      X4[, ds[1]] <- x2[1]
-      X4[, ds[2]] <- x2[2]
+      X4[, ds[1]] <- xx[1]
+      X4[, ds[2]] <- xx[2]
       X4[, notds] <- XX
-      if (average_matrix) {
+      # if (average_matrix) {
+      #   mean(func(X4))
+      # } else {
+      #   mean(apply(X4, 1, func))
+      # }
+      if (batchmax > nrow(X4)) {
         mean(func(X4))
-      } else {
+      } else if (batchmax > 1) {
+        stop("tricky case")
+        
+        sum(sapply(1:ceiling(nrow(X4)/batchmax),
+               function(k) {
+                 sum(
+                   apply(X4[(1+(k-1)*batchmax):min(nrow(X4, k*batchmax)),], 1, func)
+                 )
+               })) / nrow(X4)
+      } else { # batchmax == 1
         mean(apply(X4, 1, func))
       }
     }
   } else {
-    funcij <- function(xx, i, j) {browser()
+    funcij <- function(xx, i, j) {
       if (batchmax == 1) {
         mid2 <- baseline
         mid2[i] <- xx[1]
@@ -200,21 +220,21 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       screen(current_screen)
       # plot(rnorm(10), xlab=i, ylab=j)
       if (average) {
-        # Average over hidden dimensions
-        tf <- function(x2) {
-          xD <- numeric(D)
-          xD[ds] <- x2
-          XX <- lhs::randomLHS(average_reps, D-2)
-          X4 <- matrix(nrow=average_reps, ncol=4)
-          X4[, ds[1]] <- x2[1]
-          X4[, ds[2]] <- x2[2]
-          X4[, notds] <- XX
-          if (average_matrix) {
-            mean(func(X4))
-          } else {
-            mean(apply(X4, 1, func))
-          }
-        }
+        # # Average over hidden dimensions
+        # tf <- function(x2) {
+        #   xD <- numeric(D)
+        #   xD[ds] <- x2
+        #   XX <- lhs::randomLHS(average_reps, D-2)
+        #   X4 <- matrix(nrow=average_reps, ncol=4)
+        #   X4[, ds[1]] <- x2[1]
+        #   X4[, ds[2]] <- x2[2]
+        #   X4[, notds] <- XX
+        #   if (average_matrix) {
+        #     mean(func(X4))
+        #   } else {
+        #     mean(apply(X4, 1, func))
+        #   }
+        # }
       } else { # Just use baseline
         # tf <- function(x2) {
         #   mid2 <- baseline
