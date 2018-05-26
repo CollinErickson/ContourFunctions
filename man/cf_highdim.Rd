@@ -82,15 +82,15 @@ cf_highdim(function(x)TestFunctions::wingweight(x, scale_it=FALSE),
 
 # Average over background dimensions, use higher reps to reduce noise.
 f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
-cf_highdim(f1, 4, average=FALSE, average_reps=1e2, n=10)
+cf_highdim(f1, 4, average=TRUE, average_reps=1e2, n=10)
 f1b <- function(x) {x[,1] + x[,2]^2 + x[,3]^3}
-cf_highdim(f1b, 4, average=FALSE, average_reps=1e2, n=10, batchmax=Inf)
+cf_highdim(f1b, 4, average=TRUE, average_reps=1e2, n=10, batchmax=Inf)
 
 # This was giving bad result
 csa()
 split.screen(c(2,1))
 screen(2)
-cf_highdim(f1b, 4, average=F, average_reps=1e2, n=10, batchmax=Inf)
+cf_highdim(f1b, 4, n=10, batchmax=Inf)
 csa()
 }
 \references{
