@@ -7,7 +7,7 @@
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
   high)/2, same_scale = TRUE, n = 20, batchmax = 1,
   var_names = paste0("x", 1:D), pts = NULL, average = FALSE,
-  average_reps = 10000, average_matrix = FALSE, ...)
+  average_reps = 10000, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -35,10 +35,6 @@ Takes longer since it has to precalculate range of outputs.}
 set to baseline value? Much slower.}
 
 \item{average_reps}{Number of points to average over when using average}
-
-\item{average_matrix}{If using average, should the points be evaluated
-separately or as rows of a matrix? As a matrix can be much faster, but
-requires separate coding.}
 
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
