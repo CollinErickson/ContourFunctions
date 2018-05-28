@@ -19,6 +19,9 @@
 #' @param average Should the background dimensions be averaged over instead of
 #' set to baseline value? Much slower.
 #' @param average_reps Number of points to average over when using average
+#' @param key.title  statements which add titles for the plot key.
+#' @param key.axes  statements which draw axes on the plot key. This overrides the default axis.
+#' @param axes  logical indicating if axes should be drawn, as in plot.default.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -84,6 +87,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        var_names=paste0("x",1:D),
                        pts=NULL,
                        average=FALSE, average_reps=1e4,
+                       axes=TRUE, key.axes, key.title,
                        ...) {
   # TODO put var_names in sep row/col
   # To put them all on same scale, need range of values first
@@ -218,6 +222,37 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   current_screen <- screen.numbers[current_screen_index]
   # screen(1)
   # plot(rexp(5))
+  
+  if (same_scale) {
+    # Make bar in top right square
+    # Messed up labels when this was below plots, no clue why
+    screen(screen.numbers[D-1])
+    nlevels <- 20 # TODO
+    levels <- pretty(zlim, nlevels) # TODO
+    color.palette <- cm.colors # TODO
+    col <- color.palette(length(levels) - 1) # TODO
+    okmar <- par()$mar
+    kmar <- numeric(4) #mar.orig
+    kmar[4L] <- 2.5#mar[2L] # right
+    kmar[1] <- 2.2 # bottom
+    kmar[3] <- .83 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
+    kmar[2L] <- 3#0#1 # left
+    par(mar = kmar)
+    plot.new()
+    plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
+                yaxs = "i")
+    rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
+    if (missing(key.axes)) {
+      if (axes) 
+        axis(4)
+    }
+    else key.axes
+    box()
+    if (!missing(key.title))
+      key.title
+    # mar <- mar.orig
+    par(mar=okmar)
+  }
   # browser()
   for (j in 2:D) {
     for (i in 1:(j-1)) {
