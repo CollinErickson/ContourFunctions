@@ -42,6 +42,8 @@
 #' @param afterplotfunc Function to call after plotting, such as adding points or lines.
 #' @param cex.main The size of the main title. 1.2 is default.
 #' @param par.list List of options to pass to par
+#' @param xaxis Should x axis be added?
+#' @param yaxis Should y axis be added?
 #' @param ...  additional graphical parameters, currently only passed to title().
 #' @importFrom grDevices cm.colors
 #' @importFrom graphics .filled.contour
@@ -78,6 +80,7 @@ cf_grid <-
             afterplotfunc=NULL,
             cex.main=par()$cex.main,
             par.list=NULL,
+            xaxis=TRUE, yaxis=TRUE,
             ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
@@ -168,9 +171,22 @@ cf_grid <-
       mar[4] <- 1 # right
       
       if (!missing(plot.axes) && plot.axes == FALSE) {
+        # TODO I shouldn't use plot.axes like this, FIX THIS
         mar[1] <- .3 # bottom
         mar[2] <- .3 # left
         mar[4] <- .3 # 1 # right
+      }
+      if (!xaxis && !yaxis) {
+        mar[1] <- .3 # bottom
+        mar[2] <- .3 # left
+        mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
+        mar[4] <- .3 # right
+      } else if (!xaxis) {
+        mar[1] <- 1 # bottom
+        mar[4] <- .3 # right
+      } else if (!yaxis) {
+        mar[2] <- 1 # left
+        mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
       }
     }
     par(mar = mar)
@@ -190,8 +206,8 @@ cf_grid <-
     if (missing(plot.axes) || isTRUE(plot.axes)) {
       if (axes) {
         title(main = "", xlab = "", ylab = "")
-        Axis(x, side = 1)
-        Axis(y, side = 2)
+        if (xaxis) Axis(x, side = 1)
+        if (yaxis) Axis(y, side = 2)
       }
     }
     else plot.axes
