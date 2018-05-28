@@ -170,7 +170,7 @@ cf_grid <-
       mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
       mar[4] <- 1 # right
       
-      if (!missing(plot.axes) && plot.axes == FALSE) {
+      if (!missing(plot.axes)) {
         # TODO I shouldn't use plot.axes like this, FIX THIS
         mar[1] <- .3 # bottom
         mar[2] <- .3 # left
@@ -203,9 +203,9 @@ cf_grid <-
                     col = col)
     # Something like this will remove axis numbers and ticks
     # Axis(x, side=1, labels=F, tick=F)
-    if (missing(plot.axes) || isTRUE(plot.axes)) {
+    if (missing(plot.axes)) {
       if (axes) {
-        title(main = "", xlab = "", ylab = "")
+        # title(main = "", xlab = "", ylab = "")
         if (xaxis) Axis(x, side = 1)
         if (yaxis) Axis(y, side = 2)
       }

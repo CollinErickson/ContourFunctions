@@ -221,7 +221,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
         cf_grid(x=seq(low[i], high[i], length.out=n),
                 y=seq(low[j], high[j], length.out=n),
                 z=zlist[[j]][[i]],
-                mainminmax=FALSE, plot.axes=F,
+                mainminmax=FALSE, xaxis=F, yaxis=F, #plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
                 zlim=zlim, pts=pts[,c(i,j)],
                 nlevels=nlevels, levels=levels,
@@ -229,7 +229,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                 ...)
       } else {
         cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
-                mainminmax=FALSE, plot.axes=F,
+                mainminmax=FALSE, xaxis=F, yaxis=F, #plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
                 pts=pts[,c(i,j)],
                 ...)
