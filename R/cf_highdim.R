@@ -100,6 +100,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        axes=TRUE, key.axes, key.title,
                        nlevels=20,
                        color.palette=cm.colors,
+                       osp=.04, cex.osp=1.3,
                        ...) {
   # TODO put var_names in sep row/col
   # To put them all on same scale, need range of values first
@@ -176,6 +177,15 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     zlim <- c(zmin, zmax)
   }
   
+  # outer_screens <- split.screen(c(2,2))
+  # osp <- .06 # outer split point
+  outer_screens <- split.screen(
+    matrix(c(0,osp,osp,1,
+             osp,1,osp,1,
+             0,osp,0,osp,
+             osp,1,0,osp), byrow=T, ncol=4))
+  screen(outer_screens[2])
+  
   par(mar=c(1,1,1,1))
   screen.numbers <- split.screen(c(D-1, D-1))
   current_screen_index <- 1
@@ -248,16 +258,35 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     }
   }
   close.screen(n = screen.numbers)
+  screen(outer_screens[1])
+  left_screens <- split.screen(c(D-1, 1))
+  for (j in 2:D) {
+    screen(left_screens[j-1])
+    text_plot(var_names[j], cex=cex.osp)
+  }
+  close.screen(left_screens)
+  screen(outer_screens[4])
+  right_screens <- split.screen(c(1, D-1))
+  for (i in 1:(D-1)) {
+    screen(right_screens[i])
+    text_plot(var_names[i], cex= cex.osp)
+  }
+  close.screen(right_screens)
+  
+  # close outer
+  close.screen(outer_screens)
+  
+  
   # Return to original screen
   screen(begin_screen, new=FALSE)
   
   # Add variable names
-  for (j in 2:D) {
-    mtext(var_names[j], 2, at=(D-j+.5)/(D-1)*1.14-.07)
-  }
-  for (i in 1:(D-1)) {
-    mtext(var_names[i], 1, at=(i-.5)/(D-1)*1.14-.07)
-  }
+  # for (j in 2:D) {
+  #   mtext(var_names[j], 2, at=(D-j+.5)/(D-1)*1.14-.07)
+  # }
+  # for (i in 1:(D-1)) {
+  #   mtext(var_names[i], 1, at=(i-.5)/(D-1)*1.14-.07)
+  # }
 }
 if (F) {
   close.screen(all.screens = TRUE)
