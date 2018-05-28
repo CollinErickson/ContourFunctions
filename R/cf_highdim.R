@@ -22,6 +22,11 @@
 #' @param key.title  statements which add titles for the plot key.
 #' @param key.axes  statements which draw axes on the plot key. This overrides the default axis.
 #' @param axes  logical indicating if axes should be drawn, as in plot.default.
+#' @param nlevels  if levels is not specified, the range of z, values is
+#' divided into approximately this many levels.
+#' @param color.palette  a color palette function to be used to assign colors
+#' in the plot. Defaults to cm.colors. Other options include rainbow,
+#' heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -73,6 +78,8 @@
 #' cf_highdim(f1, 4, average=TRUE, average_reps=1e2, n=10)
 #' f1b <- function(x) {x[,1] + x[,2]^2 + x[,3]^3}
 #' cf_highdim(f1b, 4, average=TRUE, average_reps=1e2, n=10, batchmax=Inf)
+#' cf_highdim(f1b, 4, average_reps=1e2, n=10, batchmax=Inf,
+#'            color.palette = topo.colors, nlevels=3)
 #' 
 #' # This was giving bad result
 #' csa()
@@ -88,6 +95,8 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        pts=NULL,
                        average=FALSE, average_reps=1e4,
                        axes=TRUE, key.axes, key.title,
+                       nlevels=20,
+                       color.palette=cm.colors,
                        ...) {
   # TODO put var_names in sep row/col
   # To put them all on same scale, need range of values first
@@ -227,10 +236,8 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     # Make bar in top right square
     # Messed up labels when this was below plots, no clue why
     screen(screen.numbers[D-1])
-    nlevels <- 20 # TODO
-    levels <- pretty(zlim, nlevels) # TODO
-    color.palette <- cm.colors # TODO
-    col <- color.palette(length(levels) - 1) # TODO
+    levels <- pretty(zlim, nlevels)
+    col <- color.palette(length(levels) - 1)
     okmar <- par()$mar
     kmar <- numeric(4) #mar.orig
     kmar[4L] <- 2.5#mar[2L] # right
@@ -296,7 +303,10 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                 z=zlist[[j]][[i]],
                 mainminmax=FALSE, plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
-                zlim=zlim, pts=pts[,c(i,j)], ...)
+                zlim=zlim, pts=pts[,c(i,j)],
+                nlevels=nlevels, levels=levels,
+                color.palette=color.palette, col=col,
+                ...)
       } else {
         cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
                 mainminmax=FALSE, plot.axes=F,

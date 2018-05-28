@@ -7,7 +7,8 @@
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
   high)/2, same_scale = TRUE, n = 20, batchmax = 1,
   var_names = paste0("x", 1:D), pts = NULL, average = FALSE,
-  average_reps = 10000, axes = TRUE, key.axes, key.title, ...)
+  average_reps = 10000, axes = TRUE, key.axes, key.title, nlevels = 20,
+  color.palette = cm.colors, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -41,6 +42,13 @@ set to baseline value? Much slower.}
 \item{key.axes}{statements which draw axes on the plot key. This overrides the default axis.}
 
 \item{key.title}{statements which add titles for the plot key.}
+
+\item{nlevels}{if levels is not specified, the range of z, values is
+divided into approximately this many levels.}
+
+\item{color.palette}{a color palette function to be used to assign colors
+in the plot. Defaults to cm.colors. Other options include rainbow,
+heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.}
 
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
@@ -91,6 +99,8 @@ f1 <- function(x) {x[1] + x[2]^2 + x[3]^3}
 cf_highdim(f1, 4, average=TRUE, average_reps=1e2, n=10)
 f1b <- function(x) {x[,1] + x[,2]^2 + x[,3]^3}
 cf_highdim(f1b, 4, average=TRUE, average_reps=1e2, n=10, batchmax=Inf)
+cf_highdim(f1b, 4, average_reps=1e2, n=10, batchmax=Inf,
+           color.palette = topo.colors, nlevels=3)
 
 # This was giving bad result
 csa()
