@@ -104,7 +104,6 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   if (!is.null(pts)) {
     if (ncol(pts) != D) {stop("pts must have D columns")}
   }
-  # browser()
   # Make version of function for just two dimensions
   
   if (average) {
@@ -116,23 +115,14 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       if (is.matrix(xx)) {return(apply(xx, 1, funcij, i=i, j=j))}
       ds <- c(i, j)
       notds <- setdiff(1:D, ds)
-      # xD <- numeric(D)
-      # xD[ds] <- xx
       XX <- lhs::randomLHS(average_reps, D-2)
       X4 <- matrix(nrow=average_reps, ncol=4)
       X4[, ds[1]] <- xx[1]
       X4[, ds[2]] <- xx[2]
       X4[, notds] <- XX
-      # if (average_matrix) {
-      #   mean(func(X4))
-      # } else {
-      #   mean(apply(X4, 1, func))
-      # }
       if (batchmax > nrow(X4)) {
         mean(func(X4))
-      } else if (batchmax > 1) {
-        # warning("tricky case")
-        
+      } else if (batchmax > 1) { # Tricky case, need to split into groups
         sum(sapply(1:ceiling(nrow(X4)/batchmax),
                function(k) {
                  sum(
@@ -168,50 +158,12 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     #  beginning plot, so it is twice as slow.
     zmin <- Inf
     zmax <- -Inf
-    # for (j in 2:D) {
-    #   for (i in 1:(j-1)) {
-    #     tfouter <- Vectorize(function(xa, xb) {
-    #       mid2 <- baseline
-    #       mid2[i] <- xa
-    #       mid2[j] <- xb
-    #       func(mid2)
-    #     })
-    #     tv <- outer(X = seq(low[i], high[i], length.out=n),
-    #                 Y = seq(low[j], high[j], length.out=n),
-    #                 tfouter)
-    #     zmin <- min(zmin, min(tv))
-    #     zmax <- max(zmax, max(tv))
-    #   }
-    # }
-    # zlim <- c(zmin, zmax)
-    # Use eval_over_grid_with_batch
     zlist <- list()
     for (j in 2:D) {
       y <- seq(low[j], high[j], length.out=n)
       zlist[[j]] <- list()
       for (i in 1:(j-1)) {
         x <- seq(low[i], high[i], length.out=n)
-        # tfouter <- Vectorize(function(xa, xb) {
-        #   mid2 <- baseline
-        #   mid2[i] <- xa
-        #   mid2[j] <- xb
-        #   func(mid2)
-        # })
-        # if (batchmax == 1) {
-        #   tfouter <- function(xx) {
-        #     mid2 <- baseline
-        #     mid2[i] <- xx[1]
-        #     mid2[j] <- xx[2]
-        #     func(mid2)
-        #   }
-        # } else {# batchmax > 1, use matrix
-        #   tfouter <- function(xx) {browser()
-        #     mid2 <- matrix(baseline, nrow=nrow(xx), ncol=D, byrow=T)
-        #     mid2[,i] <- xx[,1]
-        #     mid2[,j] <- xx[,2]
-        #     func(mid2)
-        #   }
-        # }
         zij <- eval_over_grid_with_batch(x, y, fn=get_funcij(i=i,j=j), batchmax)
         zlist[[j]][[i]] <- zij
         zmin <- min(zmin, min(zij))
@@ -220,17 +172,11 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     }
     zlim <- c(zmin, zmax)
   }
-  # print(low);print(high); print(baseline)
-  # opar <- par()
-  # par(mfrow=c(D-1,D-1)
-  #     , mar=c(1,1,1,1)
-  # )
+  
   par(mar=c(1,1,1,1))
   screen.numbers <- split.screen(c(D-1, D-1))
   current_screen_index <- 1
   current_screen <- screen.numbers[current_screen_index]
-  # screen(1)
-  # plot(rexp(5))
   
   if (same_scale) {
     # Make bar in top right square
@@ -251,7 +197,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
     if (missing(key.axes)) {
       if (axes) 
-        axis(4)
+        axis(4, las=1)
     }
     else key.axes
     box()
@@ -260,44 +206,18 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     # mar <- mar.orig
     par(mar=okmar)
   }
-  # browser()
+  
   for (j in 2:D) {
     for (i in 1:(j-1)) {
       ds <- c(i, j)
       notds <- setdiff(1:D, ds)
       screen(current_screen)
-      # plot(rnorm(10), xlab=i, ylab=j)
-      if (average) {
-        # # Average over hidden dimensions
-        # tf <- function(x2) {
-        #   xD <- numeric(D)
-        #   xD[ds] <- x2
-        #   XX <- lhs::randomLHS(average_reps, D-2)
-        #   X4 <- matrix(nrow=average_reps, ncol=4)
-        #   X4[, ds[1]] <- x2[1]
-        #   X4[, ds[2]] <- x2[2]
-        #   X4[, notds] <- XX
-        #   if (average_matrix) {
-        #     mean(func(X4))
-        #   } else {
-        #     mean(apply(X4, 1, func))
-        #   }
-        # }
-      } else { # Just use baseline
-        # tf <- function(x2) {
-        #   mid2 <- baseline
-        #   mid2[i] <- x2[1]
-        #   mid2[j] <- x2[2]
-        #   func(mid2)
-        # }
-      }
-      # browser()
       if (same_scale) {
+        # Already calculated values, so pass them to cf_grid
         # cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
         #         mainminmax=FALSE, plot.axes=F,
         #         xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
         #         zlim=zlim, pts=pts[,c(i,j)], ...)
-        # browser()
         cf_grid(x=seq(low[i], high[i], length.out=n),
                 y=seq(low[j], high[j], length.out=n),
                 z=zlist[[j]][[i]],
@@ -314,26 +234,18 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                 pts=pts[,c(i,j)],
                 ...)
       }
-      # current_screen <- current_screen + 1
       current_screen_index <- current_screen_index + 1
       current_screen <- screen.numbers[current_screen_index]
-      # close.screen()
     }
     if (j < D) {
       for (k in 1:(D - j)) {
-        # plot.new()
-        # current_screen <- current_screen + 1
         current_screen_index <- current_screen_index + 1
         current_screen <- screen.numbers[current_screen_index]
-        # close.screen()
       }
     }
   }
-  # close.screen(all.screens = TRUE)
   close.screen(n = screen.numbers)
-  # par(mfrow=opar$mfrow, mar=opar$mar)
   # Return to original screen
-  # browser()
   screen(begin_screen, new=FALSE)
   
   # Add variable names
