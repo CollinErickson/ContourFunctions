@@ -6,9 +6,9 @@
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
   high)/2, same_scale = TRUE, n = 20, batchmax = 1,
-  var_names = paste0("x", 1:D), pts = NULL, average = FALSE,
   average_reps = 10000, axes = TRUE, key.axes, key.title, nlevels = 20,
   color.palette = cm.colors, ...)
+  var_names = c(expression(), lapply(1:D, function(ti) bquote(x[.(ti)]))),
 }
 \arguments{
 \item{func}{Function to plot contours of}
