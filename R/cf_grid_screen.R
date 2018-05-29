@@ -170,23 +170,25 @@ cf_grid <-
       mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
       mar[4] <- 1 # right
       
-      if (!missing(plot.axes)) {
-        # TODO I shouldn't use plot.axes like this, FIX THIS
-        mar[1] <- .3 # bottom
-        mar[2] <- .3 # left
-        mar[4] <- .3 # 1 # right
-      }
+      # if (!missing(plot.axes)) {
+      #   # TODO I shouldn't use plot.axes like this, FIX THIS
+      #   mar[1] <- .3 # bottom
+      #   mar[2] <- .3 # left
+      #   mar[4] <- .3 # 1 # right
+      # }
       if (!xaxis && !yaxis) {
         mar[1] <- .3 # bottom
         mar[2] <- .3 # left
         mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
         mar[4] <- .3 # right
       } else if (!xaxis) {
-        mar[1] <- 1 # bottom
+        mar[1] <- 1-.7 # bottom
+        mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
         mar[4] <- .3 # right
       } else if (!yaxis) {
-        mar[2] <- 1 # left
+        mar[2] <- 1-.7 # left
         mar[3] <- if (mainminmax | !is.null(main)) 1.3 else .3 # top
+        mar[4] <- .3 # right
       }
     }
     par(mar = mar)

@@ -6,9 +6,10 @@
 \usage{
 cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
   high)/2, same_scale = TRUE, n = 20, batchmax = 1,
-  average_reps = 10000, axes = TRUE, key.axes, key.title, nlevels = 20,
-  color.palette = cm.colors, ...)
   var_names = c(expression(), lapply(1:D, function(ti) bquote(x[.(ti)]))),
+  pts = NULL, average = FALSE, average_reps = 10000, axes = TRUE,
+  key.axes, key.title, nlevels = 20, color.palette = cm.colors,
+  edge_width = 0.04, cex.var_names = 1.3, bar = TRUE, ...)
 }
 \arguments{
 \item{func}{Function to plot contours of}
@@ -49,6 +50,12 @@ divided into approximately this many levels.}
 \item{color.palette}{a color palette function to be used to assign colors
 in the plot. Defaults to cm.colors. Other options include rainbow,
 heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.}
+
+\item{edge_width}{How wide should edges with variable names be? As proportion of full screen.}
+
+\item{cex.var_names}{Size of var_names printed on edges.}
+
+\item{bar}{Should a bar showing the output range and colors be shown on the top right?}
 
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
