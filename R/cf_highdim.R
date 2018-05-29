@@ -291,6 +291,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   # for (i in 1:(D-1)) {
   #   mtext(var_names[i], 1, at=(i-.5)/(D-1)*1.14-.07)
   # }
+  invisible()
 }
 if (F) {
   close.screen(all.screens = TRUE)
