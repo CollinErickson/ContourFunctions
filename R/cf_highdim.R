@@ -124,7 +124,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       ds <- c(i, j)
       notds <- setdiff(1:D, ds)
       XX <- lhs::randomLHS(average_reps, D-2)
-      X4 <- matrix(nrow=average_reps, ncol=4)
+      X4 <- matrix(nrow=average_reps, ncol=D)
       X4[, ds[1]] <- xx[1]
       X4[, ds[2]] <- xx[2]
       X4[, notds] <- XX
@@ -208,7 +208,6 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     kmar[3] <- .83 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
     kmar[2L] <- 3#0#1 # left
     par(mar = kmar)
-    # browser()
     kmai <- par("mai")
     kdin <- par("din")
     avail_left <- kdin[1]/(D-1) - kmai[4]-.3
