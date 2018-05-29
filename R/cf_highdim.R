@@ -208,6 +208,22 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     kmar[3] <- .83 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
     kmar[2L] <- 3#0#1 # left
     par(mar = kmar)
+    # browser()
+    kmai <- par("mai")
+    kdin <- par("din")
+    avail_left <- kdin[1]/(D-1) - kmai[4]-.3
+    max_bar_width <- 0.5 # inches
+    min_bar_width <- 0.1 # inches
+    leftmai <- if (avail_left < min_bar_width) {0}
+               else if (avail_left < min_bar_width + max_bar_width) {.1}
+               else {avail_left - max_bar_width}
+    
+    kmai2 <- c(.1,
+               # max(.5, min(par("mai")[2], par("din")[1]/2 - par("mai")[4]-0.3)),
+               leftmai,
+               .1,
+               par("mai")[4])
+    par(mai = kmai2)
     plot.new()
     plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
                 yaxs = "i")
