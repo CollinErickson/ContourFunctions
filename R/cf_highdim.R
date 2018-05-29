@@ -27,6 +27,9 @@
 #' @param color.palette  a color palette function to be used to assign colors
 #' in the plot. Defaults to cm.colors. Other options include rainbow,
 #' heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.
+#' @param bar Should a bar showing the output range and colors be shown on the top right?
+#' @param edge_width How wide should edges with variable names be? As proportion of full screen.
+#' @param cex.var_names Size of var_names printed on edges.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -100,7 +103,8 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        axes=TRUE, key.axes, key.title,
                        nlevels=20,
                        color.palette=cm.colors,
-                       osp=.04, cex.osp=1.3,
+                       edge_width=.04, cex.var_names=1.3,
+                       bar=TRUE,
                        ...) {
   # TODO put var_names in sep row/col
   # To put them all on same scale, need range of values first
@@ -178,20 +182,20 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   }
   
   # outer_screens <- split.screen(c(2,2))
-  # osp <- .06 # outer split point
+  # edge_width <- .06 # outer split point
   outer_screens <- split.screen(
-    matrix(c(0,osp,osp,1,
-             osp,1,osp,1,
-             0,osp,0,osp,
-             osp,1,0,osp), byrow=T, ncol=4))
+    matrix(c(0,edge_width,edge_width,1,
+             edge_width,1,edge_width,1,
+             0,edge_width,0,edge_width,
+             edge_width,1,0,edge_width), byrow=T, ncol=4))
   screen(outer_screens[2])
   
   par(mar=c(1,1,1,1))
   screen.numbers <- split.screen(c(D-1, D-1))
   current_screen_index <- 1
   current_screen <- screen.numbers[current_screen_index]
-  
-  if (same_scale) {
+  # TODO change bar size, do separate split screen first, make it taller/wider depending on D  
+  if (bar && same_scale) {
     # Make bar in top right square
     # Messed up labels when this was below plots, no clue why
     screen(screen.numbers[D-1])
@@ -234,7 +238,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
         cf_grid(x=seq(low[i], high[i], length.out=n),
                 y=seq(low[j], high[j], length.out=n),
                 z=zlist[[j]][[i]],
-                mainminmax=FALSE, xaxis=F, yaxis=F, #plot.axes=F,
+                mainminmax=FALSE, xaxis=F&&(j==D), yaxis=F&&(i==1), #plot.axes=F,
                 xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
                 zlim=zlim, pts=pts[,c(i,j)],
                 nlevels=nlevels, levels=levels,
@@ -262,14 +266,14 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
   left_screens <- split.screen(c(D-1, 1))
   for (j in 2:D) {
     screen(left_screens[j-1])
-    text_plot(var_names[j], cex=cex.osp)
+    text_plot(var_names[j], cex=cex.var_names)
   }
   close.screen(left_screens)
   screen(outer_screens[4])
   right_screens <- split.screen(c(1, D-1))
   for (i in 1:(D-1)) {
     screen(right_screens[i])
-    text_plot(var_names[i], cex= cex.osp)
+    text_plot(var_names[i], cex= cex.var_names)
   }
   close.screen(right_screens)
   
