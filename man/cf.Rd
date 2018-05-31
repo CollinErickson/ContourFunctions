@@ -9,7 +9,8 @@ cf(...)
 }
 \arguments{
 \item{...}{Arguments to be passed to cf_func or cf_data based on 
-data type of first argument}
+data type of first argument. If D is given as argument, then it
+is passed to cf_highdim.}
 }
 \value{
 Whatever is returned from other function, probably nothing
@@ -24,4 +25,5 @@ x <- runif(20)
 y <- runif(20)
 z <- exp(-(x-.5)^2-5*(y-.5)^2)# + rnorm(20,0,.05)
 cf(x,y,z)
+cf(function(x){x[1]^2 - x[2]}, D=3)
 }
