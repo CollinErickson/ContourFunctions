@@ -24,9 +24,15 @@
 #' @param axes  logical indicating if axes should be drawn, as in plot.default.
 #' @param nlevels  if levels is not specified, the range of z, values is
 #' divided into approximately this many levels.
+#' @param levels  a set of levels which are used to partition the range of z.
+#' Must be strictly increasing (and finite). Areas with z values between
+#' consecutive levels are painted with the same color.
 #' @param color.palette  a color palette function to be used to assign colors
 #' in the plot. Defaults to cm.colors. Other options include rainbow,
 #' heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.
+#' @param col  an explicit set of colors to be used in the plot.
+#' This argument overrides any palette function specification.
+#' There should be one less color than levels.
 #' @param bar Should a bar showing the output range and colors be shown on the top right?
 #' @param edge_width How wide should edges with variable names be? As proportion of full screen.
 #' @param cex.var_names Size of var_names printed on edges.
@@ -101,8 +107,9 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        pts=NULL,
                        average=FALSE, average_reps=1e4,
                        axes=TRUE, key.axes, key.title,
-                       nlevels=20,
-                       color.palette=cm.colors,
+                       nlevels=20, levels=pretty(zlim, nlevels),
+                       color.palette=cm.colors, 
+                       col=color.palette(length(levels) - 1),
                        edge_width=.04, cex.var_names=1.3,
                        bar=TRUE,
                        ...) {
@@ -197,8 +204,8 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     # screen(screen.numbers[D-1])
     bar_screens <- split.screen(matrix(c(3/4, 1, 2/3, 1), byrow=T, ncol=4))
     screen(bar_screens[1])
-    levels <- pretty(zlim, nlevels)
-    col <- color.palette(length(levels) - 1)
+    # levels <- pretty(zlim, nlevels)
+    # col <- color.palette(length(levels) - 1)
     okmar <- par()$mar
     kmar <- numeric(4) #mar.orig
     kmar[4L] <- 2.5#mar[2L] # right
