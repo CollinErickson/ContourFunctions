@@ -190,15 +190,13 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
              edge_width,1,0,edge_width), byrow=T, ncol=4))
   screen(outer_screens[2])
   
-  par(mar=c(1,1,1,1))
-  screen.numbers <- split.screen(c(D-1, D-1))
-  current_screen_index <- 1
-  current_screen <- screen.numbers[current_screen_index]
   # TODO change bar size, do separate split screen first, make it taller/wider depending on D  
   if (bar && same_scale) {
     # Make bar in top right square
     # Messed up labels when this was below plots, no clue why
-    screen(screen.numbers[D-1])
+    # screen(screen.numbers[D-1])
+    bar_screens <- split.screen(matrix(c(3/4, 1, 2/3, 1), byrow=T, ncol=4))
+    screen(bar_screens[1])
     levels <- pretty(zlim, nlevels)
     col <- color.palette(length(levels) - 1)
     okmar <- par()$mar
@@ -210,7 +208,8 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
     par(mar = kmar)
     kmai <- par("mai")
     kdin <- par("din")
-    avail_left <- kdin[1]/(D-1) - kmai[4]-.3
+    # avail_left <- (1-edge_width) * kdin[1]/(D-1) - kmai[4]-.3 # When put into single box
+    avail_left <- (1-edge_width) * kdin[1]/4 - kmai[4]-.3
     max_bar_width <- 0.5 # inches
     min_bar_width <- 0.1 # inches
     leftmai <- if (avail_left < min_bar_width) {0}
@@ -237,7 +236,15 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
       key.title
     # mar <- mar.orig
     par(mar=okmar)
+    close.screen(bar_screens)
+    screen(outer_screens[2], new = FALSE)
   }
+  
+  # Split screen for grid of plots
+  par(mar=c(1,1,1,1))
+  screen.numbers <- split.screen(c(D-1, D-1), erase = FALSE)
+  current_screen_index <- 1
+  current_screen <- screen.numbers[current_screen_index]
   
   for (j in 2:D) {
     for (i in 1:(j-1)) {
