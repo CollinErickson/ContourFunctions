@@ -38,136 +38,280 @@ cf_4dim <- function(func,
                     # over1=seq(0,1,length.out=nover1),
                     # over2=seq(0,1,length.out=nover2),
                     low=rep(0,4), high=rep(1,4),
+                    baseline=(low+high)/2, same_scale=TRUE,
                     n=20,
-                    same_scale=TRUE,
+                    batchmax=1,
+                    # var_names=paste0("x",1:D),
+                    var_names=c(expression(), 
+                                lapply(1:4,
+                                       function(ti) bquote(x[.(ti)]))),
+                    pts=NULL,
+                    average=FALSE, average_reps=1e4,
+                    axes=TRUE, key.axes, key.title,
                     nlevels=20,
-                    color.palette = cm.colors,
-                    col = color.palette(length(levels) - 1),
-                    var_names=paste0("x",1:4),
-                    bar=T, key.axes, axes=T,
+                    color.palette=cm.colors,
+                    edge_width=.04, cex.var_names=1.3,
+                    bar=TRUE,
                     ...) {
-  # browser()
-  d1 <- (1:4)[-over][1]
-  d2 <- (1:4)[-over][2]
+  
+  d1 <- (1:4)[-over][1] # d1 and d2 are the dimensions of the contour plots
+  d2 <- (1:4)[-over][2] # over are the dimensions for the outer set of plots
   over1=seq(low[over[1]],high[over[1]],length.out=nover1)
   over2=seq(low[over[2]],high[over[2]],length.out=nover2)
-  # To put them all on same scale, need range of values first
+  
+  begin_screen <- screen()
+  if (!is.null(pts)) {
+    if (ncol(pts) != D) {stop("pts must have D columns")}
+  }
+  # Make version of function for just two dimensions
+  
+  if (average) { stop("not working yet")
+    # Average over hidden dimensions
+    funcij <- function(xx, i, j) {
+      # There's a double batch issue: matrix of points to eval,
+      #  then I use matrices for the average. So instead I'll
+      #  force the first into vectors
+      if (is.matrix(xx)) {return(apply(xx, 1, funcij, i=i, j=j))}
+      ds <- c(i, j)
+      notds <- setdiff(1:D, ds)
+      XX <- lhs::randomLHS(average_reps, D-2)
+      X4 <- matrix(nrow=average_reps, ncol=D)
+      X4[, ds[1]] <- xx[1]
+      X4[, ds[2]] <- xx[2]
+      X4[, notds] <- XX
+      if (batchmax > nrow(X4)) {
+        mean(func(X4))
+      } else if (batchmax > 1) { # Tricky case, need to split into groups
+        sum(sapply(1:ceiling(nrow(X4)/batchmax),
+                   function(k) {
+                     sum(
+                       func(X4[(1+(k-1)*batchmax):min(nrow(X4), k*batchmax),])
+                     )
+                   })) / nrow(X4)
+      } else { # batchmax == 1
+        mean(apply(X4, 1, func))
+      }
+    }
+  } else {
+    # funcij <- function(xx, i, j) {
+    #   if (batchmax == 1) {
+    #     mid2 <- baseline
+    #     mid2[i] <- xx[1]
+    #     mid2[j] <- xx[2]
+    #   } else { # batchmax > 1, use matrix
+    #     mid2 <- matrix(baseline, nrow=nrow(xx), ncol=D, byrow=T)
+    #     mid2[,i] <- xx[,1]
+    #     mid2[,j] <- xx[,2]
+    #   }
+    #   func(mid2)
+    # }
+    # tfij <- function(x2, i, j) {
+    #   mid2 <- rep(NaN, 4)
+    #   mid2[-over] <- x2
+    #   mid2[over[1]] <- over1[i]
+    #   mid2[over[2]] <- over2[j]
+    #   func(mid2)
+    # }
+    tfij <- function(x2, over1x, over2x) {
+      
+      mid2 <- rep(NaN, 4)
+      mid2[-over] <- x2
+      mid2[over[1]] <- over1[i]
+      mid2[over[2]] <- over2[j]
+      func(mid2)
+    }
+  }
+  # Get this function as a function
+  get_tfij <- function(over1x,over2x) {
+    function(x) {
+      tfij(x2=x, over1=over1x, over2x=over2x)
+    }
+  }
+  # get_funcij <- function(i,j) {
+  #   function(x) {
+  #     funcij(xx=x, i=i, j=j)
+  #   }
+  # }
   if (same_scale) {
+    # Put all plots on same scale, need to know max and min values before
+    #  beginning plot, so it is twice as slow.
     zmin <- Inf
     zmax <- -Inf
+    zlist <- list()
     for (j in 1:nover2) {
+      # # y <- seq(low[j], high[j], length.out=n)
+      # y <- seq(low[d2], high[d2], length.out=n)
+      zlist[[j]] <- list()
       for (i in 1:nover1) {
-        tfouter <- Vectorize(function(xa, xb) {
-          mid2 <- rep(NaN, 4)
-          mid2[-over] <- c(xa, xb)
-          mid2[over[1]] <- over1[i]
-          mid2[over[2]] <- over2[j]
-          func(mid2)
-        })
-        tv <- outer(X = seq(low[d1],high[d1], l=n),
-                    Y = seq(low[d2],high[d2], l=n),
-                    tfouter)
-        zmin <- min(zmin, min(tv))
-        zmax <- max(zmax, max(tv))
+        # # x <- seq(low[i], high[i], length.out=n)
+        # x <- seq(low[d1], high[d1], length.out=n)
+        # zij <- eval_over_grid_with_batch(x, y, fn=get_tfij(i=i,j=j), batchmax)
+        # zlist[[j]][[i]] <- zij
+        # zmin <- min(zmin, min(zij))
+        # zmax <- max(zmax, max(zij))
+        # tfouter <- Vectorize(function(xa, xb) {
+        #   mid2 <- rep(NaN, 4)
+        #   mid2[-over] <- c(xa, xb)
+        #   mid2[over[1]] <- over1[i]
+        #   mid2[over[2]] <- over2[j]
+        #   func(mid2)
+        # })
+        # tv <- outer(X = seq(low[d1],high[d1], l=n),
+        #             Y = seq(low[d2],high[d2], l=n),
+        #             tfouter)
+        # zmin <- min(zmin, min(tv))
+        # zmax <- max(zmax, max(tv))
+        zij <- eval_over_grid_with_batch(seq(low[d1],high[d1], l=n),
+                                         seq(low[d2],high[d2], l=n),
+                                         fn=get_tfij(over1x=over1[i],
+                                                     over2x=over2[j]),
+                                         batchmax)
+        zlist[[j]][[i]] <- zij
+        zmin <- min(zmin, min(zij))
+        zmax <- max(zmax, max(zij))
       }
     }
     zlim <- c(zmin, zmax)
   }
-  # print(low);print(high); print(baseline)
-  # opar <- par()
-  # par(mfrow=c(D-1,D-1)
-  #     , mar=c(1,1,1,1)
-  # )
-  if (bar) {
-    #split.screen(c(1,2))
-    screen.numbers <- split.screen(matrix(c(0,.85,0,1,.85,1,0,1), ncol=4, byrow=T))
-    screen1 <- screen.numbers[1]
-    screen2 <- screen.numbers[2]
-    screen(screen2)
-    # mar <- mar.orig
-    mar <- par()$mar
-    mar[4L] <- 2.5#mar[2L] # right
-    mar[1] <- 2.2 # bottom
-    mar[3] <- .3 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
-    mar[2L] <- 0#1 # left
-    par(mar = mar)
+  
+  # outer_screens <- split.screen(c(2,2))
+  # edge_width <- .06 # outer split point
+  outer_screens <- split.screen(
+    matrix(c(0,edge_width,edge_width,1,
+             edge_width,1,edge_width,1,
+             0,edge_width,0,edge_width,
+             edge_width,1,0,edge_width), byrow=T, ncol=4))
+  screen(outer_screens[2])
+  
+  levels <- pretty(zlim, nlevels)
+  col <- color.palette(length(levels) - 1)
+  
+  # TODO change bar size, do separate split screen first, make it taller/wider depending on D  
+  if (bar && same_scale) {
+    # Make bar in top right square
+    # Messed up labels when this was below plots, no clue why
+    # screen(screen.numbers[D-1])
+    bar_screens <- split.screen(matrix(c(3/4, 1, 2/3, 1), byrow=T, ncol=4))
+    screen(bar_screens[1])
+    # levels <- pretty(zlim, nlevels)
+    # col <- color.palette(length(levels) - 1)
+    okmar <- par()$mar
+    kmar <- numeric(4) #mar.orig
+    kmar[4L] <- 2.5#mar[2L] # right
+    kmar[1] <- 2.2 # bottom
+    kmar[3] <- .83 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
+    kmar[2L] <- 3#0#1 # left
+    par(mar = kmar)
+    kmai <- par("mai")
+    kdin <- par("din")
+    # avail_left <- (1-edge_width) * kdin[1]/(D-1) - kmai[4]-.3 # When put into single box
+    avail_left <- (1-edge_width) * kdin[1]/4 - kmai[4]-.3
+    max_bar_width <- 0.5 # inches
+    min_bar_width <- 0.1 # inches
+    leftmai <- if (avail_left < min_bar_width) {0}
+    else if (avail_left < min_bar_width + max_bar_width) {.1}
+    else {avail_left - max_bar_width}
+    
+    kmai2 <- c(.1,
+               # max(.5, min(par("mai")[2], par("din")[1]/2 - par("mai")[4]-0.3)),
+               leftmai,
+               .1,
+               par("mai")[4])
+    par(mai = kmai2)
     plot.new()
-    levels = pretty(zlim, nlevels)
     plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
                 yaxs = "i")
     rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
     if (missing(key.axes)) {
-      if (axes)
-        axis(4, las=T)
+      if (axes) 
+        axis(4, las=1)
     }
     else key.axes
     box()
-    # if (!missing(key.title))
-    #   key.title
+    if (!missing(key.title))
+      key.title
     # mar <- mar.orig
-    # mar[4L] <- 1 # right # Why is this here?
-    close.screen(screen2)
-    screen(screen1)
+    par(mar=okmar)
+    close.screen(bar_screens)
+    screen(outer_screens[2], new = FALSE)
   }
+  
+  # Split screen for grid of plots
   par(mar=c(1,1,1,1))
-  screens <- split.screen(c(nover1, nover2))
-  current_screen <- 1
-  # screen(1)
-  # plot(rexp(5))
-  # browser()
-  d1 <- (1:4)[-over][1]
-  d2 <- (1:4)[-over][2]
+  screen.numbers <- split.screen(c(nover1, nover2), erase = FALSE)
+  current_screen_index <- 1
+  current_screen <- screen.numbers[current_screen_index]
+  
   for (j in nover2:1) {
     for (i in 1:nover1) {
-      screen(screens[current_screen])
-      # plot(rnorm(10), xlab=i, ylab=j)
-      tf <- function(x2) {
-        mid2 <- rep(NaN, 4)
-        mid2[-over] <- x2
-        mid2[over[1]] <- over1[i]
-        mid2[over[2]] <- over2[j]
-        func(mid2)
-      }
-      # browser()
+      # ds <- c(i, j)
+      # notds <- setdiff(1:D, ds)
+      screen(current_screen)
       if (same_scale) {
-        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
-                xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
-                zlim=zlim, n=n, ...)
-      } else {
-        cf_func(tf, batchmax=1, mainminmax=FALSE, plot.axes=F,
-                xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
+        # Already calculated values, so pass them to cf_grid
+        cf_grid(x=seq(low[d1], high[d1], length.out=n),
+                y=seq(low[d2], high[d2], length.out=n),
+                z=zlist[[j]][[i]],
+                mainminmax=FALSE, xaxis=F&&(j==D), yaxis=F&&(i==1), #plot.axes=F,
+                xlim=c(low[d1],high[d2]), ylim=c(low[d2],high[d2]),
+                zlim=zlim, pts=pts[,c(i,j)],
+                nlevels=nlevels, levels=levels,
+                color.palette=color.palette, col=col,
+                ...)
+      } else {stop("not working on this now")
+        cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
+                mainminmax=FALSE, xaxis=F, yaxis=F, #plot.axes=F,
+                xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
+                pts=pts[,c(i,j)],
                 ...)
       }
-      current_screen <- current_screen + 1
-      # close.screen()
+      current_screen_index <- current_screen_index + 1
+      current_screen <- screen.numbers[current_screen_index]
     }
     # if (j < D) {
-      # for (k in 1:(D - j)) {
-        # plot.new()
-        # current_screen <- current_screen + 1
-        # close.screen()
-      # }
+    #   for (k in 1:(D - j)) {
+    #     current_screen_index <- current_screen_index + 1
+    #     current_screen <- screen.numbers[current_screen_index]
+    #   }
     # }
   }
-  close.screen(all.screens = TRUE)
-  # par(mfrow=opar$mfrow, mar=opar$mar)
+  close.screen(n = screen.numbers)
+  screen(outer_screens[1])
+  left_screens <- split.screen(c(nover2, 1))
+  for (j in nover2:1) {
+    screen(left_screens[nover2+1-j])
+    # text_plot(paste0(var_names[over[2]], "=", over2[j]), cex=cex.var_names)
+    # browser()
+    text_plot(bquote(.(a)==.(b), where=list(a=var_names[[over[2]]], b=over2[j])), cex=cex.var_names, srt=90)
+  }
+  close.screen(left_screens)
+  screen(outer_screens[4])
+  right_screens <- split.screen(c(1, nover1))
+  for (i in 1:nover1) {
+    screen(right_screens[i])
+    # text_plot(paste0(var_names[over[1]], "=", over1[i]), cex= cex.var_names)
+    text_plot(bquote(.(a)==.(b), where=list(a=var_names[[over[1]]], b=over1[i])), cex=cex.var_names)
+  }
+  close.screen(right_screens)
+  
+  # close outer
+  close.screen(outer_screens)
+  
+  
+  # Return to original screen
+  screen(begin_screen, new=FALSE)
   
   # Add variable names
-  for (i in 1:nover1) {
-    mtext(paste0(var_names[over[1]], "=", over1[i]), 1, at=(i-.5)/(nover1)*(1.14-.15*bar)-.07)
-  }
-  for (j in 1:nover2) {
-    mtext(paste0(var_names[over[2]], "=", over2[j]), 2, at=(j-.5)/(nover2)*1.14-.07)
-  }
-}
-if (F) {
-  close.screen(all.screens = TRUE)
-  # cf_4dim(function(x) TestFunctions::borehole(c(x,.5,.5,.5,.5)), 4)
-  cf_4dim(TestFunctions::borehole, 8)
-  cf_4dim(
-       function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}
-    )
+  # for (j in 2:D) {
+  #   mtext(var_names[j], 2, at=(D-j+.5)/(D-1)*1.14-.07)
+  # }
+  # for (i in 1:(D-1)) {
+  #   mtext(var_names[i], 1, at=(i-.5)/(D-1)*1.14-.07)
+  # }
+  invisible()
 }
 
-# To get this to work, in cf_grid_screen, change Axis(x,1) part so that you can have it
-#  only set one or other. Then only set values for y on left plots and x on right
+if (F) {
+  csa()
+  cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}, bar=F)
+}
