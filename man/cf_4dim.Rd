@@ -5,10 +5,12 @@
 \title{Plot 2D contour slices of four dimensional functions}
 \usage{
 cf_4dim(func, over = c(1, 2), nover = 5, nover1 = nover, nover2 = nover,
-  low = rep(0, 4), high = rep(1, 4), n = 20, same_scale = TRUE,
-  nlevels = 20, color.palette = cm.colors,
-  col = color.palette(length(levels) - 1), var_names = paste0("x", 1:4),
-  bar = T, key.axes, axes = T, ...)
+  low = rep(0, 4), high = rep(1, 4), same_scale = TRUE, n = 20,
+  batchmax = 1, var_names = c(expression(), lapply(1:4, function(ti)
+  bquote(x[.(ti)]))), pts = NULL, average = FALSE, average_reps = 10000,
+  axes = TRUE, key.axes, key.title, nlevels = 20,
+  color.palette = cm.colors, edge_width = 0.04, cex.var_names = 1.3,
+  bar = TRUE, ...)
 }
 \arguments{
 \item{func}{A four-dimensional function to plot contours of}
@@ -25,31 +27,44 @@ cf_4dim(func, over = c(1, 2), nover = 5, nover1 = nover, nover2 = nover,
 
 \item{high}{High input value for each dimension}
 
-\item{n}{Number of points in grid on each dimension}
-
 \item{same_scale}{Should all contour plots be on the same scale?
 Takes longer since it has to precalculate range of outputs.}
+
+\item{n}{Number of points in grid on each dimension}
+
+\item{batchmax}{number of datapoints that can be computed at a time}
+
+\item{var_names}{Variable names to add to plot}
+
+\item{pts}{Matrix of points to show on plot}
+
+\item{average}{Should the background dimensions be averaged over instead of
+set to baseline value? Much slower.}
+
+\item{average_reps}{Number of points to average over when using average}
+
+\item{axes}{axes}
+
+\item{key.axes}{key for bar plot}
+
+\item{key.title}{statements which add titles for the plot key.}
 
 \item{nlevels}{Number of levels in contour scale}
 
 \item{color.palette}{Color palette used for contour plots}
 
-\item{col}{The colors for the contour plots}
+\item{edge_width}{How wide should edges with variable names be? As proportion of full screen.}
 
-\item{var_names}{Variable names to add to plot}
+\item{cex.var_names}{Size of var_names printed on edges.}
 
 \item{bar}{Should a bar be added on right when all on same_scale?}
-
-\item{key.axes}{key for bar plot}
-
-\item{axes}{axes}
 
 \item{...}{Arguments passed to cf_func, and then probably through to cf_grid}
 }
 \description{
 Plots a grid of contour plots.
 Each contour plot is a contour over two dimensions with the remaining
-two dimensions set to the baseline value.
+two dimensions set to a value.
 See cf_highdim for functions with more than 4 dimensions.
 }
 \examples{

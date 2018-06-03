@@ -2,7 +2,7 @@
 #' 
 #' Plots a grid of contour plots.
 #' Each contour plot is a contour over two dimensions with the remaining
-#' two dimensions set to the baseline value.
+#' two dimensions set to a value.
 #' See cf_highdim for functions with more than 4 dimensions.
 #'
 #' @param func A four-dimensional function to plot contours of
@@ -15,13 +15,20 @@
 #' @param n Number of points in grid on each dimension
 #' @param same_scale Should all contour plots be on the same scale?
 #' Takes longer since it has to precalculate range of outputs.
+#' @param batchmax  number of datapoints that can be computed at a time
+#' @param pts Matrix of points to show on plot
+#' @param average Should the background dimensions be averaged over instead of
+#' set to baseline value? Much slower.
+#' @param average_reps Number of points to average over when using average
 #' @param nlevels Number of levels in contour scale
 #' @param color.palette Color palette used for contour plots
-#' @param col The colors for the contour plots
 #' @param var_names Variable names to add to plot
 #' @param bar Should a bar be added on right when all on same_scale?
 #' @param key.axes key for bar plot
+#' @param key.title  statements which add titles for the plot key.
 #' @param axes axes
+#' @param edge_width How wide should edges with variable names be? As proportion of full screen.
+#' @param cex.var_names Size of var_names printed on edges.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -38,7 +45,7 @@ cf_4dim <- function(func,
                     # over1=seq(0,1,length.out=nover1),
                     # over2=seq(0,1,length.out=nover2),
                     low=rep(0,4), high=rep(1,4),
-                    baseline=(low+high)/2, same_scale=TRUE,
+                    same_scale=TRUE,
                     n=20,
                     batchmax=1,
                     # var_names=paste0("x",1:D),
@@ -61,7 +68,7 @@ cf_4dim <- function(func,
   
   begin_screen <- screen()
   if (!is.null(pts)) {
-    if (ncol(pts) != D) {stop("pts must have D columns")}
+    if (ncol(pts) != 4) {stop("pts must have 4 columns")}
   }
   # Make version of function for just two dimensions
   
@@ -73,9 +80,9 @@ cf_4dim <- function(func,
       #  force the first into vectors
       if (is.matrix(xx)) {return(apply(xx, 1, funcij, i=i, j=j))}
       ds <- c(i, j)
-      notds <- setdiff(1:D, ds)
-      XX <- lhs::randomLHS(average_reps, D-2)
-      X4 <- matrix(nrow=average_reps, ncol=D)
+      notds <- setdiff(1:4, ds)
+      XX <- lhs::randomLHS(average_reps, 4-2)
+      X4 <- matrix(nrow=average_reps, ncol=4)
       X4[, ds[1]] <- xx[1]
       X4[, ds[2]] <- xx[2]
       X4[, notds] <- XX
@@ -124,7 +131,7 @@ cf_4dim <- function(func,
   # Get this function as a function
   get_tfij <- function(over1x,over2x) {
     function(x) {
-      tfij(x2=x, over1=over1x, over2x=over2x)
+      tfij(x2=x, over1x=over1x, over2x=over2x)
     }
   }
   # get_funcij <- function(i,j) {
@@ -172,6 +179,8 @@ cf_4dim <- function(func,
       }
     }
     zlim <- c(zmin, zmax)
+    levels <- pretty(zlim, nlevels)
+    col <- color.palette(length(levels) - 1)
   }
   
   # outer_screens <- split.screen(c(2,2))
@@ -183,8 +192,8 @@ cf_4dim <- function(func,
              edge_width,1,0,edge_width), byrow=T, ncol=4))
   screen(outer_screens[2])
   
-  levels <- pretty(zlim, nlevels)
-  col <- color.palette(length(levels) - 1)
+  # levels <- pretty(zlim, nlevels)
+  # col <- color.palette(length(levels) - 1)
   
   # TODO change bar size, do separate split screen first, make it taller/wider depending on D  
   if (bar && same_scale) {
@@ -252,16 +261,16 @@ cf_4dim <- function(func,
         cf_grid(x=seq(low[d1], high[d1], length.out=n),
                 y=seq(low[d2], high[d2], length.out=n),
                 z=zlist[[j]][[i]],
-                mainminmax=FALSE, xaxis=F&&(j==D), yaxis=F&&(i==1), #plot.axes=F,
-                xlim=c(low[d1],high[d2]), ylim=c(low[d2],high[d2]),
+                mainminmax=FALSE, xaxis=F&&(j==4), yaxis=F&&(i==1), #plot.axes=F,
+                xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
                 zlim=zlim, pts=pts[,c(i,j)],
                 nlevels=nlevels, levels=levels,
                 color.palette=color.palette, col=col,
                 ...)
-      } else {stop("not working on this now")
-        cf_func(get_funcij(i=i,j=j), batchmax=batchmax,
+      } else { #browser("not working on this now")
+        cf_func(get_tfij(over1x=over1[i], over2x=over2[i]), batchmax=batchmax,
                 mainminmax=FALSE, xaxis=F, yaxis=F, #plot.axes=F,
-                xlim=c(low[i],high[i]), ylim=c(low[j],high[j]),
+                xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
                 pts=pts[,c(i,j)],
                 ...)
       }
