@@ -36,6 +36,9 @@
 #' cf_4dim(
 #'   function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}
 #' )
+#' 
+#' cf_4dim(function(x) x[1]*x[3] + sin(x[2]*x[4]), color.palette=heat.colors,
+#'         nover1=3, nover2=8, cex.var_names = .5)
 cf_4dim <- function(func,
                     over=c(1,2),
                     nover=5, nover1=nover, nover2=nover,
@@ -160,7 +163,7 @@ cf_4dim <- function(func,
   
   # Split screen for grid of plots
   par(mar=c(1,1,1,1))
-  screen.numbers <- split.screen(c(nover1, nover2), erase = FALSE)
+  screen.numbers <- split.screen(c(nover2, nover1), erase = FALSE)
   current_screen_index <- 1
   current_screen <- screen.numbers[current_screen_index]
   

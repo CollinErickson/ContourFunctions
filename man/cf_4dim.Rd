@@ -65,4 +65,7 @@ See cf_highdim for functions with more than 4 dimensions.
 cf_4dim(
   function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}
 )
+
+cf_4dim(function(x) x[1]*x[3] + sin(x[2]*x[4]), color.palette=heat.colors,
+        nover1=3, nover2=8, cex.var_names = .5)
 }
