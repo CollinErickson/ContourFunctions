@@ -17,9 +17,6 @@
 #' Takes longer since it has to precalculate range of outputs.
 #' @param batchmax  number of datapoints that can be computed at a time
 #' @param pts Matrix of points to show on plot
-#' @param average Should the background dimensions be averaged over instead of
-#' set to baseline value? Much slower.
-#' @param average_reps Number of points to average over when using average
 #' @param nlevels Number of levels in contour scale
 #' @param color.palette Color palette used for contour plots
 #' @param var_names Variable names to add to plot
@@ -53,7 +50,6 @@ cf_4dim <- function(func,
                                 lapply(1:4,
                                        function(ti) bquote(x[.(ti)]))),
                     pts=NULL,
-                    average=FALSE, average_reps=1e4,
                     axes=TRUE, key.axes, key.title,
                     nlevels=20,
                     color.palette=cm.colors,
@@ -72,61 +68,12 @@ cf_4dim <- function(func,
   }
   # Make version of function for just two dimensions
   
-  if (average) { stop("not working yet")
-    # Average over hidden dimensions
-    funcij <- function(xx, i, j) {
-      # There's a double batch issue: matrix of points to eval,
-      #  then I use matrices for the average. So instead I'll
-      #  force the first into vectors
-      if (is.matrix(xx)) {return(apply(xx, 1, funcij, i=i, j=j))}
-      ds <- c(i, j)
-      notds <- setdiff(1:4, ds)
-      XX <- lhs::randomLHS(average_reps, 4-2)
-      X4 <- matrix(nrow=average_reps, ncol=4)
-      X4[, ds[1]] <- xx[1]
-      X4[, ds[2]] <- xx[2]
-      X4[, notds] <- XX
-      if (batchmax > nrow(X4)) {
-        mean(func(X4))
-      } else if (batchmax > 1) { # Tricky case, need to split into groups
-        sum(sapply(1:ceiling(nrow(X4)/batchmax),
-                   function(k) {
-                     sum(
-                       func(X4[(1+(k-1)*batchmax):min(nrow(X4), k*batchmax),])
-                     )
-                   })) / nrow(X4)
-      } else { # batchmax == 1
-        mean(apply(X4, 1, func))
-      }
-    }
-  } else {
-    # funcij <- function(xx, i, j) {
-    #   if (batchmax == 1) {
-    #     mid2 <- baseline
-    #     mid2[i] <- xx[1]
-    #     mid2[j] <- xx[2]
-    #   } else { # batchmax > 1, use matrix
-    #     mid2 <- matrix(baseline, nrow=nrow(xx), ncol=D, byrow=T)
-    #     mid2[,i] <- xx[,1]
-    #     mid2[,j] <- xx[,2]
-    #   }
-    #   func(mid2)
-    # }
-    # tfij <- function(x2, i, j) {
-    #   mid2 <- rep(NaN, 4)
-    #   mid2[-over] <- x2
-    #   mid2[over[1]] <- over1[i]
-    #   mid2[over[2]] <- over2[j]
-    #   func(mid2)
-    # }
-    tfij <- function(x2, over1x, over2x) {
-      
-      mid2 <- rep(NaN, 4)
-      mid2[-over] <- x2
-      mid2[over[1]] <- over1[i]
-      mid2[over[2]] <- over2[j]
-      func(mid2)
-    }
+  tfij <- function(x2, over1x, over2x) {
+    mid2 <- rep(NaN, 4)
+    mid2[-over] <- x2
+    mid2[over[1]] <- over1[i]
+    mid2[over[2]] <- over2[j]
+    func(mid2)
   }
   # Get this function as a function
   get_tfij <- function(over1x,over2x) {

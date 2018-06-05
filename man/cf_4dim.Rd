@@ -7,10 +7,9 @@
 cf_4dim(func, over = c(1, 2), nover = 5, nover1 = nover, nover2 = nover,
   low = rep(0, 4), high = rep(1, 4), same_scale = TRUE, n = 20,
   batchmax = 1, var_names = c(expression(), lapply(1:4, function(ti)
-  bquote(x[.(ti)]))), pts = NULL, average = FALSE, average_reps = 10000,
-  axes = TRUE, key.axes, key.title, nlevels = 20,
-  color.palette = cm.colors, edge_width = 0.04, cex.var_names = 1.3,
-  bar = TRUE, ...)
+  bquote(x[.(ti)]))), pts = NULL, axes = TRUE, key.axes, key.title,
+  nlevels = 20, color.palette = cm.colors, edge_width = 0.04,
+  cex.var_names = 1.3, bar = TRUE, ...)
 }
 \arguments{
 \item{func}{A four-dimensional function to plot contours of}
@@ -37,11 +36,6 @@ Takes longer since it has to precalculate range of outputs.}
 \item{var_names}{Variable names to add to plot}
 
 \item{pts}{Matrix of points to show on plot}
-
-\item{average}{Should the background dimensions be averaged over instead of
-set to baseline value? Much slower.}
-
-\item{average_reps}{Number of points to average over when using average}
 
 \item{axes}{axes}
 
