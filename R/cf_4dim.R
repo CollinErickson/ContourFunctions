@@ -25,7 +25,9 @@
 #' @param key.title  statements which add titles for the plot key.
 #' @param axes axes
 #' @param edge_width How wide should edges with variable names be? As proportion of full screen.
+#' Either single value for both edges, or length two vector.
 #' @param cex.var_names Size of var_names printed on edges.
+#' @param over_srt Degrees of rotation for the axis labels. Vector of length two.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
@@ -39,6 +41,10 @@
 #' 
 #' cf_4dim(function(x) x[1]*x[3] + sin(x[2]*x[4]), color.palette=heat.colors,
 #'         nover1=3, nover2=8, cex.var_names = .5)
+#'         
+#' cf_4dim(function(x) x[1]*x[3] + sin(x[2]*x[4]), color.palette=topo.colors,
+#'         nover1=3, nover2=8, cex.var_names = 1, over_srt = c(90,0),
+#'         edge_width=c(.1, .2), nlevels = 5)
 cf_4dim <- function(func,
                     over=c(1,2),
                     nover=5, nover1=nover, nover2=nover,
@@ -57,6 +63,7 @@ cf_4dim <- function(func,
                     color.palette=cm.colors,
                     edge_width=.04, cex.var_names=1.3,
                     bar=TRUE,
+                    over_srt=c(0,90),
                     ...) {
   
   d1 <- (1:4)[-over][1] # d1 and d2 are the dimensions of the contour plots
@@ -106,11 +113,12 @@ cf_4dim <- function(func,
     col <- color.palette(length(levels) - 1)
   }
   
+  if (length(edge_width) == 1) {edge_width <- c(edge_width, edge_width)}
   outer_screens <- split.screen(
-    matrix(c(0,edge_width,edge_width,1,
-             edge_width,1,edge_width,1,
-             0,edge_width,0,edge_width,
-             edge_width,1,0,edge_width), byrow=T, ncol=4))
+    matrix(c(0,edge_width[2],edge_width[1],1,
+             edge_width[2],1,edge_width[1],1,
+             0,edge_width[2],0,edge_width[1],
+             edge_width[2],1,0,edge_width[1]), byrow=T, ncol=4))
   screen(outer_screens[2])
   
   # TODO change bar size, do separate split screen first, make it taller/wider depending on D  
@@ -131,7 +139,7 @@ cf_4dim <- function(func,
     kmai <- par("mai")
     kdin <- par("din")
     # avail_left <- (1-edge_width) * kdin[1]/(D-1) - kmai[4]-.3 # When put into single box
-    avail_left <- (1-edge_width) * kdin[1]/4 - kmai[4]-.3
+    avail_left <- (1-edge_width[1]) * kdin[1]/4 - kmai[4]-.3
     max_bar_width <- 0.5 # inches
     min_bar_width <- 0.1 # inches
     leftmai <- if (avail_left < min_bar_width) {0}
@@ -197,14 +205,14 @@ cf_4dim <- function(func,
   left_screens <- split.screen(c(nover2, 1))
   for (j in nover2:1) {
     screen(left_screens[nover2+1-j])
-    text_plot(bquote(.(a)==.(b), where=list(a=var_names[[over[2]]], b=over2[j])), cex=cex.var_names, srt=90)
+    text_plot(bquote(.(a)==.(b), where=list(a=var_names[[over[2]]], b=over2[j])), cex=cex.var_names, srt=over_srt[2])
   }
   close.screen(left_screens)
   screen(outer_screens[4])
   right_screens <- split.screen(c(1, nover1))
   for (i in 1:nover1) {
     screen(right_screens[i])
-    text_plot(bquote(.(a)==.(b), where=list(a=var_names[[over[1]]], b=over1[i])), cex=cex.var_names)
+    text_plot(bquote(.(a)==.(b), where=list(a=var_names[[over[1]]], b=over1[i])), cex=cex.var_names, srt=over_srt[1])
   }
   close.screen(right_screens)
   
