@@ -9,7 +9,8 @@ cf_4dim(func, over = c(1, 2), nover = 5, nover1 = nover, nover2 = nover,
   batchmax = 1, var_names = c(expression(), lapply(1:4, function(ti)
   bquote(x[.(ti)]))), pts = NULL, axes = TRUE, key.axes, key.title,
   nlevels = 20, color.palette = cm.colors, edge_width = 0.04,
-  cex.var_names = 1.3, bar = TRUE, over_srt = c(0, 90), ...)
+  cex.var_names = 1.3, bar = TRUE, bar_width = 0.2, over_srt = c(0, 90),
+  ...)
 }
 \arguments{
 \item{func}{A four-dimensional function to plot contours of}

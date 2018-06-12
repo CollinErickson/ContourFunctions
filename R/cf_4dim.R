@@ -63,6 +63,7 @@ cf_4dim <- function(func,
                     color.palette=cm.colors,
                     edge_width=.04, cex.var_names=1.3,
                     bar=TRUE,
+                    bar_width=.2,
                     over_srt=c(0,90),
                     ...) {
   
@@ -113,20 +114,14 @@ cf_4dim <- function(func,
     col <- color.palette(length(levels) - 1)
   }
   
-  if (length(edge_width) == 1) {edge_width <- c(edge_width, edge_width)}
-  outer_screens <- split.screen(
-    matrix(c(0,edge_width[2],edge_width[1],1,
-             edge_width[2],1,edge_width[1],1,
-             0,edge_width[2],0,edge_width[1],
-             edge_width[2],1,0,edge_width[1]), byrow=T, ncol=4))
-  screen(outer_screens[2])
   
-  # TODO change bar size, do separate split screen first, make it taller/wider depending on D  
+  # TODO get bar to work 
   if (bar && same_scale) {
+    # prebarscreen <- screen()
     # Make bar in top right square
     # Messed up labels when this was below plots, no clue why
-    bar_screens <- split.screen(matrix(c(3/4, 1, 2/3, 1), byrow=T, ncol=4))
-    screen(bar_screens[1])
+    bar_screens <- split.screen(matrix(c(0, 3/4, 0, 1, 3/4, 1, 0, 1), byrow=T, ncol=4))
+    screen(bar_screens[2])
     # levels <- pretty(zlim, nlevels)
     # col <- color.palette(length(levels) - 1)
     okmar <- par()$mar
@@ -139,12 +134,12 @@ cf_4dim <- function(func,
     kmai <- par("mai")
     kdin <- par("din")
     # avail_left <- (1-edge_width) * kdin[1]/(D-1) - kmai[4]-.3 # When put into single box
-    avail_left <- (1-edge_width[1]) * kdin[1]/4 - kmai[4]-.3
-    max_bar_width <- 0.5 # inches
-    min_bar_width <- 0.1 # inches
-    leftmai <- if (avail_left < min_bar_width) {0}
-    else if (avail_left < min_bar_width + max_bar_width) {.1}
-    else {avail_left - max_bar_width}
+    # avail_left <- (1-edge_width[1]) * kdin[1]/4 - kmai[4]-.3
+    # max_bar_width <- 0.5 # inches
+    # min_bar_width <- 0.1 # inches
+    leftmai <- .1 #if (avail_left < min_bar_width) {0}
+    # else if (avail_left < min_bar_width + max_bar_width) {.1}
+    # else {avail_left - max_bar_width}
     kmai2 <- c(.1,
                # max(.5, min(par("mai")[2], par("din")[1]/2 - par("mai")[4]-0.3)),
                leftmai,
@@ -165,9 +160,19 @@ cf_4dim <- function(func,
       key.title
     # mar <- mar.orig
     par(mar=okmar)
-    close.screen(bar_screens)
-    screen(outer_screens[2], new = FALSE)
+    close.screen(bar_screens[2])
+    # screen(outer_screens[2], new = FALSE)
+    screen(bar_screens[1])
   }
+  
+  # Do this after bar so bar is separate
+  if (length(edge_width) == 1) {edge_width <- c(edge_width, edge_width)}
+  outer_screens <- split.screen(
+    matrix(c(0,edge_width[2],edge_width[1],1,
+             edge_width[2],1,edge_width[1],1,
+             0,edge_width[2],0,edge_width[1],
+             edge_width[2],1,0,edge_width[1]), byrow=T, ncol=4))
+  screen(outer_screens[2])
   
   # Split screen for grid of plots
   par(mar=c(1,1,1,1))
@@ -219,6 +224,10 @@ cf_4dim <- function(func,
   # close outer
   close.screen(outer_screens)
   
+  # close left screen if bar was made on right
+  if (bar && same_scale) {
+    close.screen(bar_screens[1])
+  }
   
   # Return to original screen
   screen(begin_screen, new=FALSE)
