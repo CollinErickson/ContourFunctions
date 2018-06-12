@@ -24,8 +24,10 @@
 #' @param key.axes key for bar plot
 #' @param key.title  statements which add titles for the plot key.
 #' @param axes axes
-#' @param edge_width How wide should edges with variable names be? As proportion of full screen.
+#' @param edge_width How wide should edges with variable names be?
+#' As proportion of screen section to left of bar.
 #' Either single value for both edges, or length two vector.
+#' @param bar_width How wide should bar section of plot be?
 #' @param cex.var_names Size of var_names printed on edges.
 #' @param over_srt Degrees of rotation for the axis labels. Vector of length two.
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid

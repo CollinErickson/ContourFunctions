@@ -48,12 +48,15 @@ Takes longer since it has to precalculate range of outputs.}
 
 \item{color.palette}{Color palette used for contour plots}
 
-\item{edge_width}{How wide should edges with variable names be? As proportion of full screen.
+\item{edge_width}{How wide should edges with variable names be?
+As proportion of screen section to left of bar.
 Either single value for both edges, or length two vector.}
 
 \item{cex.var_names}{Size of var_names printed on edges.}
 
 \item{bar}{Should a bar be added on right when all on same_scale?}
+
+\item{bar_width}{How wide should bar section of plot be?}
 
 \item{over_srt}{Degrees of rotation for the axis labels. Vector of length two.}
 
