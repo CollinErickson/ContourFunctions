@@ -116,12 +116,8 @@ cf_4dim <- function(func,
     col <- color.palette(length(levels) - 1)
   }
   
-  
-  # TODO get bar to work 
   if (bar && same_scale) {
-    # prebarscreen <- screen()
-    # Make bar in top right square
-    # Messed up labels when this was below plots, no clue why
+    # Make bar on right side
     bar_screens <- split.screen(matrix(c(0, 3/4, 0, 1, 3/4, 1, 0, 1), byrow=T, ncol=4))
     screen(bar_screens[2])
     # levels <- pretty(zlim, nlevels)
@@ -129,21 +125,14 @@ cf_4dim <- function(func,
     okmar <- par()$mar
     kmar <- numeric(4) #mar.orig
     kmar[4L] <- 2.5#mar[2L] # right
-    kmar[1] <- 2.2 # bottom
-    kmar[3] <- .83 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
-    kmar[2L] <- 3#0#1 # left
+    # kmar[1] <- 2.2 # bottom
+    # kmar[3] <- .83 #if (mainminmax | !is.null(main)) 1.3 else .3 #1.3#1.3 # top
+    # kmar[2L] <- 3#0#1 # left
     par(mar = kmar)
     kmai <- par("mai")
-    kdin <- par("din")
-    # avail_left <- (1-edge_width) * kdin[1]/(D-1) - kmai[4]-.3 # When put into single box
-    # avail_left <- (1-edge_width[1]) * kdin[1]/4 - kmai[4]-.3
-    # max_bar_width <- 0.5 # inches
-    # min_bar_width <- 0.1 # inches
-    leftmai <- .1 #if (avail_left < min_bar_width) {0}
-    # else if (avail_left < min_bar_width + max_bar_width) {.1}
-    # else {avail_left - max_bar_width}
+    # kdin <- par("din")
+    leftmai <- .1
     kmai2 <- c(.1,
-               # max(.5, min(par("mai")[2], par("din")[1]/2 - par("mai")[4]-0.3)),
                leftmai,
                .1,
                par("mai")[4])
@@ -163,7 +152,6 @@ cf_4dim <- function(func,
     # mar <- mar.orig
     par(mar=okmar)
     close.screen(bar_screens[2])
-    # screen(outer_screens[2], new = FALSE)
     screen(bar_screens[1])
   }
   
