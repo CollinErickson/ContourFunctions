@@ -129,4 +129,14 @@ cf(x,y,z, bar=T)
 ```
 
 
+## `cf_highdim`
+
+For higher dimensional functions, `cf_highdim` makes a contour plot
+of two-dimensional slices of the given function.
+The dimensions not being shown can be set to a default value
+or averaged out.
+
+```{r}
+cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])})
+```
 
