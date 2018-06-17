@@ -137,6 +137,17 @@ The dimensions not being shown can be set to a default value
 or averaged out.
 
 ```{r}
+
+friedman <- function(x) {
+  10*sin(pi*x[1]*x[2]) + 20*(x[3]-.5)^2 + 10*x[4] + 5*x[5]
+}
+cf_highdim(friedman, 5, color.palette=topo.colors)
+```
+
+
+## `cf_4dim`
+
+```{r}
 cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])})
 ```
 
