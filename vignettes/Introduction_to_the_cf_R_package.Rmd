@@ -147,6 +147,13 @@ cf_highdim(friedman, 5, color.palette=topo.colors)
 
 ## `cf_4dim`
 
+Functions with four input dimensions can be displayed
+using a grid of contour plots with the function `cf_4dim`.
+Two of the dimensions are shown on each plot,
+while the other two are set to a specific value
+for the given plot.
+
+
 ```{r}
 cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])})
 ```
