@@ -76,4 +76,6 @@ friedman <- function(x) {
 cf_highdim(friedman, 5, color.palette=topo.colors)
 ```
 
-
+```{r cf_4dim}
+cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])})
+```
