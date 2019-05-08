@@ -10,7 +10,7 @@ Description: Provides functions for making contour plots.
   or a data set. If non-grid data is given, then a Gaussian
   process is fit to the data and used to create the contour plot.
 License: GPL-3
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: knitr,
     rmarkdown,
     lhs,

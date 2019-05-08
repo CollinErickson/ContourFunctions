@@ -4,11 +4,12 @@
 \alias{cf_highdim}
 \title{Plot 2D contour slices of higher dimensional functions}
 \usage{
-cf_highdim(func, D, low = rep(0, D), high = rep(1, D), baseline = (low +
-  high)/2, same_scale = TRUE, n = 20, batchmax = 1,
-  var_names = c(expression(), lapply(1:D, function(ti) bquote(x[.(ti)]))),
-  pts = NULL, average = FALSE, average_reps = 10000, axes = TRUE,
-  key.axes, key.title, nlevels = 20, levels = pretty(zlim, nlevels),
+cf_highdim(func, D, low = rep(0, D), high = rep(1, D),
+  baseline = (low + high)/2, same_scale = TRUE, n = 20,
+  batchmax = 1, var_names = c(expression(), lapply(1:D, function(ti)
+  bquote(x[.(ti)]))), pts = NULL, average = FALSE,
+  average_reps = 10000, axes = TRUE, key.axes, key.title,
+  nlevels = 20, levels = pretty(zlim, nlevels),
   color.palette = cm.colors, col = color.palette(length(levels) - 1),
   edge_width = 0.04, cex.var_names = 1.3, bar = TRUE, ...)
 }
