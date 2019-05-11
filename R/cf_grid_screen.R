@@ -220,7 +220,11 @@ cf_grid <-
     #else plot.title
     
     if (mainminmax | !is.null(main)) {
-      make.multicolor.title(main=main, z=z, pretitle=pretitle, posttitle=posttitle, mainminmax_minmax=mainminmax_minmax, cex.main=cex.main)
+      make.multicolor.title(main=main, z=z, pretitle=pretitle,
+                            posttitle=posttitle,
+                            mainminmax_minmax=mainminmax_minmax,
+                            col_min=col[1], col_max=col[length(col)],
+                            cex.main=cex.main)
     }
     
     if (!is.null(pts)) {
