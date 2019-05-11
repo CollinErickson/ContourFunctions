@@ -18,3 +18,4 @@ Suggests: knitr,
     laGP
 VignetteBuilder: knitr
 URL: https://github.com/CollinErickson/contour
+Encoding: UTF-8
