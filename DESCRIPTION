@@ -11,12 +11,15 @@ Description: Provides functions for making contour plots.
   process is fit to the data and used to create the contour plot.
 License: GPL-3
 RoxygenNote: 6.1.1
-Suggests: knitr,
+Suggests: 
+    knitr,
     rmarkdown,
     lhs,
     mlegp,
     ggplot2,
-    laGP
+    laGP,
+    covr,
+    testthat
 VignetteBuilder: knitr
 URL: https://github.com/CollinErickson/contour
 Encoding: UTF-8
