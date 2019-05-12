@@ -15,6 +15,7 @@ Suggests: knitr,
     rmarkdown,
     lhs,
     mlegp,
+    ggplot2,
     laGP
 VignetteBuilder: knitr
 URL: https://github.com/CollinErickson/contour
