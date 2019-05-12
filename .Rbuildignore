@@ -5,3 +5,4 @@ Rplots.pdf
 ^\.travis\.yml$
 Scratch
 ^cran-comments\.md$
+^codecov\.yml$
