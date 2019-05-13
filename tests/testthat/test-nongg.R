@@ -25,6 +25,18 @@ test_that("cf_func", {
   cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=T, main="Title check")
   cf_func(function(xx){exp(-sum((xx-.5)^2/.1))},pts=matrix(c(.2,.2,.2,.8,.8,.2,.8,.8),byrow=T,ncol=2))
   cf(function(xx){exp(-sum((xx-.5)^2/.1))})
+  
+  # xylim
+  cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, xylim = c(-1,2))
+  
+  # use lines
+  cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, use_lines = T)
+  
+  # out.col.name
+  expect_error(cf_func(function(xx){data.frame(y1=exp(-sum((xx-.5)^2/.1)), y2=1)}))
+  expect_error(cf_func(function(xx){data.frame(y1=exp(-sum((xx-.5)^2/.1)), y2=1)}, out.col.name = "y1"), NA)
+  # out.name from list
+  expect_error(cf_func(function(xx){list(y1=exp(-sum((xx-.5)^2/.1)), y2=1)}, out.name = "y1"), NA)
 })
 
 test_that("cf_4dim", {
@@ -65,4 +77,19 @@ test_that("cf highdim", {
               color.palette = topo.colors, nlevels=3)
     }, NA)
   
+  # Error when pts has wrong num of columns
+  expect_error(cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3, pts=matrix(1:4,2,2)))
+  
+  # Batch max between 1 and nrows
+  expect_error(cf_highdim(function(x) {if (is.matrix(x)){x[,1]^2+exp(x[,2])} else {x[1]^2 + exp(x[2])}}, D=3, batchmax=10), NA)
+  
+  # Not same scale
+  expect_error(cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3, same_scale = F), NA)
+  
+  # From cf
+  expect_error(cf(function(x) {x[1]^2 + exp(x[2])}, D=3), NA)
+})
+
+test_that("cf error", {
+  expect_error(cf("you shouldn't give in text here!"))
 })
