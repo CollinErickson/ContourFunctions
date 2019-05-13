@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 [![Travis-CI Build Status](https://travis-ci.org/CollinErickson/contour.svg?branch=master)](https://travis-ci.org/CollinErickson/contour)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ContourFunctions)](https://cran.r-project.org/package=ContourFunctions)
+[![Codecov test coverage](https://codecov.io/gh/CollinErickson/ContourFunctions/branch/master/graph/badge.svg)](https://codecov.io/gh/CollinErickson/ContourFunctions?branch=master)
 
 This is an R package that provides simple functions for creating contour plots.
 
