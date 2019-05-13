@@ -180,7 +180,7 @@ cf_4dim <- function(func,
                 z=zlist[[j]][[i]],
                 mainminmax=FALSE, xaxis=F&&(j==4), yaxis=F&&(i==1), #plot.axes=F,
                 xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
-                zlim=zlim, pts=pts[,c(i,j)],
+                zlim=zlim, pts=pts[,c(d1, d2)],
                 nlevels=nlevels, levels=levels,
                 color.palette=color.palette, col=col,
                 ...)
@@ -188,7 +188,7 @@ cf_4dim <- function(func,
         cf_func(get_tfij(over1x=over1[i], over2x=over2[i]), batchmax=batchmax,
                 mainminmax=FALSE, xaxis=F, yaxis=F, #plot.axes=F,
                 xlim=c(low[d1],high[d1]), ylim=c(low[d2],high[d2]),
-                pts=pts[,c(i,j)],
+                pts=pts[,c(d1, d2)],
                 ...)
       }
       current_screen_index <- current_screen_index + 1

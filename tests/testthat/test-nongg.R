@@ -71,6 +71,10 @@ test_that("cf_4dim", {
   
   expect_error(cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}), NA)
   
+  # Add pts
+  expect_error(cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}, pts=matrix(c(.1,.2,.3,.4,.5,.6,.7,.8),2,4)), NA)
+  expect_error(cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}, pts=matrix(c(.1,.2,.3,.4,.5,.6,.7,.8,.9,1),2,5)))
+  
   # Not same scale, this is a lot slower
   expect_error(cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}, same_scale = F), NA)
   
