@@ -33,9 +33,6 @@ gcf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1),
 \item{pts}{Points to plot on top of contour}
 
 \item{...}{Passed to cf_grid}
-
-\item{use_lines}{If the contour should be made with lines. Otherwise is made
-using colors. Defaults to colors.}
 }
 \description{
 A contour plot of the given function without sidebar by default.
@@ -46,5 +43,5 @@ gcf_func(function(x){x[1]*x[2]})
 gcf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 gcf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, color.palette=terrain.colors)
 gcf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, mainminmax=TRUE)
-gcf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)), use_lines=TRUE)
+gcf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 }

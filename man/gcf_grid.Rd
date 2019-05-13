@@ -7,11 +7,11 @@
 gcf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out
   = ncol(z)), z, xlim = range(x, finite = TRUE), ylim = range(y, finite
   = TRUE), zlim = range(z, finite = TRUE), with_lines = FALSE,
-  lines_only = FALSE, bins = 8, levels = pretty(zlim, nlevels),
-  nlevels = 20, color.palette = cm.colors.strong,
-  col = color.palette(length(levels) - 1), asp = NA, las = 1,
-  bar = F, pts = NULL, reset.par = TRUE, pretitle = "",
-  posttitle = "", main = NULL, mainminmax = !bar,
+  lines_only = FALSE, bins = 8, interpolate = TRUE,
+  levels = pretty(zlim, nlevels), nlevels = 20,
+  color.palette = cm.colors.strong, col = color.palette(length(levels)
+  - 1), asp = NA, las = 1, bar = F, pts = NULL, reset.par = TRUE,
+  pretitle = "", posttitle = "", main = NULL, mainminmax = !bar,
   mainminmax_minmax = TRUE, afterplotfunc = NULL,
   cex.main = par()$cex.main, ...)
 }
@@ -36,6 +36,8 @@ contour to show contours?}
 \item{lines_only}{Should no fill be used, only contour lines?}
 
 \item{bins}{Number of lines used when using `with_lines` or `lines_only`}
+
+\item{interpolate}{Will smooth out contours}
 
 \item{levels}{a set of levels which are used to partition the range of z.
 Must be strictly increasing (and finite). Areas with z values between

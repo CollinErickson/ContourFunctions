@@ -14,6 +14,7 @@
 #' contour to show contours?
 #' @param lines_only Should no fill be used, only contour lines?
 #' @param bins Number of lines used when using `with_lines` or `lines_only`
+#' @param interpolate Will smooth out contours
 #' @param levels  a set of levels which are used to partition the range of z.
 #' Must be strictly increasing (and finite). Areas with z values between
 #' consecutive levels are painted with the same color.
@@ -62,6 +63,7 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
                        with_lines=FALSE,
                        lines_only=FALSE,
                        bins=8, # number of contour lines
+                       interpolate=TRUE,
                        levels = pretty(zlim, nlevels), nlevels = 20,
                        color.palette = cm.colors.strong,
                        col = color.palette(length(levels) - 1),
@@ -103,7 +105,7 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
     ggplot2::scale_fill_gradientn(colours=col)
   if (!lines_only) {
     p <- p + ggplot2::geom_raster(ggplot2::aes_string(x="Var1", y="Var2", fill = "tz"),
-                         t2, interpolate=TRUE)
+                         t2, interpolate=interpolate)
   }
   
   # Add contour lines

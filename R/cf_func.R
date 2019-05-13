@@ -75,6 +75,7 @@ cf_func <- function(fn0, n=100,
   if (use_lines) {
     contour(x, y, z, ...)
     points(pts, pch=19)
-  } else
+  } else {
     cf_grid(x,y,z, pts=pts, ...)
+  }
 }

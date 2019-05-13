@@ -17,15 +17,13 @@
 #' #@param title Title for the plot
 #' #@param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param pts Points to plot on top of contour
-#' @param use_lines If the contour should be made with lines. Otherwise is made
-#' using colors. Defaults to colors.
 #' @param ...  Passed to cf_grid
 #' @examples 
 #' gcf_func(function(x){x[1]*x[2]})
 #' gcf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 #' gcf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, color.palette=terrain.colors)
 #' gcf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, mainminmax=TRUE)
-#' gcf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)), use_lines=TRUE)
+#' gcf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 #' @export
 gcf_func <- function(fn0, n=100,
                     xlim=c(0,1), ylim=c(0,1), xylim=NULL,
