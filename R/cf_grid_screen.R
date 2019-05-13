@@ -94,13 +94,13 @@ cf_grid <-
           z <- x$z
           y <- x$y
           x <- x$x
-        }
-        else {
+        } else {
           z <- x
           x <- seq.int(0, 1, length.out = nrow(z))
         }
+      } else {
+        stop("no 'z' matrix specified")
       }
-      else stop("no 'z' matrix specified")
     }
     else if (is.list(x)) {
       y <- x$y

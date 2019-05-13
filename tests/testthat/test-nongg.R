@@ -6,7 +6,24 @@ test_that("cf_grid", {
   cf_grid(cos(r^2)*exp(-r/(2*pi)))
   cf_grid(cos(r^2)*exp(-r/(2*pi)), bar=T)
   cf_grid(cos(r^2)*exp(-r/(2*pi)), bar=T, mainminmax = T)
+  # Give in list x,y,z
+  cf_grid(list(x=a,y=b,z=cos(r^2)*exp(-r/(2*pi))))
+  # Give in nothing, get error
+  expect_error(cf_grid())
+  cf_grid(x=list(x=a,y=b), z=cos(r^2)*exp(-r/(2*pi)))
+  expect_error(cf_grid(rev(x), y, cos(r^2)*exp(-r/(2*pi))))
+  expect_error(cf_grid(x, rev(y), cos(r^2)*exp(-r/(2*pi))))
+  expect_error(cf_grid(cos(r^2)*exp(-r/(2*pi)), xaxis=T, yaxis=F), NA)
+  expect_error(cf_grid(cos(r^2)*exp(-r/(2*pi)), xaxis=F, yaxis=T), NA)
+  expect_error(cf_grid(a,b,z=c(cos(r^2)*exp(-r/(2*pi)))))
+  cf_grid(matrix(as.integer(3*cos(r^2)*exp(-r/(2*pi))),27,27))
+  cf_grid(cos(r^2)*exp(-r/(2*pi)), pts=c(.1,.2,.3,.4,.5,.6))
+  cf_grid(cos(r^2)*exp(-r/(2*pi)), afterplotfunc=function(){text(.4,.6,labels="Text added!")})
+  expect_true(is.function(cf_grid(cos(r^2)*exp(-r/(2*pi)), reset.par = F)))
   
+  # csa
+  expect_error(csa(), NA)
+  expect_error(csa(silent=T), NA)
 })
 
 test_that("cf_data", {
@@ -21,6 +38,12 @@ test_that("cf_data", {
   cf_data(cbind(x,y),y=z)
   cf_data(cbind(x,y),z=z)
   cf_data(cbind(x,y,z))
+  
+  # Errors
+  expect_error(cf_data(cbind(x,y,y),y=z))
+  expect_error(cf_data(cbind(x,y,y),z=z))
+  expect_error(cf_data(cbind(x,y)))
+  expect_error(cf_data(cbind(x,y,z,z)))
 })
 
 test_that("cf_func", {
@@ -47,6 +70,9 @@ test_that("cf_func", {
 test_that("cf_4dim", {
   
   expect_error(cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}), NA)
+  
+  # Not same scale, this is a lot slower
+  expect_error(cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])}, same_scale = F), NA)
   
   expect_error(
     cf_4dim(function(x) x[1]*x[3] + sin(x[2]*x[4]), color.palette=heat.colors,
@@ -87,6 +113,8 @@ test_that("cf highdim", {
   
   # Batch max between 1 and nrows
   expect_error(cf_highdim(function(x) {if (is.matrix(x)){x[,1]^2+exp(x[,2])} else {x[1]^2 + exp(x[2])}}, D=3, batchmax=10), NA)
+  # Batch max between 1 and nrows AND average
+  expect_error(cf_highdim(function(x) {if (is.matrix(x)){x[,1]^2+exp(x[,2])} else {x[1]^2 + exp(x[2])}}, D=3, batchmax=10, average=T), NA)
   
   # Not same scale
   expect_error(cf_highdim(function(x) {x[1]^2 + exp(x[2])}, D=3, same_scale = F), NA)
