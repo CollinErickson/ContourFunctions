@@ -157,7 +157,9 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
       }
     }
     # points(pts, pch=19)
-    p <- p + ggplot2::geom_point(ggplot2::aes_string("V1","V2"), data=as.data.frame(pts))
+    pts <- as.data.frame(pts)
+    colnames(pts) <- c("V1", "V2")
+    p <- p + ggplot2::geom_point(ggplot2::aes_string("V1","V2"), data=pts)
   }
   
   if (!is.null(afterplotfunc)) {

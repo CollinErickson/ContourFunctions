@@ -12,6 +12,7 @@
 #' @param xylim x and y limits for the contour plot
 #' @param fit Method to fit a model with. Current options are laGP (default)
 #' and mlegp. laGP is faster but might cause trouble.
+#' @param gg If TRUE, will use ggplot2 by calling gcf_func
 #' @param ...  passed to cf_func
 #' @importFrom utils capture.output
 #' @examples 
@@ -19,15 +20,12 @@
 #' y <- runif(20)
 #' z <- exp(-(x-.5)^2-5*(y-.5)^2)
 #' cf_data(x,y,z)
-#' @references
-#' [1] filled.contour R function, copied function but removed part for sidebar
-#' @references
-#' [2] http://stackoverflow.com/questions/16774928/removing-part-of-a-graphic-in-r, answer by P Lapointe
 #' @export
 cf_data <- function(x, y=NULL, z=NULL,
-                               xlim=NULL, ylim=NULL, xylim=NULL,
+                    xlim=NULL, ylim=NULL, xylim=NULL,
                     fit="",
-                               ...) {
+                    gg=FALSE,
+                    ...) {
   # Function that creates a contour plot from a data set
   # using a Gaussian process interpolation from mlegp
   #  x,y,z: three dimensional data, can be given only in x, in x and y, or in all three
@@ -51,11 +49,11 @@ cf_data <- function(x, y=NULL, z=NULL,
     y <- x[,2]
     x <- x[,1]
   }
-  # Fits a Gaussian process model that interpolates perfectly, ie no smoothing
+  # Fits a Gaussian process model that interpolates perfectly, i.e., no smoothing
   if (fit == "mlegp") {
     co <- capture.output(mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0))
     pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
-  } else {#browser()
+  } else {
     X <- data.frame(x, y)
     da <- laGP::darg(list(mle=TRUE), X=X)
     ga <- laGP::garg(list(mle=TRUE), y=z)
@@ -72,7 +70,9 @@ cf_data <- function(x, y=NULL, z=NULL,
   if(is.null(xlim)) {xlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
   if(is.null(ylim)) {ylim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
   # Passes prediction function to cf_func
-  cf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=cbind(x,y), batchmax=500, ...)
-  # Adds points to show where data came from
-  #points(x,y,pch=19) # now passed as pts to cf_func
+  if (gg) {
+    gcf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=cbind(x,y), batchmax=500, ...)
+  } else {
+    cf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=cbind(x,y), batchmax=500, ...)
+  }
 }
