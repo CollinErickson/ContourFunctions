@@ -10,6 +10,10 @@
 #' @param xlim  x limits for the plot.
 #' @param ylim  y limits for the plot.
 #' @param zlim  z limits for the plot.
+#' @param with_lines Should lines be added on top of 
+#' contour to show contours?
+#' @param lines_only Should no fill be used, only contour lines?
+#' @param bins Number of lines used when using `with_lines` or `lines_only`
 #' @param levels  a set of levels which are used to partition the range of z.
 #' Must be strictly increasing (and finite). Areas with z values between
 #' consecutive levels are painted with the same color.
@@ -55,6 +59,9 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
                        xlim = range(x, finite = TRUE),
                        ylim = range(y, finite = TRUE),
                        zlim = range(z, finite = TRUE),
+                       with_lines=FALSE,
+                       lines_only=FALSE,
+                       bins=8, # number of contour lines
                        levels = pretty(zlim, nlevels), nlevels = 20,
                        color.palette = cm.colors.strong,
                        col = color.palette(length(levels) - 1),
@@ -91,11 +98,27 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
   
   
   t2 <- cbind(expand.grid(x, y), tz=c(z))
-  p <- ggplot2::ggplot() + 
-    ggplot2::geom_raster(ggplot2::aes_string(x="Var1", y="Var2", fill = "tz"),
-                                                t2, interpolate=TRUE)+
+  p <- ggplot2::ggplot() +
     # scale_fill_gradientn(colours=c("cyan","white","magenta"))
     ggplot2::scale_fill_gradientn(colours=col)
+  if (!lines_only) {
+    p <- p + ggplot2::geom_raster(ggplot2::aes_string(x="Var1", y="Var2", fill = "tz"),
+                         t2, interpolate=TRUE)
+  }
+  
+  # Add contour lines
+  if (with_lines) {
+    p <- p + ggplot2::geom_contour(ggplot2::aes_string(x="Var1", y="Var2", z = "tz"),
+                                   bins=bins,
+                                   color="black",
+                                   t2)
+  }
+  if (lines_only) { # Only color lines if only lines
+    p <- p + ggplot2::geom_contour(ggplot2::aes_string(x="Var1", y="Var2", z = "tz",
+                                                       color="..level.."),
+                                   bins=bins,
+                                   t2)
+  }
   
   if (bar) {
     # Remove title on legend
