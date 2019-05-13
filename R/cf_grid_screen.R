@@ -14,6 +14,9 @@
 #' @param xlim  x limits for the plot.
 #' @param ylim  y limits for the plot.
 #' @param zlim  z limits for the plot.
+#' @param with_lines Should lines be added on top of 
+#' contour to show contours?
+#' @param lines_only Should no fill be used, only contour lines?
 #' @param levels  a set of levels which are used to partition the range of z. Must be strictly increasing (and finite). Areas with z values between consecutive levels are painted with the same color.
 #' @param nlevels  if levels is not specified, the range of z, values is divided into approximately this many levels.
 #' @param color.palette  a color palette function to be used to assign colors
@@ -81,6 +84,7 @@ cf_grid <-
             cex.main=par()$cex.main,
             par.list=NULL,
             xaxis=TRUE, yaxis=TRUE,
+            with_lines=FALSE, lines_only=FALSE,
             ...)
   {#browser()
     # filled.contour gives unnecessary legend, this function removes it
@@ -201,8 +205,10 @@ cf_grid <-
       storage.mode(z) <- "double"
     #.Internal(filledcontour(as.double(x), as.double(y), z, as.double(levels),
     #                        col = col))
-    .filled.contour(as.double(x), as.double(y), z, as.double(levels),
-                    col = col)
+    if (!lines_only) {
+      .filled.contour(as.double(x), as.double(y), z, as.double(levels),
+                      col = col)
+    }
     # Something like this will remove axis numbers and ticks
     # Axis(x, side=1, labels=F, tick=F)
     if (missing(plot.axes)) {
@@ -227,6 +233,12 @@ cf_grid <-
                             cex.main=cex.main)
     }
     
+    # Add contour lines if required
+    if (with_lines || lines_only) {
+      contour(x=x, y=y, z=z, add=T)
+    }
+    
+    # Add points (pts) if given
     if (!is.null(pts)) {
       if (!is.matrix(pts)) { # if not a matrix, make it a matrix by row
         if (is.numeric(pts) && (length(pts)%%2==0)) {

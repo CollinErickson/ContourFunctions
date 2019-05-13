@@ -17,15 +17,14 @@
 #' #@param title Title for the plot
 #' #@param mainminmax_minmax Whether [min,max]= should be shown in title or just the numbers
 #' @param pts Points to plot on top of contour
-#' @param use_lines If the contour should be made with lines. Otherwise is made
-#' using colors. Defaults to colors.
+#' @param gg Should ggplot2 be used? Will use gcf_grid() instead of cf_grid().
 #' @param ...  Passed to cf_grid
 #' @examples 
 #' cf_func(function(x){x[1]*x[2]})
 #' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)))
 #' cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE)
 #' cf_func(function(xx){exp(-sum((xx-.5)^2/.1))}, bar=TRUE, mainminmax=TRUE)
-#' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)), use_lines=TRUE)
+#' cf_func(function(x)(exp(-(x[1]-.5)^2-5*(x[2]-.5)^2)), with_lines=TRUE)
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references
@@ -36,7 +35,7 @@ cf_func <- function(fn0, n=100,
                     batchmax=1, out.col.name=NULL,
                     out.name=NULL,
                     pts=NULL,
-                    use_lines=FALSE,
+                    gg=FALSE,
                     ...) {
   if(!is.null(out.col.name)) {
     fn <- function(xx){fn0(xx)[,out.col.name]}
@@ -49,32 +48,9 @@ cf_func <- function(fn0, n=100,
   x <- seq(xlim[1],xlim[2],length.out = n)
   y <- seq(ylim[1],ylim[2],length.out = n)
   z <- eval_over_grid_with_batch(x, y, fn, batchmax)
-  # z <- matrix(NA,n,n)
-  # if(batchmax<=1) { # calculate single Z value at a time
-  #   #for(xi in 1:n) for(yi in 1:n) {z[xi,yi] <- fn(c(x[xi],y[yi]))}
-  #   fn_outer <- Vectorize(function(xi, yi) {fn(c(x[xi], y[yi]))})
-  #   z <- outer(1:n, 1:n, fn_outer)
-  # } else {
-  #   inbatch <- 0
-  #   for(xi in 1:n) {
-  #     for(yi in 1:n) {
-  #       if(inbatch==0) XYi <- matrix(c(xi,yi),ncol=2)
-  #       else XYi <- rbind(XYi,matrix(c(xi,yi),ncol=2))
-  #       inbatch <- inbatch + 1
-  #       if(inbatch == batchmax | (xi==n & yi==n)) {
-  #         Zbatch <- fn(matrix(c(x[XYi[,1]],y[XYi[,2]]),ncol=2,byrow=F))
-  #         for(rowbatch in 1:length(Zbatch)) {
-  #           z[XYi[rowbatch,1],XYi[rowbatch,2]] <- Zbatch[rowbatch]
-  #         }
-  #         inbatch <- 0
-  #         rm(XYi)
-  #       }
-  #     }
-  #   }
-  # }
-  if (use_lines) {
-    contour(x, y, z, ...)
-    points(pts, pch=19)
+  
+  if (gg) {
+    gcf_grid(x,y,z, pts=pts, ...)
   } else {
     cf_grid(x,y,z, pts=pts, ...)
   }

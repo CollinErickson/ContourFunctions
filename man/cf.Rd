@@ -5,15 +5,18 @@
 \title{Simpler function for making contours with cf package.
 Won't give argument completion, so all must be specified}
 \usage{
-cf(...)
+cf(..., gg = FALSE)
 }
 \arguments{
 \item{...}{Arguments to be passed to cf_func or cf_data based on 
 data type of first argument. If D is given as argument, then it
 is passed to cf_highdim.}
+
+\item{gg}{Should ggplot2 be used instead of base graphics?}
 }
 \value{
-Whatever is returned from other function, probably nothing
+Whatever is returned from other function, probably nothing.
+Will be a ggplot2 object if using gg=TRUE.
 }
 \description{
 Simpler function for making contours with cf package.

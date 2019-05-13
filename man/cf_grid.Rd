@@ -14,7 +14,7 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   reset.par = TRUE, pretitle = "", posttitle = "", main = NULL,
   mainminmax = !bar, mainminmax_minmax = TRUE, afterplotfunc = NULL,
   cex.main = par()$cex.main, par.list = NULL, xaxis = TRUE,
-  yaxis = TRUE, ...)
+  yaxis = TRUE, with_lines = FALSE, lines_only = FALSE, ...)
 }
 \arguments{
 \item{x}{x values, must form grid with y. If not given, it is assumed to be from 0 to 1.}
@@ -85,6 +85,11 @@ unless you need to add something to the plot afterwards and bar is TRUE.}
 \item{xaxis}{Should x axis be added?}
 
 \item{yaxis}{Should y axis be added?}
+
+\item{with_lines}{Should lines be added on top of 
+contour to show contours?}
+
+\item{lines_only}{Should no fill be used, only contour lines?}
 
 \item{...}{additional graphical parameters, currently only passed to title().}
 }

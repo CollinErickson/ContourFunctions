@@ -31,17 +31,25 @@ gcf_func <- function(fn0, n=100,
                     out.name=NULL,
                     pts=NULL,
                     ...) {
-  if(!is.null(out.col.name)) {
-    fn <- function(xx){fn0(xx)[,out.col.name]}
-  } else if (!is.null(out.name)) {
-    fn <- function(xx){fn0(xx)[[out.name]]}
-  } else {
-    fn <- fn0
-  }
-  if (!is.null(xylim)) {xlim <- ylim <- xylim}
-  x <- seq(xlim[1],xlim[2],length.out = n)
-  y <- seq(ylim[1],ylim[2],length.out = n)
-  z <- eval_over_grid_with_batch(x, y, fn, batchmax)
-  
-  gcf_grid(x,y,z, pts=pts, ...)
+  cf_func(fn0=fn0, n=n,
+          xlim=xlim, ylim=ylim, xylim=xylim,
+          batchmax=batchmax,
+          out.col.name=out.col.name,
+          out.name=out.name,
+          pts=pts,
+          gg=TRUE,
+          ...)
+  # if(!is.null(out.col.name)) {
+  #   fn <- function(xx){fn0(xx)[,out.col.name]}
+  # } else if (!is.null(out.name)) {
+  #   fn <- function(xx){fn0(xx)[[out.name]]}
+  # } else {
+  #   fn <- fn0
+  # }
+  # if (!is.null(xylim)) {xlim <- ylim <- xylim}
+  # x <- seq(xlim[1],xlim[2],length.out = n)
+  # y <- seq(ylim[1],ylim[2],length.out = n)
+  # z <- eval_over_grid_with_batch(x, y, fn, batchmax)
+  # 
+  # gcf_grid(x,y,z, pts=pts, ...)
 }
