@@ -16,6 +16,11 @@ test_that("cf_data", {
   cf_data(x,y,z)
   cf_data(x,y,z, bar=T)
   cf(x,y,z)
+  cf_data(x,y,z, fit="mlegp")
+  cf_data(x,y,z, xylim=c(-1,2))
+  cf_data(cbind(x,y),y=z)
+  cf_data(cbind(x,y),z=z)
+  cf_data(cbind(x,y,z))
 })
 
 test_that("cf_func", {
