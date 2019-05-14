@@ -27,8 +27,8 @@
 #' @param levels  a set of levels which are used to partition the range of z.
 #' Must be strictly increasing (and finite). Areas with z values between
 #' consecutive levels are painted with the same color.
-#' @param color.palette  a color palette function to be used to assign colors
-#' in the plot. Defaults to cm.colors. Other options include rainbow,
+#' @param color.palette  A color palette function to be used to assign colors
+#' in the plot. Defaults to cm.colors.strong. Other options include rainbow,
 #' heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.
 #' @param col  an explicit set of colors to be used in the plot.
 #' This argument overrides any palette function specification.
@@ -108,7 +108,7 @@ cf_highdim <- function(func, D, low=rep(0,D), high=rep(1,D),
                        average=FALSE, average_reps=1e4,
                        axes=TRUE, key.axes, key.title,
                        nlevels=20, levels=pretty(zlim, nlevels),
-                       color.palette=cm.colors, 
+                       color.palette=cm.colors.strong, 
                        col=color.palette(length(levels) - 1),
                        edge_width=.04, cex.var_names=1.3,
                        bar=TRUE,

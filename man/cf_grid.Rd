@@ -7,7 +7,7 @@
 cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
   ncol(z)), z, xlim = range(x, finite = TRUE), ylim = range(y, finite =
   TRUE), zlim = range(z, finite = TRUE), levels = pretty(zlim,
-  nlevels), nlevels = 20, color.palette = cm.colors,
+  nlevels), nlevels = 20, color.palette = cm.colors.strong,
   col = color.palette(length(levels) - 1), plot.title, plot.axes,
   key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
   axes = TRUE, frame.plot = axes, bar = F, pts = NULL,
@@ -33,8 +33,8 @@ cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
 
 \item{nlevels}{if levels is not specified, the range of z, values is divided into approximately this many levels.}
 
-\item{color.palette}{a color palette function to be used to assign colors
-in the plot. Defaults to cm.colors. Other options include rainbow,
+\item{color.palette}{A color palette function to be used to assign colors
+in the plot. Defaults to cm.colors.strong. Other options include rainbow,
 heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.}
 
 \item{col}{an explicit set of colors to be used in the plot. This argument overrides any palette function specification. There should be one less color than levels}
