@@ -135,7 +135,8 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
     ggplot2::theme(axis.title.y = ggplot2::element_blank())
   
   # Cut off extra space
-  p <- p + ggplot2::coord_cartesian(xlim=c(min(x), max(x)), ylim=c(min(y), max(y)), expand=F)
+  # p <- p + ggplot2::coord_cartesian(xlim=c(min(x), max(x)), ylim=c(min(y), max(y)), expand=F)
+  p <- p + ggplot2::coord_cartesian(xlim=xlim, ylim=ylim, expand=F)
   
   
   if (mainminmax | !is.null(main)) {
@@ -145,9 +146,17 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
     # Max/min annotations since colors don't work
     minind <- arrayInd(which.min(z), dim(z))
-    p <- p + ggplot2::annotate("text", x = x[minind[1]], y = y[minind[1]], label = signif(min(z),4))
+    xminz <- x[minind[1]]
+    yminz <- y[minind[2]]
+    xminz <- min(max(xminz, xlim[1]+.025*(xlim[2]-xlim[1])), xlim[2]-.025*(xlim[2]-xlim[1]))
+    yminz <- min(max(yminz, ylim[1]+.015*(ylim[2]-ylim[1])), ylim[2]-.015*(ylim[2]-ylim[1]))
+    p <- p + ggplot2::annotate("text", x = xminz, y = yminz, label = signif(min(z),3))
     maxind <- arrayInd(which.max(z), dim(z))
-    p <- p + ggplot2::annotate("text", x = x[maxind[2]], y = y[maxind[2]], label = signif(max(z),4))
+    xmaxz <- x[maxind[1]]
+    ymaxz <- y[maxind[2]]
+    xmaxz <- min(max(xmaxz, xlim[1]+.025*(xlim[2]-xlim[1])), xlim[2]-.025*(xlim[2]-xlim[1]))
+    ymaxz <- min(max(ymaxz, ylim[1]+.015*(ylim[2]-ylim[1])), ylim[2]-.015*(ylim[2]-ylim[1]))
+    p <- p + ggplot2::annotate("text", x = xmaxz, y = ymaxz, label = signif(max(z),3))
   }
   
   if (!is.null(pts)) {
