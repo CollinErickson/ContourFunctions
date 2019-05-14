@@ -1,3 +1,5 @@
+#' Make contour plot from data or function
+#' 
 #' Simpler function for making contours with cf package.
 #' Won't give argument completion, so all must be specified
 #'
