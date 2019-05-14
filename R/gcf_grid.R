@@ -142,7 +142,12 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
   if (mainminmax | !is.null(main)) {
     # Unable to put colors in title
     # p <- p + gg_make_multicolor_title()
-    p <- p + ggplot2::ggtitle(paste0("[min,max]=[",signif(min(z),3),",", signif(max(z),3),"]")) + 
+    gtitle <- pretitle
+    if (mainminmax_minmax) {
+      gtitle <- paste0(gtitle, "[min,max]=")
+    }
+    gtitle <- paste0(gtitle, "[",signif(min(z),3),",", signif(max(z),3),"]", posttitle)
+    p <- p + ggplot2::ggtitle(gtitle) + 
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
     # Max/min annotations since colors don't work
     minind <- arrayInd(which.min(z), dim(z))
