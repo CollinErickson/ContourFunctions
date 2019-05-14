@@ -73,30 +73,31 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
                        mainminmax=!bar, mainminmax_minmax=TRUE,
                        afterplotfunc=NULL,
                        cex.main=par()$cex.main,
-                       ...) {#browser()
+                       ...) {
   if (missing(z)) {
     if (!missing(x)) {
       if (is.list(x)) {
         z <- x$z
         y <- x$y
         x <- x$x
-      }
-      else {
+      } else {
         z <- x
         x <- seq.int(0, 1, length.out = nrow(z))
       }
+    } else {
+      stop("no 'z' matrix specified")
     }
-    else stop("no 'z' matrix specified")
-  }
-  else if (is.list(x)) {
+  } else if (is.list(x)) {
     y <- x$y
     x <- x$x
   }
-  if (any(diff(x) <= 0) || any(diff(y) <= 0))
+  if (any(diff(x) <= 0) || any(diff(y) <= 0)) {
     stop("increasing 'x' and 'y' values expected")
+  }
   
-  if (any(diff(x) <= 0) || any(diff(y) <= 0)) 
+  if (any(diff(x) <= 0) || any(diff(y) <= 0)) {
     stop("increasing 'x' and 'y' values expected")
+  }
   
   
   t2 <- cbind(expand.grid(x, y), tz=c(z))
