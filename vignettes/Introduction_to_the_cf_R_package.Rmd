@@ -15,6 +15,8 @@ knitr::opts_chunk$set(fig.width=6, fig.height=6)
 
 
 The ContourFunctions R package provides functions that make it easier to make contour plots. The function `cf` is a quick function that can take in grid data, a function, or any data, and give a contour plot showing the function or data.
+By default, plots are made using base graphics,
+but they can also be done using ggplot2.
 
 ## `cf_grid`
 
@@ -156,5 +158,32 @@ for the given plot.
 
 ```{r}
 cf_4dim(function(x) {x[1] + x[2]^2 + sin(2*pi*x[3])})
+```
+
+## Making plots with ggplot2
+
+All of the above plots used R base graphics.
+Similar functions for `cf`, `cf_func`, `cf_data`, and `cf_grid`
+that use ggplot2 are also available as
+`gcf`, `gcf_func`, `gcf_data`, and `gcf_grid`
+
+```{r}
+f2 <- function(x) {exp(x[1]) * sin(2*pi*x[2])}
+gcf(f2)
+```
+
+
+## Adding contour lines to plots
+
+By default, the contour plots are made using filled colors.
+To add lines on top of the color fill, use `with_lines=TRUE`.
+To make a contour plot with only lines, use `lines_only=TRUE`.
+
+```{r}
+cf(f2, with_lines=TRUE)
+```
+
+```{r}
+gcf(f2, lines_only=TRUE, bar=T)
 ```
 

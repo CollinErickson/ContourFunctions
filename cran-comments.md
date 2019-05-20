@@ -1,10 +1,10 @@
-I submitted twice last week.
-I was asked to change the name from cf, so it is now called ContourFunctions
+I added new functions and new functionality.
+
+The only reverse dependency is another package of mine.
 
 ## Test environments
-* local Windows 7 install, R 3.4.0
-* x86_64-pc-linux-gnu, R 3.3.2
-* ubuntu 12.04 (on travis-ci), R 3.3.3
+* local Windows 7 install, R 3.6.0
+* ubuntu 14.04 (on travis-ci), R 3.6.0
 * win-builder (devel and release)
 
 ## R CMD check results

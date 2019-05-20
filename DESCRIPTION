@@ -1,7 +1,7 @@
 Package: ContourFunctions
 Type: Package
 Title: Create Contour Plots from Data or a Function
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: person("Collin", "Erickson", 
   email = "collinberickson@gmail.com",
   role = c("aut", "cre"))
