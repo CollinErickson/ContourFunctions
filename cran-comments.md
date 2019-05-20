@@ -1,7 +1,5 @@
 I added new functions and new functionality.
 
-The only reverse dependency is another package of mine.
-
 ## Test environments
 * local Windows 7 install, R 3.6.0
 * ubuntu 14.04 (on travis-ci), R 3.6.0
@@ -9,10 +7,9 @@ The only reverse dependency is another package of mine.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 notes
 
 ## Reverse dependencies
 
-This is a new release, so there are no reverse dependencies.
+The only reverse dependency is another package of mine,
+and it doesn't affect it.
