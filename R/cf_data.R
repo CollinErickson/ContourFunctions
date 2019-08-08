@@ -50,11 +50,21 @@ cf_data <- function(x, y=NULL, z=NULL,
     y <- x[,2]
     x <- x[,1]
   }
+  # Check fit name given
+  if (fit == "") {
+    if (length(x) > 200) {
+      fit <- "locfit"
+      message("Fitting with locfit since n > 200")
+    } else {
+      fit <- "lagp"
+      message("Fitting with laGP since n <= 200")
+    }
+  }
   # Fits a Gaussian process model that interpolates perfectly, i.e., no smoothing
   if (fit == "mlegp") {
     co <- capture.output(mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0))
     pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
-  } else if (fit %in% c("lagp", "")) {
+  } else if (fit %in% c("lagp")) {
     X <- data.frame(x, y)
     da <- laGP::darg(list(mle=TRUE), X=X)
     ga <- laGP::garg(list(mle=TRUE), y=z)
