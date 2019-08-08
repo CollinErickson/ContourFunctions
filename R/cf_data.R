@@ -15,6 +15,7 @@
 #' @param gg If TRUE, will use ggplot2 by calling gcf_func
 #' @param ...  passed to cf_func
 #' @importFrom utils capture.output
+#' @importFrom stats predict
 #' @examples 
 #' x <- runif(20)
 #' y <- runif(20)
