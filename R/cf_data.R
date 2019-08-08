@@ -54,7 +54,7 @@ cf_data <- function(x, y=NULL, z=NULL,
   if (fit == "mlegp") {
     co <- capture.output(mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0))
     pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
-  } else {
+  } else if (fit %in% c("lagp", "")) {
     X <- data.frame(x, y)
     da <- laGP::darg(list(mle=TRUE), X=X)
     ga <- laGP::garg(list(mle=TRUE), y=z)
@@ -64,6 +64,16 @@ cf_data <- function(x, y=NULL, z=NULL,
                     dab=da$ab, gab=ga$ab, verb=0, maxit=1000)
     
     pred.func <- function(xx) {laGP::predGPsep(mod1, xx, lite=TRUE)$mean}
+  } else if (fit == "locfit") {
+    # browser()
+    X <- data.frame(x, y, z)
+    lfmod <- locfit::locfit(z ~ x + y, data=X)
+    pred.func <- function(xx) {
+      # browser()
+      predict(lfmod, data.frame(x=xx[,1], y=xx[,2]))
+    }
+  } else {
+    stop(paste0("fit is unknown"))
   }
   
   minx <- min(x);maxx <- max(x);miny <- min(y);maxy <- max(y)
