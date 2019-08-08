@@ -18,6 +18,7 @@ Suggests:
     mlegp,
     ggplot2,
     laGP,
+    locfit,
     covr,
     testthat
 VignetteBuilder: knitr
