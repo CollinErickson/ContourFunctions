@@ -99,10 +99,17 @@ cf_data <- function(x, y=NULL, z=NULL,
   if (!is.null(xylim)) {xlim <- ylim <- xylim}
   if(is.null(xlim)) {xlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
   if(is.null(ylim)) {ylim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
+  # Make pts to pass that will be shown on plot
+  show_points <- if (length(x)>300) {F} else {T}
+  if (show_points) {
+    pts <- cbind(x,y)
+  } else {
+    pts <- NULL
+  }
   # Passes prediction function to cf_func
   if (gg) {
-    gcf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=cbind(x,y), batchmax=500, ...)
+    gcf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=pts, batchmax=500, ...)
   } else {
-    cf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=cbind(x,y), batchmax=500, ...)
+    cf_func(fn0 = pred.func,xlim=xlim,ylim=ylim, pts=pts, batchmax=500, ...)
   }
 }
