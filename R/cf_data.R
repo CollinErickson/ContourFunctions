@@ -82,6 +82,15 @@ cf_data <- function(x, y=NULL, z=NULL,
       # browser()
       predict(lfmod, data.frame(x=xx[,1], y=xx[,2]))
     }
+  } else if (fit == "gam") {
+    # browser()
+    X <- data.frame(x=x, y=y, z=z) # Need new names?
+    gammod <- mgcv::gam(z ~ te(x, y), data=X)
+    print(gammod)
+    pred.func <- function(xx) {
+      # browser()
+      predict(gammod, data.frame(x=xx[,1], y=xx[,2]))
+    }
   } else {
     stop(paste0("fit is unknown"))
   }
