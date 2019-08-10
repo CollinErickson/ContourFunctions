@@ -19,6 +19,7 @@ Suggests:
     ggplot2,
     laGP,
     locfit,
+    mgcv,
     covr,
     testthat
 VignetteBuilder: knitr
