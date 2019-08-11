@@ -13,6 +13,8 @@
 #' @param fit Method to fit a model with. Current options are laGP (default)
 #' and mlegp. laGP is faster but might cause trouble.
 #' @param gg If TRUE, will use ggplot2 by calling gcf_func
+#' @param show_points Whether the input data points should be shown on the plot.
+#' If missing, is TRUE when there are more than 300 points.
 #' @param ...  passed to cf_func
 #' @importFrom utils capture.output
 #' @importFrom stats predict
@@ -26,6 +28,7 @@ cf_data <- function(x, y=NULL, z=NULL,
                     xlim=NULL, ylim=NULL, xylim=NULL,
                     fit="",
                     gg=FALSE,
+                    show_points,
                     ...) {
   # Function that creates a contour plot from a data set
   # using a Gaussian process interpolation from mlegp
@@ -100,7 +103,9 @@ cf_data <- function(x, y=NULL, z=NULL,
   if(is.null(xlim)) {xlim <- c(minx-.05*(maxx-minx),maxx+.05*(maxx-minx))}
   if(is.null(ylim)) {ylim <- c(miny-.05*(maxy-miny),maxy+.05*(maxy-miny))}
   # Make pts to pass that will be shown on plot
-  show_points <- if (length(x)>300) {F} else {T}
+  if (missing(show_points)) {
+    show_points <- if (length(x)>300) {F} else {T}
+  }
   if (show_points) {
     pts <- cbind(x,y)
   } else {

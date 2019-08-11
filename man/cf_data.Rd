@@ -5,7 +5,7 @@
 \title{Contour plot from data}
 \usage{
 cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL,
-  xylim = NULL, fit = "", gg = FALSE, ...)
+  xylim = NULL, fit = "", gg = FALSE, show_points, ...)
 }
 \arguments{
 \item{x}{either just x data, x and y data, or x, y and z data}
@@ -24,6 +24,9 @@ cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL,
 and mlegp. laGP is faster but might cause trouble.}
 
 \item{gg}{If TRUE, will use ggplot2 by calling gcf_func}
+
+\item{show_points}{Whether the input data points should be shown on the plot.
+If missing, is TRUE when there are more than 300 points.}
 
 \item{...}{passed to cf_func}
 }
