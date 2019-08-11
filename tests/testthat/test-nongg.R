@@ -38,6 +38,9 @@ test_that("cf_data", {
   cf_data(cbind(x,y),y=z)
   cf_data(cbind(x,y),z=z)
   cf_data(cbind(x,y,z))
+  # Fit with other packages
+  expect_error(cf_data(x,y,z, fit="locfit"), NA)
+  expect_error(cf_data(x,y,z, fit="gam"), NA)
   
   # Errors
   expect_error(cf_data(cbind(x,y,y),y=z))
