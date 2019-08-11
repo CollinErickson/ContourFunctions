@@ -15,6 +15,8 @@
 #' @param gg If TRUE, will use ggplot2 by calling gcf_func
 #' @param show_points Whether the input data points should be shown on the plot.
 #' If missing, is TRUE when there are more than 300 points.
+#' @param family The distribution/link to be used in fitting. Only available
+#' when fit is locfit or mgcv.
 #' @param ...  passed to cf_func
 #' @importFrom utils capture.output
 #' @importFrom stats predict
@@ -29,6 +31,7 @@ cf_data <- function(x, y=NULL, z=NULL,
                     fit="",
                     gg=FALSE,
                     show_points,
+                    family="gaussian",
                     ...) {
   # Function that creates a contour plot from a data set
   # using a Gaussian process interpolation from mlegp
@@ -80,7 +83,7 @@ cf_data <- function(x, y=NULL, z=NULL,
   } else if (fit == "locfit") {
     # browser()
     X <- data.frame(x, y, z)
-    lfmod <- locfit::locfit(z ~ x + y, data=X)
+    lfmod <- locfit::locfit(z ~ x + y, data=X, family=family)
     pred.func <- function(xx) {
       # browser()
       predict(lfmod, data.frame(x=xx[,1], y=xx[,2]))
@@ -88,7 +91,7 @@ cf_data <- function(x, y=NULL, z=NULL,
   } else if (fit == "gam") {
     # browser()
     X <- data.frame(x=x, y=y, z=z) # Need new names?
-    gammod <- mgcv::gam(z ~ te(x, y), data=X)
+    gammod <- mgcv::gam(z ~ te(x, y), data=X, family=family)
     print(gammod)
     pred.func <- function(xx) {
       # browser()

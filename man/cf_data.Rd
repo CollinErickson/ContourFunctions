@@ -5,7 +5,8 @@
 \title{Contour plot from data}
 \usage{
 cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL,
-  xylim = NULL, fit = "", gg = FALSE, show_points, ...)
+  xylim = NULL, fit = "", gg = FALSE, show_points,
+  family = "gaussian", ...)
 }
 \arguments{
 \item{x}{either just x data, x and y data, or x, y and z data}
@@ -27,6 +28,9 @@ and mlegp. laGP is faster but might cause trouble.}
 
 \item{show_points}{Whether the input data points should be shown on the plot.
 If missing, is TRUE when there are more than 300 points.}
+
+\item{family}{The distribution/link to be used in fitting. Only available
+when fit is locfit or mgcv.}
 
 \item{...}{passed to cf_func}
 }
