@@ -41,6 +41,10 @@ test_that("cf_data", {
   # Fit with other packages
   expect_error(cf_data(x,y,z, fit="locfit"), NA)
   expect_error(cf_data(x,y,z, fit="gam"), NA)
+  # Fit binomial
+  expect_error(cf_data(x,y,round(pmax(0, pmin(1, z))), family="binomial", fit="locfit"), NA)
+  # gam needs more data to avoid error
+  expect_error(cf_data(c(x,x+.01),c(y,y+.01),rep(round(pmax(0, pmin(1, z))), 2), family=binomial(), fit="gam"), NA)
   
   # Errors
   expect_error(cf_data(cbind(x,y,y),y=z))
