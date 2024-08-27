@@ -21,7 +21,7 @@
 #' @param nlevels  if levels is not specified, the range of z, values is divided into approximately this many levels.
 #' @param color.palette  A color palette function to be used to assign colors
 #' in the plot. Defaults to cm.colors.strong. Other options include rainbow,
-#' heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.
+#' heat.colors, terrain.colors, topo.colors, and function(x) \{gray((1:x)/x)\}.
 #' @param col  an explicit set of colors to be used in the plot. This argument overrides any palette function specification. There should be one less color than levels
 #' @param plot.title  statements which add titles to the main plot.
 #' @param plot.axes  statements which draw axes (and a box) on the main plot. This overrides the default axes.
@@ -64,7 +64,7 @@
 #' r <- sqrt(outer(x^2, y^2, "+"))
 #' cf_grid(cos(r^2)*exp(-r/(2*pi)))
 #' cf_grid(r, color.palette=heat.colors, bar=TRUE)
-#' cf_grid(r, color.palette=function(x) {gray((1:x)/x)}, bar=TRUE)
+#' cf_grid(r, color.palette=function(x) \{gray((1:x)/x)\}, bar=TRUE)
 #' @references
 #' [1] filled.contour R function, copied function but removed part for sidebar
 #' @references

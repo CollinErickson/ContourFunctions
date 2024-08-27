@@ -72,7 +72,7 @@ consecutive levels are painted with the same color.}
 
 \item{color.palette}{A color palette function to be used to assign colors
 in the plot. Defaults to cm.colors.strong. Other options include rainbow,
-heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.}
+heat.colors, terrain.colors, topo.colors, and function(x) \{gray((1:x)/x)\}.}
 
 \item{col}{an explicit set of colors to be used in the plot.
 This argument overrides any palette function specification.

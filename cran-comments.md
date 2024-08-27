@@ -1,4 +1,5 @@
-I added new functions and new functionality.
+I received an email that I need to fix the note on CRAN by 8/27/24.
+Apologies for slightly missing that deadline.
 
 ## Test environments
 * local Windows 7 install, R 3.6.0

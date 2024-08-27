@@ -22,7 +22,7 @@
 #' divided into approximately this many levels.
 #' @param color.palette  a color palette function to be used to assign colors
 #' in the plot. Defaults to cm.colors. Other options include rainbow,
-#' heat.colors, terrain.colors, topo.colors, and function(x) {gray((1:x)/x)}.
+#' heat.colors, terrain.colors, topo.colors, and function(x) \{gray((1:x)/x)\}.
 #' @param col  an explicit set of colors to be used in the plot. This argument
 #' overrides any palette function specification. There should be one less
 #' color than levels
@@ -48,6 +48,7 @@
 #' 
 #' @return ggplot2 object
 #' @export
+#' @importFrom rlang .data
 #'
 #' @examples
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)
@@ -105,20 +106,23 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
     # scale_fill_gradientn(colours=c("cyan","white","magenta"))
     ggplot2::scale_fill_gradientn(colours=col)
   if (!lines_only) {
-    p <- p + ggplot2::geom_raster(ggplot2::aes_string(x="Var1", y="Var2", fill = "tz"),
-                         t2, interpolate=interpolate)
+    p <- p + ggplot2::geom_raster(ggplot2::aes(x=.data$Var1, y=.data$Var2,
+                                               fill = .data$tz),
+                                  t2, interpolate=interpolate)
   }
   
   # Add contour lines
   if (with_lines) {
-    p <- p + ggplot2::geom_contour(ggplot2::aes_string(x="Var1", y="Var2", z = "tz"),
+    p <- p + ggplot2::geom_contour(ggplot2::aes(x=.data$Var1, y=.data$Var2, 
+                                                z = .data$tz),
                                    bins=bins,
                                    color="black",
                                    t2)
   }
   if (lines_only) { # Only color lines if only lines
-    p <- p + ggplot2::geom_contour(ggplot2::aes_string(x="Var1", y="Var2", z = "tz",
-                                                       color="..level.."),
+    p <- p + ggplot2::geom_contour(ggplot2::aes(x=.data$Var1, y=.data$Var2,
+                                                z = .data$tz,
+                                                color=.data$..level..),
                                    bins=bins,
                                    t2)
   }
@@ -174,7 +178,7 @@ gcf_grid <-  function (x = seq(0, 1, length.out = nrow(z)),
     # points(pts, pch=19)
     pts <- as.data.frame(pts)
     colnames(pts) <- c("V1", "V2")
-    p <- p + ggplot2::geom_point(ggplot2::aes_string("V1","V2"), data=pts)
+    p <- p + ggplot2::geom_point(ggplot2::aes(.data$V1, .data$V2), data=pts)
   }
   
   if (!is.null(afterplotfunc)) {

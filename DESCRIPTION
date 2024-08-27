@@ -11,6 +11,8 @@ Description: Provides functions for making contour plots.
   process is fit to the data and used to create the contour plot.
 License: GPL-3
 RoxygenNote: 7.3.1
+Imports:
+    rlang
 Suggests: 
     knitr,
     rmarkdown,
