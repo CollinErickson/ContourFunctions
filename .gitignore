@@ -39,3 +39,4 @@ Temporary Items
 .Rdata
 .Rhistory
 inst/doc
+test/testthat/Rplots.pdf
