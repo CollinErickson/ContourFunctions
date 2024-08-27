@@ -1,5 +1,6 @@
-# cf 0.1.1.9000
+# cf 0.1.2
 
+Minor fix to stay on CRAN.
 
 # cf 0.1.1
 

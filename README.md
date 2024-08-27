@@ -5,11 +5,9 @@
 
 <!-- badges: start -->
 
-[![Travis-CI Build
-Status](https://travis-ci.org/CollinErickson/ContourFunctions.svg?branch=master)](https://travis-ci.org/CollinErickson/ContourFunctions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ContourFunctions)](https://cran.r-project.org/package=ContourFunctions)
 [![Codecov test
-coverage](https://codecov.io/gh/CollinErickson/ContourFunctions/branch/master/graph/badge.svg)](https://codecov.io/gh/CollinErickson/ContourFunctions?branch=master)
+coverage](https://codecov.io/gh/CollinErickson/ContourFunctions/branch/master/graph/badge.svg)](https://app.codecov.io/gh/CollinErickson/ContourFunctions?branch=master)
 [![R-CMD-check](https://github.com/CollinErickson/ContourFunctions/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CollinErickson/ContourFunctions/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
