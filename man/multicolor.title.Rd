@@ -4,8 +4,7 @@
 \alias{multicolor.title}
 \title{Makes plot title using specified colors for the text}
 \usage{
-multicolor.title(main, col.main, collapse = "",
-  cex.main = par()$cex.main)
+multicolor.title(main, col.main, collapse = "", cex.main = par()$cex.main)
 }
 \arguments{
 \item{main}{Text to put in main title of plot}

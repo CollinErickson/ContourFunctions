@@ -4,8 +4,17 @@
 \alias{gcf_data}
 \title{Contour plot from data}
 \usage{
-gcf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL,
-  xylim = NULL, fit = "", gg = TRUE, ...)
+gcf_data(
+  x,
+  y = NULL,
+  z = NULL,
+  xlim = NULL,
+  ylim = NULL,
+  xylim = NULL,
+  fit = "",
+  gg = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{either just x data, x and y data, or x, y and z data}

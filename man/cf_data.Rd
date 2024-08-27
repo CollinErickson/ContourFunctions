@@ -4,9 +4,19 @@
 \alias{cf_data}
 \title{Contour plot from data}
 \usage{
-cf_data(x, y = NULL, z = NULL, xlim = NULL, ylim = NULL,
-  xylim = NULL, fit = "", gg = FALSE, show_points,
-  family = "gaussian", ...)
+cf_data(
+  x,
+  y = NULL,
+  z = NULL,
+  xlim = NULL,
+  ylim = NULL,
+  xylim = NULL,
+  fit = "",
+  gg = FALSE,
+  show_points,
+  family = "gaussian",
+  ...
+)
 }
 \arguments{
 \item{x}{either just x data, x and y data, or x, y and z data}

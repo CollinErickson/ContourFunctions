@@ -4,9 +4,19 @@
 \alias{cf_func}
 \title{Makes filled contour plot from function}
 \usage{
-cf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1), xylim = NULL,
-  batchmax = 1, out.col.name = NULL, out.name = NULL, pts = NULL,
-  gg = FALSE, ...)
+cf_func(
+  fn0,
+  n = 100,
+  xlim = c(0, 1),
+  ylim = c(0, 1),
+  xylim = NULL,
+  batchmax = 1,
+  out.col.name = NULL,
+  out.name = NULL,
+  pts = NULL,
+  gg = FALSE,
+  ...
+)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}

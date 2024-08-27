@@ -4,17 +4,44 @@
 \alias{cf_grid}
 \title{Create a contour plot from a grid of data}
 \usage{
-cf_grid(x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, length.out =
-  ncol(z)), z, xlim = range(x, finite = TRUE), ylim = range(y, finite =
-  TRUE), zlim = range(z, finite = TRUE), levels = pretty(zlim,
-  nlevels), nlevels = 20, color.palette = cm.colors.strong,
-  col = color.palette(length(levels) - 1), plot.title, plot.axes,
-  key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1,
-  axes = TRUE, frame.plot = axes, bar = F, pts = NULL,
-  reset.par = TRUE, pretitle = "", posttitle = "", main = NULL,
-  mainminmax = !bar, mainminmax_minmax = TRUE, afterplotfunc = NULL,
-  cex.main = par()$cex.main, par.list = NULL, xaxis = TRUE,
-  yaxis = TRUE, with_lines = FALSE, lines_only = FALSE, ...)
+cf_grid(
+  x = seq(0, 1, length.out = nrow(z)),
+  y = seq(0, 1, length.out = ncol(z)),
+  z,
+  xlim = range(x, finite = TRUE),
+  ylim = range(y, finite = TRUE),
+  zlim = range(z, finite = TRUE),
+  levels = pretty(zlim, nlevels),
+  nlevels = 20,
+  color.palette = cm.colors.strong,
+  col = color.palette(length(levels) - 1),
+  plot.title,
+  plot.axes,
+  key.title,
+  key.axes,
+  asp = NA,
+  xaxs = "i",
+  yaxs = "i",
+  las = 1,
+  axes = TRUE,
+  frame.plot = axes,
+  bar = F,
+  pts = NULL,
+  reset.par = TRUE,
+  pretitle = "",
+  posttitle = "",
+  main = NULL,
+  mainminmax = !bar,
+  mainminmax_minmax = TRUE,
+  afterplotfunc = NULL,
+  cex.main = par()$cex.main,
+  par.list = NULL,
+  xaxis = TRUE,
+  yaxis = TRUE,
+  with_lines = FALSE,
+  lines_only = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{x values, must form grid with y. If not given, it is assumed to be from 0 to 1.}

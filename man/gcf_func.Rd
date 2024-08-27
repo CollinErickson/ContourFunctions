@@ -4,9 +4,18 @@
 \alias{gcf_func}
 \title{Makes filled contour plot from function}
 \usage{
-gcf_func(fn0, n = 100, xlim = c(0, 1), ylim = c(0, 1),
-  xylim = NULL, batchmax = 1, out.col.name = NULL, out.name = NULL,
-  pts = NULL, ...)
+gcf_func(
+  fn0,
+  n = 100,
+  xlim = c(0, 1),
+  ylim = c(0, 1),
+  xylim = NULL,
+  batchmax = 1,
+  out.col.name = NULL,
+  out.name = NULL,
+  pts = NULL,
+  ...
+)
 }
 \arguments{
 \item{fn0}{function to plot, first argument must be two-dimensional}
