@@ -3,11 +3,15 @@
 
 # ContourFunctions
 
+<!-- badges: start -->
+
 [![Travis-CI Build
 Status](https://travis-ci.org/CollinErickson/ContourFunctions.svg?branch=master)](https://travis-ci.org/CollinErickson/ContourFunctions)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ContourFunctions)](https://cran.r-project.org/package=ContourFunctions)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ContourFunctions)](https://cran.r-project.org/package=ContourFunctions)
 [![Codecov test
 coverage](https://codecov.io/gh/CollinErickson/ContourFunctions/branch/master/graph/badge.svg)](https://codecov.io/gh/CollinErickson/ContourFunctions?branch=master)
+[![R-CMD-check](https://github.com/CollinErickson/ContourFunctions/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CollinErickson/ContourFunctions/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 This is an R package that provides simple functions for creating contour
 plots.
@@ -16,35 +20,36 @@ plots.
 
 The main functions are:
 
-  - `cf_grid`: Makes a contour plot from grid data.
+- `cf_grid`: Makes a contour plot from grid data.
 
-  - `cf_func`: Makes a contour plot for a function.
+- `cf_func`: Makes a contour plot for a function.
 
-  - `cf_data`: Makes a contour plot for a data set by fitting a Gaussian
-    process model.
+- `cf_data`: Makes a contour plot for a data set by fitting a Gaussian
+  process model.
 
-  - `cf`: Passes arguments to `cf_function` or `cf_data` depending on
-    whether the first argument is a function or numeric.
+- `cf`: Passes arguments to `cf_function` or `cf_data` depending on
+  whether the first argument is a function or numeric.
 
 All of these functions make the plot using base graphics by default. To
 make plots using ggplot2, add the argument `gg=TRUE`, or put g in front
-of the function name. E.g., `gcf_data(...)` is the same as `cf_data(...,
-gg=TRUE)`, and makes a similar plot to `cf_data` but using ggplot2.
+of the function name. E.g., `gcf_data(...)` is the same as
+`cf_data(..., gg=TRUE)`, and makes a similar plot to `cf_data` but using
+ggplot2.
 
 There are two functions for making plots in higher dimensions:
 
-  - `cf_4dim`: Plots functions with four inputs by making a series of
-    contour plots.
+- `cf_4dim`: Plots functions with four inputs by making a series of
+  contour plots.
 
-  - `cf_highdim`: Plots for higher dimensional inputs by making a
-    contour plot for each pair of input dimensions and holding the other
-    inputs constant or averaging over them.
+- `cf_highdim`: Plots for higher dimensional inputs by making a contour
+  plot for each pair of input dimensions and holding the other inputs
+  constant or averaging over them.
 
 ## Installation
 
     # It can be installed like any other package
     install.packages("ContourFunctions")
-    
+
     # Or the the development version from GitHub:
     # install.packages("devtools")
     devtools::install_github("CollinErickson/contour")
@@ -80,6 +85,7 @@ x <- runif(20)
 y <- runif(20)
 z <- exp(-(x-.5)^2-5*(y-.5)^2)
 cf_data(x,y,z)
+#> Fitting with laGP since n <= 200
 ```
 
 ![](tools/README-cf_data-1.png)<!-- -->
