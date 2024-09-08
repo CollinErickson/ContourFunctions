@@ -40,3 +40,5 @@ Temporary Items
 .Rhistory
 inst/doc
 test/testthat/Rplots.pdf
+/doc/
+/Meta/

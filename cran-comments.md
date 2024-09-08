@@ -15,13 +15,13 @@ Apologies for slightly missing that deadline.
 ## R CMD check results
 
 
-* local Windows 10 install (8/26/24): 0 errors | 0 warnings | 0 notes
+* local Windows 10 install (9/8/24): 0 errors | 0 warnings | 0 notes
 
 * win-builder (devel)
 
 * win-builder (release)
 
-* mac-builder (8/26/24): OK
+* mac-builder (9/8/24): OK
 
 * macOS 14.6.1 (GitHub Actions) (8/26/24): OK
 
