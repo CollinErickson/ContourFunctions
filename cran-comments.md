@@ -3,7 +3,8 @@ Apologies for missing that deadline.
 
 I tried to submit on 9/8 but was rejected for failing when Suggests packages
 aren't available. I have either moved packages to Depends, or added
-requireNamespace around functions from the packages in Suggests.
+requireNamespace around functions from the packages in Suggests. I reran the
+tests and everything passes.
 
 ## Test environments
 * local Windows 10 install, R 4.4.1
