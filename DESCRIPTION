@@ -12,18 +12,19 @@ Description: Provides functions for making contour plots.
 License: GPL-3
 RoxygenNote: 7.3.1
 Imports:
-    rlang
-Suggests: 
-    knitr,
-    rmarkdown,
-    lhs,
-    mlegp,
-    ggplot2,
-    laGP,
-    locfit,
-    mgcv,
-    covr,
-    testthat
+  rlang
+Depends:
+  ggplot2,
+  lhs,
+  rmarkdown
+Suggests:
+  covr, 
+  knitr,
+  laGP,
+  locfit,
+  mgcv,
+  mlegp,
+  testthat
 VignetteBuilder: knitr
 URL: https://github.com/CollinErickson/ContourFunctions
 Encoding: UTF-8

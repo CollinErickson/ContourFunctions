@@ -10,3 +10,4 @@ Scratch
 ^\.github$
 ^doc$
 ^Meta$
+^CRAN-SUBMISSION$

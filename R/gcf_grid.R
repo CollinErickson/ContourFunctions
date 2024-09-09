@@ -49,6 +49,7 @@
 #' @return ggplot2 object
 #' @export
 #' @importFrom rlang .data
+#' @importFrom ggplot2 ggplot
 #'
 #' @examples
 #' x <- y <- seq(-4*pi, 4*pi, len = 27)

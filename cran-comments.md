@@ -1,6 +1,10 @@
 I received an email that I need to fix the note on CRAN by 8/27/24.
 Apologies for missing that deadline.
 
+I tried to submit on 9/8 but was rejected for failing when Suggests packages
+aren't available. I have either moved packages to Depends, or added
+requireNamespace around functions from the packages in Suggests.
+
 ## Test environments
 * local Windows 10 install, R 4.4.1
 * win-builder (devel)

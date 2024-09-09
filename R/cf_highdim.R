@@ -39,6 +39,7 @@
 #' @param ... Arguments passed to cf_func, and then probably through to cf_grid
 #'
 #' @importFrom graphics contour mtext
+#' @importFrom lhs randomLHS
 #' @return NULL
 #' @export
 #' @references Hwang, Yongmoon, Sang-Lyul Cha, Sehoon Kim, Seung-Seop Jin,

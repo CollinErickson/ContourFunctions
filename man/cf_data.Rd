@@ -31,8 +31,8 @@ cf_data(
 
 \item{xylim}{x and y limits for the contour plot}
 
-\item{fit}{Method to fit a model with. Current options are laGP (default)
-and mlegp. laGP is faster but might cause trouble.}
+\item{fit}{Method to fit a model with. Current options are laGP (default),
+mlegp, gam (uses mgcv), and locfit. laGP is faster but might cause trouble.}
 
 \item{gg}{If TRUE, will use ggplot2 by calling gcf_func}
 

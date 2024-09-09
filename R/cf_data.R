@@ -10,8 +10,8 @@
 #' @param xlim  x limits for the contour plot, will be set to data limits +- 5\% if not specified
 #' @param ylim  y limits for the contour plot, will be set to data limits +- 5\% if not specified
 #' @param xylim x and y limits for the contour plot
-#' @param fit Method to fit a model with. Current options are laGP (default)
-#' and mlegp. laGP is faster but might cause trouble.
+#' @param fit Method to fit a model with. Current options are laGP (default),
+#' mlegp, gam (uses mgcv), and locfit. laGP is faster but might cause trouble.
 #' @param gg If TRUE, will use ggplot2 by calling gcf_func
 #' @param show_points Whether the input data points should be shown on the plot.
 #' If missing, is TRUE when there are more than 300 points.
@@ -20,6 +20,8 @@
 #' @param ...  passed to cf_func
 #' @importFrom utils capture.output
 #' @importFrom stats predict
+#' @importFrom rmarkdown html_vignette 
+#' @importFrom stats lm
 #' @examples 
 #' x <- runif(20)
 #' y <- runif(20)
@@ -58,19 +60,19 @@ cf_data <- function(x, y=NULL, z=NULL,
   }
   # Check fit name given
   if (fit == "") {
-    if (length(x) > 200) {
+    if (length(x) > 200 && requireNamespace("locfit", quietly = TRUE)) {
       fit <- "locfit"
       message("Fitting with locfit since n > 200")
     } else {
       fit <- "lagp"
-      message("Fitting with laGP since n <= 200")
+      message("Fitting with laGP since n <= 200 (or locfit not available)")
     }
   }
   # Fits a Gaussian process model that interpolates perfectly, i.e., no smoothing
-  if (fit == "mlegp") {
+  if (fit == "mlegp" && requireNamespace("mlegp", quietly = TRUE)) {
     co <- capture.output(mod <- mlegp::mlegp(X=data.frame(x,y),Z=z,verbose=0))
     pred.func <- function(xx) {mlegp::predict.gp(mod,xx)}
-  } else if (fit %in% c("lagp")) {
+  } else if (fit %in% c("lagp") && requireNamespace("laGP", quietly = TRUE)) {
     X <- data.frame(x, y)
     da <- laGP::darg(list(mle=TRUE), X=X)
     ga <- laGP::garg(list(mle=TRUE), y=z)
@@ -80,7 +82,7 @@ cf_data <- function(x, y=NULL, z=NULL,
                     dab=da$ab, gab=ga$ab, verb=0, maxit=1000)
     
     pred.func <- function(xx) {laGP::predGPsep(mod1, xx, lite=TRUE)$mean}
-  } else if (fit == "locfit") {
+  } else if (fit == "locfit" && requireNamespace("locfit", quietly = TRUE)) {
     # browser()
     X <- data.frame(x, y, z)
     lfmod <- locfit::locfit(z ~ x + y, data=X, family=family)
@@ -88,7 +90,7 @@ cf_data <- function(x, y=NULL, z=NULL,
       # browser()
       predict(lfmod, data.frame(x=xx[,1], y=xx[,2]))
     }
-  } else if (fit == "gam") {
+  } else if (fit == "gam" && requireNamespace("mgcv", quietly = TRUE)) {
     # browser()
     X <- data.frame(x=x, y=y, z=z)
     gammod <- mgcv::gam(z ~ te(x, y), data=X, family=family)
@@ -98,7 +100,15 @@ cf_data <- function(x, y=NULL, z=NULL,
       predict(gammod, data.frame(x=xx[,1], y=xx[,2]), type='response')
     }
   } else {
-    stop(paste0("fit is unknown"))
+    warning(paste0("Defaulting to use LM for fit. This is bad. Choose a better",
+                   " option for fit and ensure the package is installed."))
+    X <- data.frame(x=x, y=y, z=z)
+    lmmod <- lm(z ~ x + y + x*y, data=X)
+    pred.func <- function(xx) {
+      # browser()
+      predict(lmmod, data.frame(x=xx[,1], y=xx[,2]), type='response')
+    }
+    # stop(paste0("fit is unknown, or the requested package is not installed"))
   }
   
   minx <- min(x);maxx <- max(x);miny <- min(y);maxy <- max(y)
